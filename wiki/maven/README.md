@@ -1,3 +1,0 @@
-
-
-# Build Management with Maven
