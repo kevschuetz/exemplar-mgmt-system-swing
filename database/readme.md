@@ -1,1 +1,1 @@
-This Spring-Boot project will provide a REST API to connect the client with the database
+Repository from team 4 for creating an Exemplar Management System
