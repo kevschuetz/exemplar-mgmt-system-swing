@@ -16,7 +16,7 @@ public class Datenbankverbindung {
         stmt = con.prepareStatement(create);
         stmt.executeUpdate();
 
-        stmt = con.prepareStatement("INSERT INTO REGISTRATION values(106)");
+        stmt = con.prepareStatement("INSERT INTO REGISTRATION values(110)");
         stmt.executeUpdate();
 
         con.close();
