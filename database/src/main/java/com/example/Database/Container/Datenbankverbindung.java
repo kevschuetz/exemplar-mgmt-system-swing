@@ -1,6 +1,11 @@
 package com.example.Database.Container;
 import java.sql.*;
 
+/**
+ *
+ * Obsolet - switched to JPA
+ *
+ */
 public class Datenbankverbindung {
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();

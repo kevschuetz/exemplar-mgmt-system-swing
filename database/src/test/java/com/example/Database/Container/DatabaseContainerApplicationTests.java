@@ -1,13 +1,16 @@
 package com.example.Database.Container;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-class DatabaseContainerApplicationTests {
+@SpringBootConfiguration
+public class DatabaseContainerApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }
