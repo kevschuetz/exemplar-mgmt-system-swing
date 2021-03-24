@@ -1,5 +1,5 @@
 com\example\Database\Container\Datenbankverbindung.class
-appliation\UserController.class
-appliation\DatabaseContainerApplication.class
-appliation\UserRepository.class
-appliation\Users.class
+application\UserRepository.class
+application\UserController.class
+application\Users.class
+application\DatabaseContainerApplication.class
