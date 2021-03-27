@@ -8,10 +8,13 @@ public class Users {
     @Id
     private String username;
 
+    private int is_contributor;
+
     public Users(){
     }
-    public Users(String username){
+    public Users(String username, int isContributor){
         this.username = username;
+        this.is_contributor = isContributor;
     }
 
     public void setUsername(String username){
@@ -20,6 +23,14 @@ public class Users {
 
     public String getUsername(){
         return this.username;
+    }
+
+    public int getIsContributor() {
+        return is_contributor;
+    }
+
+    public void setIsContributor(int isContributor) {
+        this.is_contributor = isContributor;
     }
 
     @Override

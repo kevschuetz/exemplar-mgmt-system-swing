@@ -11,8 +11,8 @@ DROP TABLE COMMUNITY;
 
 
 CREATE TABLE USERS(
-name varchar(50) PRIMARY KEY,
-contributor bit NOT NULL,
+username varchar(50) PRIMARY KEY,
+is_contributor bit NOT NULL,
 /* CHECK (contributor IN ("yes", "no")) */
 );
 
@@ -23,7 +23,7 @@ problem varchar(5000) NOT NULL,
 solution varchar(5000) NOT NULL,
 owner varchar(50),
 
-CONSTRAINT exemplar_owner FOREIGN KEY(owner) references USERS(name) ON DELETE SET NULL
+CONSTRAINT exemplar_owner FOREIGN KEY(owner) references USERS(username) ON DELETE SET NULL
 );
 
 CREATE TABLE CONTRIBUTED_TO_EXEMPLAR(
@@ -31,7 +31,7 @@ user_name varchar(50) NOT NULL,
 exemplar_name varchar(50) NOT NULL,
 
 PRIMARY KEY(user_name, exemplar_name),
-CONSTRAINT contributing_user FOREIGN KEY(user_name) references USERS(name) ON DELETE CASCADE,
+CONSTRAINT contributing_user FOREIGN KEY(user_name) references USERS(username) ON DELETE CASCADE,
 CONSTRAINT referenced_exemplar FOREIGN KEY(exemplar_name) references EXEMPLAR(name) ON DELETE CASCADE,
 );
 
@@ -51,7 +51,7 @@ user_name varchar(50),
 rating integer,
 exemplar_name varchar(50),
 PRIMARY KEY(user_name, exemplar_name),
-CONSTRAINT rating_fk1 FOREIGN KEY(user_name) REFERENCES USERS(name) ON DELETE CASCADE,
+CONSTRAINT rating_fk1 FOREIGN KEY(user_name) REFERENCES USERS(username) ON DELETE CASCADE,
 CONSTRAINT rating_fk2 FOREIGN KEY(exemplar_name) REFERENCES EXEMPLAR(name) ON DELETE CASCADE
 );
 
@@ -65,7 +65,7 @@ user_n varchar(50),
 community varchar(20),
 PRIMARY KEY(user_n, community),
 
-CONSTRAINT community_member_fk1 FOREIGN KEY (user_n) REFERENCES USERS(name) ON DELETE CASCADE,
+CONSTRAINT community_member_fk1 FOREIGN KEY (user_n) REFERENCES USERS(username) ON DELETE CASCADE,
 CONSTRAINT community_member_fk2 FOREIGN KEY (community) REFERENCES COMMUNITY(name) ON DELETE CASCADE
 );
 
