@@ -48,4 +48,8 @@ public class Users {
         }
         return username != null && this.username.equals(((Users) o).username);
     }
+    public String toString(){
+        String s = is_contributor == 1 ? "yes" : "no";
+        return "User " + username + " is " + s + " contributor";
+    }
 }
