@@ -13,7 +13,7 @@ public class UserController {
     public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-    @PostMapping("")
+    @PutMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Users createUser(@RequestBody Users u) {
         return userRepository.save(u);
@@ -30,8 +30,9 @@ public class UserController {
         return result.orElse(null);
     }
 
-    @DeleteMapping("")
-    public void deleteUser(@RequestBody Users u){
-        userRepository.delete(u);
+    @DeleteMapping("/{username}")
+    public void deleteUser(@PathVariable String username){
+        Users u = userRepository.findById(username).orElse(null);
+        if (u != null) userRepository.delete(u);
     }
 }
