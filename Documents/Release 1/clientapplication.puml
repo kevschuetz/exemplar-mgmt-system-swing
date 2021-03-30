@@ -1,0 +1,143 @@
+@startuml
+package Entities{
+
+class Exemplar{
+    #owner : Contributor
+    #problem : String
+    #solution : String
+}
+
+class Users{
+    #username : String
+    #password : String
+}
+
+class Contributor{
+
+}
+Contributor --|> Users
+
+
+class Label{
+    #value : String
+}
+
+
+class Community{
+    #name : String
+    #creator : Users
+}
+
+class Rating{
+    #exemplar : Exemplar
+    #rater : Users
+    #rating : int
+}
+}
+
+package controller{
+class FrameController{
+#currentUser : Users
+#currentExemplar : Exemplar
+--
+Frames
+--
+#mainFrame : MainFrame
+#userFrame : UserFrame
+#communityFrame : CommunityFrame
+
+}
+
+}
+
+package view{
+class MainFrame extends JFrame{
+#exemplar : ExemplarPanel
+#exemplars : AllExemplarsPanel
+#menuBar : MenuBar
+}
+class MenuBar extends JMenuBar{
+
+}
+class UserFrame extends JFrame{
+#user : Users
+}
+
+class CommunityFrame extends JFrame{
+#community : Community
+}
+class ExemplarPanel extends JPanel{
+#exemplar : Exemplar
+}
+class AllExemplarsPanel extends JPanel{
+exemplars : List<Exemplar>
+}
+}
+
+package model{
+class DatabaseManager{
+#client : HttpClient
+--
+Exemplar methods
+--
+void addExemplar(Exemplar e)
+Exemplar getExemplar(String s)
+List<Exemplar> getExemplars()
+
+void addLabelToExemplar(Exemplar e, Label l)
+void addContributorToExemplar(Exemplar e, Contributor c)
+void addRatingToExemplar(Rating r)
+
+List<Contributor> getContributors(Exemplar e)
+List<Rating> getRatings(Exemplar e)
+List<Label> getLabels(Exemplar e)
+
+
+void deleteExemplar(Exemplar e)
+--
+User methods
+--
+void addUser(Users u)
+Users getUser(String s)
+
+void deleteUser(User u)
+--
+Community methods
+--
+void addCommunity(Community c)
+Community getCommunity(String s)
+
+void addAdministratorToCommunity(Community c, Users u)
+void addMemberToCommunity(Community c, Users u)
+void addExemplarToCommunity(Community c, Users u)
+
+List<Users> getAdministratorsOfComm(Community c)
+List<Users> getMembersOfCOmm((Community c)
+List<Exemplar> getExemplarsOfComm(Community c)
+
+void rmvAdminOfCommunity(Community c, Users u)
+void rmvMemberOfCommunity(Community c, Users u)
+void rmvExemplarOfCommunity(Community c, Exemplar e)
+
+void deleteCommunity(Community c)
+--
+Label methods
+--
+void addLabel(Label l)
+
+List<Label> getLabelsForExemplar(Exemplar e)
+void rmvLabelFromExemplar(Exemplar e, Label l)
+
+void deleteRating(Label l)
+--
+Rating methods
+--
+void addRating(Rating r)
+
+List<Rating> getRatingsForExemplar(Exemplar e)
+
+void addRatingToExemplar(Exemplar e, Rating r)
+void removeRatingFromExemplar(Exemplar e, Rating r)
+}
+}
+@enduml
