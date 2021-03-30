@@ -45,7 +45,7 @@ label_name varchar(10),
 PRIMARY KEY(exemplar_name, label_name),
 
 CONSTRAINT is_labeld_fk1 FOREIGN KEY(exemplar_name) REFERENCES EXEMPLAR(name),
-CONSTRAINT is_labeld_fk2 FOREIGN KEY(labe_name) REFERENCES LABEL(name) 
+CONSTRAINT is_labeld_fk2 FOREIGN KEY(label_name) REFERENCES LABEL(name) 
 ); 
 
 CREATE TABLE RATING(
