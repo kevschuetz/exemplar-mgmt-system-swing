@@ -2,14 +2,14 @@
 package Entities{
 
 class Exemplar{
-    #owner : Contributor
-    #problem : String
-    #solution : String
+#owner : Contributor
+#problem : String
+#solution : String
 }
 
 class Users{
-    #username : String
-    #password : String
+#username : String
+#password : String
 }
 
 class Contributor{
@@ -19,19 +19,19 @@ Contributor --|> Users
 
 
 class Label{
-    #value : String
+ #value : String
 }
 
 
 class Community{
-    #name : String
-    #creator : Users
+#name : String
+#creator : Users
 }
 
 class Rating{
-    #exemplar : Exemplar
-    #rater : Users
-    #rating : int
+#exemplar : Exemplar
+#rater : Users
+#rating : int
 }
 }
 
