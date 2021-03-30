@@ -18,7 +18,7 @@ Other documents and documentation files can be found unde /Documents
 
 * [General architecture of the application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/General%20Architecture%200.pdf)
 * [SQL-Script for Database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/database_script/Logic_Design.sql) 
-* [UML class diagram database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
+* [Diagram database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
 * [Link to CircleCI confirming succesfull builds](https://app.circleci.com/pipelines/github/jku-win-se) 
 * [UML class diagram desktop application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Desktop_Application.png)
 * [UML class for desktop application PlantUML-Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/clientapplication.puml)
