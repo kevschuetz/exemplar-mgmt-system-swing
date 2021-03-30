@@ -42,8 +42,10 @@ name varchar(10) PRIMARY KEY
 CREATE TABLE IS_LABELED_AS(
 exemplar_name varchar(50),
 label_name varchar(10),
-PRIMARY KEY(exemplar_name, label_name)
+PRIMARY KEY(exemplar_name, label_name),
 
+CONSTRAINT is_labeld_fk1 FOREIGN KEY(exemplar_name) REFERENCES EXEMPLAR(name),
+CONSTRAINT is_labeld_fk2 FOREIGN KEY(labe_name) REFERENCES LABEL(name) 
 ); 
 
 CREATE TABLE RATING(
