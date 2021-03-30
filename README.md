@@ -1,4 +1,4 @@
-### Exemplar Management System (Team 4)
+# Exemplar Management System (Team 4)
 
 Repository team4 for the project of creating an Exemplar Management Tool
 
