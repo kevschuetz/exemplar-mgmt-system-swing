@@ -12,8 +12,10 @@ public class UserTestClient {
     public static void main(String[] args) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
 
+        String url = "http://database.northeurope.azurecontainer.io:8080";
+        //url = "http://localhost:8080";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/user"))
+                .uri(URI.create(url+"/user"))
                 .build();
 
         /**
@@ -41,7 +43,7 @@ public class UserTestClient {
         testUser.setIsContributor(0);
         String json = mapper.writeValueAsString(testUser);
         request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/user"))
+                .uri(URI.create(url+"/user"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -55,7 +57,7 @@ public class UserTestClient {
          */
         System.out.println("getUser()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/user/momosuke"))
+                .uri(URI.create(url+"/user/momosuke"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -67,7 +69,7 @@ public class UserTestClient {
          */
         System.out.println("deleteUser()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/user/Kevin"))
+                .uri(URI.create(url+"/user/Kevin"))
                 .DELETE()
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());

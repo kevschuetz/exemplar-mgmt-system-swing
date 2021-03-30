@@ -4,13 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.mycompany.app</groupId>
-  <artifactId>my-app</artifactId>
+  <groupId>jku-win-se.teaching-2021.prse-exemplar-team4</groupId>
+  <artifactId>application</artifactId>
   <version>1.0</version>
-
+  <description>Project for creating the desktop application for the Exemplar Management System</description>
   <name>my-app</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
