@@ -2,7 +2,7 @@
 
 Repository team4 for the project of creating an Exemplar Management Tool
 
-## **Structure of the repository **
+## Structure of the repository 
 
 The root folder represents the maven project for the desktop application (Exemplar Management System).
 
