@@ -2,6 +2,15 @@
 
 Repository team4 for the project of creating an Exemplar Management Tool
 
+## **Structure of the repository **
+
+The root folder represents the maven project for the desktop application (Exemplar Management System).
+
+The /database folder represents an independent Spring-Boot application that will act as a proxy between the desktop application and the database (for security reasons and to make the client "thinner")
+[Spring-Boot project](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/tree/main/database)
+
+Other documents and documentation files can be found unde /Documents
+[Documentation](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/tree/main/Documents)
 
 ## **Release 1**
 
