@@ -1,9 +1,1 @@
-application\UserRepository.class
-application\UserTestClient.class
-application\UserController.class
-application\Users.class
 application\Exemplar.class
-com\example\Database\Container\Datenbankverbindung.class
-application\DatabaseContainerApplication.class
-application\ExemplarController.class
-application\ExemplarRepository.class

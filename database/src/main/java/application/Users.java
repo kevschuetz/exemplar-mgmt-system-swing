@@ -30,8 +30,8 @@ public class Users {
         return is_contributor;
     }
 
-    public void setIsContributor(int isContributor) {
-        this.is_contributor = isContributor;
+    public void setIsContributor(int is_contributor) {
+        this.is_contributor = is_contributor;
     }
 
     @Override

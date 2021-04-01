@@ -1,5 +1,5 @@
 @startuml
-package Entities{
+package entities{
 
 class Exemplar{
 #owner : Contributor

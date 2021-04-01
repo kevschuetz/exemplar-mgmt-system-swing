@@ -3,6 +3,7 @@ package application;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public Iterable<Users> getUsers() {
+    public List<Users> getUsers() {
         return userRepository.findAll();
     }
 
