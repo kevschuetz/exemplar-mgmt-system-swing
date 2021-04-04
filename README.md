@@ -17,7 +17,7 @@ Other documents and documentation files can be found unde /Documents
 *The Deliverables for Release 1 can be found under the following links:*
 
 * [Diagram: General architecture of the application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/General%20Architecture%200.pdf)
-* [SQL-Script: Database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/database_script/Logic_Design.sql) 
+* [SQL-Script: Database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Database_Documents/Logic_Design.sql) 
 * [Diagram: database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
 * [Link to CircleCI confirming succesfull builds](https://app.circleci.com/pipelines/github/jku-win-se) 
 * [UML class diagram: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Desktop_Application.png)
