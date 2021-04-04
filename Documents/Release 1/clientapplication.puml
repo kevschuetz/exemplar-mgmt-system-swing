@@ -14,26 +14,60 @@ Frames
 }
 
 package view{
+package frames{
 class MainFrame extends JFrame{
 #exemplarPanel : ExemplarPanel
 #allExemplarsPanel : AllExemplarsPanel
 #menuBar : MenuBar
 }
-class MenuBar extends JMenuBar{
-
-}
 class UserFrame extends JFrame{
 #user : Users
+
+#username : JLabel
+#contributedTo : Exemplar[]
+#memberOf : Community[]
+
 }
 
 class CommunityFrame extends JFrame{
 #community : Community
+
+#members : Users[]
+#exemplars : Exemplar[]
+#admins : Users[]
 }
+
+}
+package panels{
+class MenuBar extends JMenuBar{
+#profile : JMenuItem
+
+}
+
 class ExemplarPanel extends JPanel{
 #exemplar : Exemplar
+#avgRating : int
+#labels : Label[]
+
+#nameLabel : JLabel
+#nameField : JTextField
+#descriptionLabel : JLabel
+#descriptionField : JTextArea
+#solutionLabel : JLabel
+#solutionField : JTextArea
+#avgRatingView : JLabel
+#labelView : List<JPanel>
+#ratingSlider : JSlider
+#submitRatinButton : JButton
+
+void paint();
 }
 class AllExemplarsPanel extends JPanel{
-exemplars : List<Exemplar>
+#exemplars : List<Exemplar>
+#exemplarList : JList
+#showExemplarButton : JButton
+void paint()
+}
 }
 }
 

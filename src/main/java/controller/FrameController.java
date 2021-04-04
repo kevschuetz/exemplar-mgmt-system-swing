@@ -17,7 +17,6 @@ public class FrameController<Usrs> {
 
     private UserClient userClient;
 
-
     private MainFrame mainFrame;
 
     public FrameController(){

@@ -1,0 +1,161 @@
+@startuml
+package app{
+class Application{
+main()
+}
+}
+
+
+package entities{
+class Exemplar{
+#owner : Contributor
+#problem : String
+#solution : String
+}
+
+class Users{
+#username : String
+#password : String
+}
+
+class Contributor{
+
+}
+Contributor --|> Users
+
+
+class Label{
+ #value : String
+}
+
+
+class Community{
+#name : String
+#creator : Users
+}
+
+class Rating{
+#exemplar : Exemplar
+#rater : Users
+#rating : int
+}
+
+class IsLabeledAs{
+#exemplarName : String
+#label : String
+}
+
+class ContributedToExemplar{
+#exemplarName : String
+#userName : String
+}
+class IsMemberOf{
+#communityName : String
+#userName : String
+}
+
+class CommunityExemplar{
+#communityName : String
+#exemplarName : String
+}
+
+class IsAdminOf{
+#communityName : String
+#userName : String
+}
+}
+
+package repositories{
+class JpaRepository<T, ID>{
+void	deleteAllInBatch()
+deleteInBatch(Iterable<T> entities)
+findAll()
+findAll(Example<V> example)
+findAll(Example<V> example, Sort sort)
+findAll(Sort sort)
+findAllById(Iterable<ID> ids)
+flush()
+getOne(ID id)
+saveAll(Iterable<V> entities)
+saveAndFlush(S entity)
+long	count()
+void	delete(T entity)
+void	deleteAll()
+void	deleteAll(Iterable<? extends T> entities)
+void	deleteById(ID id)
+boolean	existsById(ID id)
+Iterable<T>	findAll()
+Iterable<T>	findAllById(Iterable<ID> ids)
+Optional<T>	findById(ID id)
+<V extends T> V save(V entity)
+<V extends T> Iterable<V>	saveAll(Iterable<V> entities)
+
+}
+class ExemplarRepository<Exemplar, String> extends JpaRepository{
+}
+class UserRepository<Users, String> extends JpaRepository{
+}
+class RatingRepository<Rating, String> extends JpaRepository{
+}
+class CommunityRepository<Exemplar, String> extends JpaRepository{
+}
+class LabelRepository<Label, String> extends JpaRepository{
+}
+class ContributorRepository<ContributedToExemplar, String> extends JpaRepository{
+}
+class isLabeledRepository<IsLabeledAs, String> extends JpaRepository{
+}
+class CommExemplarRepository<CommunityExemplar, String> extends JpaRepository{
+}
+class MemberRepository<IsMemberOf, String> extends JpaRepository{
+}
+class AdminRepository<IsAdminOf, String> extends JpaRepository{
+}
+
+}
+
+package controllers{
+class UserController{
+add()
+get()
+getAll()
+delete()
+}
+
+class ExemplarController{
+add()
+get()
+getAll()
+delete()
+addContributor()
+}
+
+class CommunityController{
+add()
+get()
+getAll()
+delete()
+addExemplar()
+addMember()
+addAdministrator()
+}
+
+class RatingController{
+add()
+get()
+getAll()
+delete()
+}
+
+class LabelController{
+add()
+get()
+delete()
+getAll()
+
+addToExemplar()
+removeFromExemplar()
+}
+}
+
+@enduml

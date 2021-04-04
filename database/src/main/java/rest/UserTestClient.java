@@ -1,4 +1,4 @@
-package application;
+package rest;
 
 import java.net.http.HttpClient;
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class UserTestClient {
         String json = mapper.writeValueAsString(testUser);
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url+"/user"))
-                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .setHeader(HttpHeaders.CONTENT_TYPE, "rest/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());

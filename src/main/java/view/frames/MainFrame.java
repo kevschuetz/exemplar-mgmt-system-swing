@@ -1,6 +1,7 @@
 package view.frames;
 
 import view.listeners.CustomListener;
+import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +10,15 @@ import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame{
     public CustomListener customListener;
+    private AllExemplarsPanel exemplarList;
 
-
-    public MainFrame(){
+    public MainFrame() {
         setVisible(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(500, 500));
+        setSize(new Dimension(1000, 750));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        setLayout(new BorderLayout());
 
         JPanel jPanel = new JPanel();
         jPanel.setVisible(false);
@@ -27,7 +30,7 @@ public class MainFrame extends JFrame{
 
         jPanel.add(textField);
         jPanel.add(button);
-        add(jPanel);
+        add(BorderLayout.PAGE_START, jPanel);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -35,6 +38,10 @@ public class MainFrame extends JFrame{
                 customListener.listenerActivated(textField.getText());
             }
         });
+
+        exemplarList = new AllExemplarsPanel();
+        add(BorderLayout.WEST, exemplarList);
+
         jPanel.setVisible(true);
     }
 }

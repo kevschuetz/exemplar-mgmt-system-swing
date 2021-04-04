@@ -1,4 +1,4 @@
-package application;
+package rest;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
