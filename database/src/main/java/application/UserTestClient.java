@@ -1,4 +1,4 @@
-package application.test;
+package application;
 
 import java.net.http.HttpClient;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import application.Users;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 
@@ -28,7 +28,7 @@ public class UserTestClient {
 
 
        ObjectMapper mapper = new ObjectMapper();
-       Users[] asArray = mapper.readValue(response.body(), application.Users[].class);
+       Users[] asArray = mapper.readValue(response.body(), Users[].class);
        for(int i = 0; i < asArray.length; i++)
            System.out.println(asArray[i].toString());
 

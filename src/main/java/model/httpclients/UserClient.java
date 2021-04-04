@@ -12,15 +12,13 @@ import java.net.http.HttpResponse;
 
 
 
-public class UserClient implements Client<Users> {
+public class UserClient extends Client<Users> {
     private final HttpClient client;
     private final String URL;
     private final ObjectMapper mapper;
 
     private HttpRequest request;
     private HttpResponse<String> response;
-
-
 
     public UserClient(){
         client = HttpClient.newHttpClient();

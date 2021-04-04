@@ -21,8 +21,8 @@ public class MainFrame extends JFrame{
         jPanel.setVisible(false);
         jPanel.setSize(100, 100);
 
-        JTextField textField = new JTextField();
-        JButton button = new JButton();
+        JTextField textField = new JTextField(10);
+        JButton button = new JButton("Print");
 
 
         jPanel.add(textField);
