@@ -24,6 +24,6 @@ Other documents and documentation files can be found unde /Documents
 * [UML class PlantUML-Syntax: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/clientapplication.puml)
 * [UML class diagram: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Backend.png)
 * [UML class PlantUML-Syntax: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/backend.puml)
-
-
+* [Prototype User Guide (also includes link to prototype)](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/GR04_PrototypeUserGuide.pdf)
+* [Prototype Presentation](https://pr.to/XKZ9SR/)
 
