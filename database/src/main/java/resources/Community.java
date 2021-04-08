@@ -1,4 +1,4 @@
-package main;
+package resources;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +12,7 @@ public class Community {
     private List<Exemplar> exemplars;
 
     @ManyToMany
-    private List<User> users;
+    private List<User> members;
 
     @ManyToOne
     private User creator;
@@ -33,12 +33,12 @@ public class Community {
         this.exemplars = exemplars;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getMembers() {
+        return members;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUsers(List<User> members) {
+        this.members = members;
     }
 
     public User getCreator() {
@@ -47,5 +47,9 @@ public class Community {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public String toString(){
+        return this.name;
     }
 }

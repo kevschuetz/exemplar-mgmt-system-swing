@@ -1,4 +1,4 @@
-package main;
+package resources;
 
 import javax.persistence.*;
 import java.util.List;
@@ -85,5 +85,10 @@ public class Exemplar {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    public String toString(){
+        return this.name;
+
     }
 }

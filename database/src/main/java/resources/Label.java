@@ -1,4 +1,4 @@
-package main;
+package resources;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,10 +9,17 @@ public class Label {
     private String value;
 
     public Label(){
-
     }
 
     public Label(String name){
         this.value = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
