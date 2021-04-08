@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,7 @@ public class UserTestClient {
         System.out.println("createUser()");
         mapper = new ObjectMapper();
         User testUser = new User();
-        testUser.setUsername("Kevin");
+        testUser.setUsername("Franz");
         testUser.setIsContributor(0);
         testUser.setFullName("kevin");
         testUser.setPassword("password");
@@ -76,6 +77,31 @@ public class UserTestClient {
                 .uri(URI.create(url+"/user/Kevin"))
                 .DELETE()
                 .build();
+        // response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+
+
+        /**
+         *Test addExemplar
+         *
+         */
+        Exemplar exemplar = new Exemplar();
+        ArrayList<User> contributors = new ArrayList<>();
+        contributors.add(new User("franz", "aigner", "password", 1));
+        exemplar.setContributors(contributors);
+        exemplar.setName("exemplar1");
+        ArrayList<Label> labels = new ArrayList<>();
+        //labels.add(new Label("java"));
+        exemplar.setLabels(labels);
+        System.out.println("addExemplar()");
+        json= mapper.writeValueAsString(exemplar);
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/exemplar"))
+                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
     }

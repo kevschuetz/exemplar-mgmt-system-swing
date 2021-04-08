@@ -73,22 +73,25 @@ void paint()
 
 package model{
 package entities{
-
 class Exemplar{
-#owner : Contributor
+#creator : Contributor
 #problem : String
 #solution : String
+#labels : List<Label>
+#contributors : List<Contributor>
+#ratings : List<Rating>
 }
 
-class Users{
+class User{
 #username : String
 #password : String
+#fullname : String
 }
 
 class Contributor{
 
 }
-Contributor --|> Users
+Contributor --|> User
 
 
 class Label{
@@ -99,12 +102,14 @@ class Label{
 class Community{
 #name : String
 #creator : Users
+#members : List<User>
+#exemplars : List<Exemplar>
 }
 
 class Rating{
 #exemplar : Exemplar
 #rater : Users
-#rating : int
+#rating : double
 }
 }
 package httpClients{
@@ -132,7 +137,6 @@ List<Rating> getRatings(Exemplar e)
 List<Label> getLabels(Exemplar e)
 }
 class CommunityClient<Community> extends Client{
-void addAdministratorToCommunity(Community c, Users u)
 void addMemberToCommunity(Community c, Users u)
 void addExemplarToCommunity(Community c, Users u)
 
@@ -140,7 +144,6 @@ List<Users> getAdministratorsOfComm(Community c)
 List<Users> getMembersOfCOmm((Community c)
 List<Exemplar> getExemplarsOfComm(Community c)
 
-void rmvAdminOfCommunity(Community c, Users u)
 void rmvMemberOfCommunity(Community c, Users u)
 void rmvExemplarOfCommunity(Community c, Exemplar e)
 }

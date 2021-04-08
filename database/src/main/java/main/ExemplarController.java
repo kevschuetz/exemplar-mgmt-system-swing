@@ -1,8 +1,7 @@
 package main;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,10 +15,13 @@ public class ExemplarController {
     }
 
      @GetMapping("")
-    public List<Exemplar> getExemplar(){
+    public List<Exemplar> getExemplars(){
          return exemplarRepository.findAll();
      }
 
-
-
+    @PutMapping(value="", consumes = {"application/json"})
+    @ResponseStatus(HttpStatus.CREATED)
+    public Exemplar addExemplar(@RequestBody Exemplar e) {
+        return exemplarRepository.save(e);
+    }
 }

@@ -8,12 +8,15 @@ main()
 
 package entities{
 class Exemplar{
-#owner : Contributor
+#creator : Contributor
 #problem : String
 #solution : String
+#labels : List<Label>
+#contributors : List<Contributor>
+#ratings : List<Rating>
 }
 
-class Users{
+class User{
 #username : String
 #password : String
 }
@@ -21,7 +24,7 @@ class Users{
 class Contributor{
 
 }
-Contributor --|> Users
+Contributor --|> User
 
 
 class Label{
@@ -32,36 +35,14 @@ class Label{
 class Community{
 #name : String
 #creator : Users
+#members : List<User>
+#exemplars : List<Exemplar>
 }
 
 class Rating{
 #exemplar : Exemplar
 #rater : Users
-#rating : int
-}
-
-class IsLabeledAs{
-#exemplarName : String
-#label : String
-}
-
-class ContributedToExemplar{
-#exemplarName : String
-#userName : String
-}
-class IsMemberOf{
-#communityName : String
-#userName : String
-}
-
-class CommunityExemplar{
-#communityName : String
-#exemplarName : String
-}
-
-class IsAdminOf{
-#communityName : String
-#userName : String
+#rating : double
 }
 }
 

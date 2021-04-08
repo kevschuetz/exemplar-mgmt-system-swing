@@ -15,9 +15,10 @@ public class UserController {
     public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+
     @PutMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User u) {
+    public User addUser(@RequestBody User u) {
         return userRepository.save(u);
     }
 
