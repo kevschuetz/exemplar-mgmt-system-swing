@@ -1,4 +1,4 @@
-package rest;
+package main;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,26 +15,26 @@ public class UserController {
     public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-    @PutMapping("")
+    @PutMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Users createUser(@RequestBody Users u) {
+    public User createUser(@RequestBody User u) {
         return userRepository.save(u);
     }
 
     @GetMapping("")
-    public List<Users> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @GetMapping("/{username}")
-    public Users getUser(@PathVariable String username){
-        Optional<Users> result = userRepository.findById(username);
+    public User getUser(@PathVariable String username){
+        Optional<User> result = userRepository.findById(username);
         return result.orElse(null);
     }
 
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username){
-        Users u = userRepository.findById(username).orElse(null);
+        User u = userRepository.findById(username).orElse(null);
         if (u != null) userRepository.delete(u);
     }
 }

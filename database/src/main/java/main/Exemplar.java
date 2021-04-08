@@ -1,17 +1,46 @@
-package rest;
+package main;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Exemplar {
     @Id
     private String name;
+
     private String problem;
     private String solution;
-    private String owner;
 
+    @ManyToOne
+    private User creator;
+
+    @ManyToMany
+    private List<User> contributors;
+
+    @ManyToMany
+    private List<Label> labels;
+
+    @OneToMany
+    private List<Rating> ratings;
+
+
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
+    }
+
+    public List<User> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<User> contributors) {
+        this.contributors = contributors;
+    }
 
     public String getName() {
         return name;
@@ -37,12 +66,12 @@ public class Exemplar {
         this.solution = solution;
     }
 
-    public String getOwner() {
-        return owner;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     @Override

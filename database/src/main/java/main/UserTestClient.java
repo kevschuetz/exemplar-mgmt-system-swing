@@ -1,4 +1,4 @@
-package rest;
+package main;
 
 import java.net.http.HttpClient;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class UserTestClient {
 
 
        ObjectMapper mapper = new ObjectMapper();
-       Users[] asArray = mapper.readValue(response.body(), Users[].class);
+       User[] asArray = mapper.readValue(response.body(), User[].class);
        for(int i = 0; i < asArray.length; i++)
            System.out.println(asArray[i].toString());
 
@@ -40,13 +40,15 @@ public class UserTestClient {
          */
         System.out.println("createUser()");
         mapper = new ObjectMapper();
-        Users testUser = new Users();
+        User testUser = new User();
         testUser.setUsername("Kevin");
         testUser.setIsContributor(0);
+        testUser.setFullName("kevin");
+        testUser.setPassword("password");
         String json = mapper.writeValueAsString(testUser);
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url+"/user"))
-                .setHeader(HttpHeaders.CONTENT_TYPE, "rest/json")
+                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());

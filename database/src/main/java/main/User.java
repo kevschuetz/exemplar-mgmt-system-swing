@@ -1,21 +1,43 @@
-package rest;
+package main;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-public class Users {
+@Table(name="Users")
+public class User {
     @Id
     private String username;
-
     private int is_contributor;
+    private String fullName;
+    private String password;
 
-    public Users(){
+    public User(){
     }
-    public Users(String username, int isContributor){
+
+    public User(String username, String fullName, String password, int isContributor){
         this.username = username;
         this.is_contributor = isContributor;
+        this.fullName=fullName;
+        this.password=password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setUsername(String username){
@@ -44,10 +66,10 @@ public class Users {
         if (this == o){
             return true;
         }
-        if (!(o instanceof Users)){
+        if (!(o instanceof User)){
             return false;
         }
-        return username != null && this.username.equals(((Users) o).username);
+        return username != null && this.username.equals(((User) o).username);
     }
     public String toString(){
         String s = is_contributor == 1 ? "yes" : "no";

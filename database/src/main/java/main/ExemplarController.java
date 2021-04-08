@@ -1,4 +1,4 @@
-package rest;
+package main;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/exemplar")
 public class ExemplarController {
-    private ExemplarRepository exemplarRepository;
+    public ExemplarRepository exemplarRepository;
 
     public ExemplarController(ExemplarRepository exemplarRepository){
         this.exemplarRepository=exemplarRepository;
