@@ -16,12 +16,14 @@ Other documents and documentation files can be found unde /Documents
 
 *The Deliverables for Release 1 can be found under the following links:*
 
-* [General architecture of the application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/General%20Architecture%200.pdf)
-* [SQL-Script for Database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/database_script/Logic_Design.sql) 
-* [Diagram database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
+* [Diagram: General architecture of the application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/General%20Architecture%200.pdf)
+* [SQL-Script: Database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Database_Documents/Logic_Design.sql) 
+* [Diagram: database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
 * [Link to CircleCI confirming succesfull builds](https://app.circleci.com/pipelines/github/jku-win-se) 
-* [UML class diagram desktop application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Desktop_Application.png)
-* [UML class for desktop application PlantUML-Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/clientapplication.puml)
-
-
+* [UML class diagram: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Desktop_Application.png)
+* [UML class PlantUML-Syntax: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/clientapplication.puml)
+* [UML class diagram: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Backend.png)
+* [UML class PlantUML-Syntax: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/backend.puml)
+* [Prototype User Guide (also includes link to prototype)](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/GR04_PrototypeUserGuide.pdf)
+* [Prototype Presentation](https://pr.to/XKZ9SR/)
 
