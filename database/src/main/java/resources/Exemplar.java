@@ -21,10 +21,6 @@ public class Exemplar {
     @ManyToMany
     private List<Label> labels;
 
-    @OneToMany
-    private List<Rating> ratings;
-
-
 
     public List<Label> getLabels() {
         return labels;

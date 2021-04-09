@@ -22,18 +22,32 @@ public class RatingController {
     @PutMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Rating addRating(@RequestBody Rating r) {
+        System.out.println(r.getKey().getExemplar().getName());
+        System.out.println(r.getRating());
+        System.out.println(r.getKey().getUser().getUsername());
+
         return repository.save(r);
     }
 
 
     @GetMapping("/{name}")
-    public Rating getRating(@PathVariable RatingPK key){
+    public Rating getRating(@RequestParam String username, @RequestParam String exemplarname){
+        Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
+        User u = UserController.getUserRepository().findById(username).get();
+        RatingPK key = new RatingPK();
+        key.setExemplar(e);
+        key.setUser(u);
         Optional<Rating> result = repository.findById(key);
         return result.orElse(null);
     }
 
     @DeleteMapping("/{value}")
-    public void deleteRating(@PathVariable RatingPK key){
+    public void deleteRating(@RequestParam String username, @RequestParam String exemplarname){
+        Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
+        User u = UserController.getUserRepository().findById(username).get();
+        RatingPK key = new RatingPK();
+        key.setExemplar(e);
+        key.setUser(u);
         Rating k = repository.findById(key).orElse(null);
         if (k != null) repository.delete(k);
     }

@@ -3,36 +3,21 @@ package resources;
 import javax.persistence.*;
 
 @Entity
-@IdClass(RatingPK.class)
 public class Rating {
-    @Id
-    @ManyToOne
-    private User user;
-
-    @Id
-    @ManyToOne
-    private Exemplar exemplar;
+    @EmbeddedId
+    RatingPK key;
 
     private double rating;
 
     public Rating(){
-
     }
 
-    public User getUser() {
-        return user;
+    public RatingPK getKey() {
+        return key;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Exemplar getExemplar() {
-        return exemplar;
-    }
-
-    public void setExemplar(Exemplar exemplar) {
-        this.exemplar = exemplar;
+    public void setKey(RatingPK key) {
+        this.key = key;
     }
 
     public double getRating() {

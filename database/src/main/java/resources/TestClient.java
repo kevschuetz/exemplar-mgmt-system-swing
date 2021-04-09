@@ -121,7 +121,13 @@ public class TestClient {
          *Test addExemplar
          *
          */
+
+
+
+
         Exemplar exemplar = new Exemplar();
+
+
         ArrayList<User> contributors = new ArrayList<>();
         contributors.add(testUser);
         exemplar.setContributors(contributors);
@@ -137,7 +143,6 @@ public class TestClient {
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
 
@@ -189,7 +194,6 @@ public class TestClient {
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
 
         /**
@@ -207,10 +211,10 @@ public class TestClient {
         for(int i = 0; i < communityarray.length; i++)
             System.out.println(communityarray[i].toString());
         /**
-         *Test getExemplar()
+         *Test getCommunity()
          *
          */
-        System.out.println("getCommunityadsf()");
+        System.out.println("getCommunity()");
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url+"/community/community1"))
                 .build();
@@ -219,9 +223,55 @@ public class TestClient {
         System.out.println(response.body());
 
 
+        /**
+         *Test addRating
+         *
+         */
+        // Rating creation--/
+        Rating rating = new Rating();
+        rating.setRating(5);
+        RatingPK ratingPK = new RatingPK();
+        ratingPK.setUser(testUser);
+        ratingPK.setExemplar(exemplar);
+        rating.setKey(ratingPK);
+
+
+        System.out.println("addRating()");
+        json= mapper.writeValueAsString(rating);
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/rating"))
+                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+        /**
+         * Test for getRatings()
+         */
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/rating"))
+                .build();
+        System.out.println("getRatings()");
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 
 
+        Rating[] ratingA = mapper.readValue(response.body(), Rating[].class);
+        for(int i = 0; i < ratingA.length; i++)
+            System.out.println(ratingA[i].toString());
+
+        /**
+         *Test getRating()
+         *
+         */
+        System.out.println("getRating()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/rating?username=kevin&&exemplarname=exemplar1"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
 
 

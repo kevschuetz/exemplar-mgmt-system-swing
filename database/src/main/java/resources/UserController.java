@@ -10,10 +10,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
 
     public UserController(UserRepository userRepository){
-        this.userRepository = userRepository;
+        UserController.userRepository = userRepository;
+    }
+
+    public static UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public static void setUserRepository(UserRepository userRepository) {
+        UserController.userRepository = userRepository;
     }
 
     @PutMapping(value="", consumes = {"application/json"})

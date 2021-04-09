@@ -9,13 +9,21 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/exemplar")
 public class ExemplarController {
-    public ExemplarRepository repository;
+    public static ExemplarRepository repository;
 
     public ExemplarController(ExemplarRepository exemplarRepository){
         this.repository=exemplarRepository;
     }
 
-     @GetMapping("")
+    public static ExemplarRepository getRepository() {
+        return repository;
+    }
+
+    public void setRepository(ExemplarRepository repository) {
+        this.repository = repository;
+    }
+
+    @GetMapping("")
     public List<Exemplar> getExemplars(){
          return repository.findAll();
      }
