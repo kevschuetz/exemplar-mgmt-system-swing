@@ -1,1 +1,15 @@
+model\httpclients\App.class
+model\entities\Label.class
+view\panels\mainFrame\AllExemplarsPanel.class
+model\entities\Users.class
+model\httpclients\UserClient.class
 controller\FrameController.class
+model\httpclients\Client.class
+view\frames\MainFrame$1.class
+view\listeners\CustomListener.class
+view\panels\mainFrame\ExemplarPanel.class
+model\httpclients\HttpConstants.class
+model\entities\Exemplar.class
+model\httpclients\ExemplarClient.class
+view\frames\MainFrame.class
+controller\FrameController$1.class
