@@ -82,16 +82,7 @@ class CommunityRepository<Exemplar, String> extends JpaRepository{
 }
 class LabelRepository<Label, String> extends JpaRepository{
 }
-class ContributorRepository<ContributedToExemplar, String> extends JpaRepository{
-}
-class isLabeledRepository<IsLabeledAs, String> extends JpaRepository{
-}
-class CommExemplarRepository<CommunityExemplar, String> extends JpaRepository{
-}
-class MemberRepository<IsMemberOf, String> extends JpaRepository{
-}
-class AdminRepository<IsAdminOf, String> extends JpaRepository{
-}
+
 
 }
 
