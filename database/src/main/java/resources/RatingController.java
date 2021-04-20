@@ -47,9 +47,9 @@ public class RatingController {
     }
 
 
-    @GetMapping("/{exemplarName}")
-    public Rating getRating(@RequestParam String username, @PathVariable String exemplarName){
-        Exemplar e = ExemplarController.getRepository().findById(exemplarName).get();
+    @GetMapping("/{exemplarname}")
+    public Rating getRating(@RequestParam String username, @PathVariable String exemplarname){
+        Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
         User u = UserController.getUserRepository().findById(username).get();
         RatingPK key = new RatingPK();
         key.setExemplar(e);
@@ -58,15 +58,17 @@ public class RatingController {
         return result.orElse(null);
     }
 
-    @DeleteMapping("")
-    public void deleteRating(@RequestParam String username, @RequestParam String exemplarname){
+    @DeleteMapping(value = "/{exemplarname}")
+    public void deleteRating(@RequestParam String username, @PathVariable String exemplarname){
         Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
         User u = UserController.getUserRepository().findById(username).get();
         RatingPK key = new RatingPK();
         key.setExemplar(e);
         key.setUser(u);
         Rating k = repository.findById(key).orElse(null);
-        if (k != null) repository.delete(k);
+        if (k != null){
+            repository.delete(k);
+        }
     }
 
 }

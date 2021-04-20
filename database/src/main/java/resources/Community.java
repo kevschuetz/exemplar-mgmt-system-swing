@@ -18,6 +18,8 @@ public class Community {
     @ManyToOne
     private User creator;
 
+    public Community(){};
+
     public String getName() {
         return name;
     }

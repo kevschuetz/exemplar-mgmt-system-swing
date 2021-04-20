@@ -42,6 +42,6 @@ public class MainFrame extends JFrame{
         exemplarList = new AllExemplarsPanel();
         add(BorderLayout.WEST, exemplarList);
 
-        jPanel.setVisible(true);
+        jPanel.setVisible(false);
     }
 }

@@ -3,7 +3,7 @@ package view.panels.mainFrame;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Exemplar;
 import model.entities.Label;
-import model.entities.Users;
+import model.entities.User;
 
 import javax.swing.*;
 
@@ -11,7 +11,7 @@ public class ExemplarPanel extends JPanel {
     private Exemplar currentExemplar;
     private int avgRating;
     private Label[] labels;
-    private Users[] contributors;
+    private User[] contributors;
     private ObjectMapper mapper;
 
     private JLabel nameLabel;

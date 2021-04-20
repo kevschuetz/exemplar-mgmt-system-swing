@@ -5,6 +5,7 @@ import model.httpclients.ExemplarClient;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.List;
 
 public class AllExemplarsPanel extends JPanel {
     private JScrollPane scrollPane;
@@ -12,7 +13,7 @@ public class AllExemplarsPanel extends JPanel {
     DefaultListModel<String> listModel;
 
 
-    private Exemplar[] exemplars;
+    private List<Exemplar> exemplars;
     private JButton showExemplarButton;
     private ExemplarClient exemplarClient;
 

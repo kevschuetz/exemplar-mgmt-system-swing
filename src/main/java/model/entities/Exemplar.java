@@ -1,13 +1,18 @@
 package model.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Exemplar {
     private String name;
+
     private String problem;
     private String solution;
-    private String owner;
+    private User creator;
 
+    private List<User> contributors;
+
+    private List<Label> labels;
 
     public String getName() {
         return name;
@@ -33,20 +38,35 @@ public class Exemplar {
         this.solution = solution;
     }
 
-    public String getOwner() {
-        return owner;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
+    public List<User> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<User> contributors) {
+        this.contributors = contributors;
+    }
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Exemplar exemplar = (Exemplar) o;
-        return name.equals(exemplar.name);
+        return name != null && name.equals(exemplar.name);
     }
 
     @Override
@@ -54,4 +74,8 @@ public class Exemplar {
         return Objects.hash(name);
     }
 
+    public String toString(){
+        return this.name;
+
+    }
 }

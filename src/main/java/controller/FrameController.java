@@ -1,7 +1,7 @@
 package controller;
 
 import model.entities.Exemplar;
-import model.entities.Users;
+import model.entities.User;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
 import view.listeners.CustomListener;
@@ -13,7 +13,7 @@ public class FrameController<Usrs> {
         new FrameController();
     }
     private Exemplar currentExemplar;
-    private Users currentUser;
+    private User currentUser;
 
     private UserClient userClient;
 
@@ -28,7 +28,7 @@ public class FrameController<Usrs> {
             @Override
             public void listenerActivated(String s) {
                 try {
-                    userClient.add(new Users(s , 0));
+                    userClient.add(new User(s, s, "password", 0));
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -39,5 +39,4 @@ public class FrameController<Usrs> {
         };
         mainFrame.setVisible(true);
     }
-
 }

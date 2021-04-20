@@ -1,8 +1,11 @@
 model\httpclients\App.class
 model\entities\Label.class
 view\panels\mainFrame\AllExemplarsPanel.class
-model\entities\Users.class
+model\entities\RatingPK.class
+model\entities\User.class
+model\entities\Rating.class
 model\httpclients\UserClient.class
+model\entities\Community.class
 controller\FrameController.class
 model\httpclients\Client.class
 view\frames\MainFrame$1.class
@@ -13,3 +16,4 @@ model\entities\Exemplar.class
 model\httpclients\ExemplarClient.class
 view\frames\MainFrame.class
 controller\FrameController$1.class
+model\httpclients\UserClient$1.class

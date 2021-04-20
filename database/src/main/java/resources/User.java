@@ -10,7 +10,7 @@ import java.util.Objects;
 public class User {
     @Id
     private String username;
-    private int is_contributor;
+    private int isContributor;
     private String fullName;
     private String password;
 
@@ -19,7 +19,7 @@ public class User {
 
     public User(String username, String fullName, String password, int isContributor){
         this.username = username;
-        this.is_contributor = isContributor;
+        this.isContributor = isContributor;
         this.fullName=fullName;
         this.password=password;
     }
@@ -49,11 +49,11 @@ public class User {
     }
 
     public int getIsContributor() {
-        return is_contributor;
+        return isContributor;
     }
 
-    public void setIsContributor(int is_contributor) {
-        this.is_contributor = is_contributor;
+    public void setIsContributor(int isContributor) {
+        this.isContributor = isContributor;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class User {
         return username != null && this.username.equals(((User) o).username);
     }
     public String toString(){
-        String s = is_contributor == 1 ? "yes" : "no";
+        String s = isContributor == 1 ? "yes" : "no";
         return "User " + username + " is " + s + " contributor";
     }
 }

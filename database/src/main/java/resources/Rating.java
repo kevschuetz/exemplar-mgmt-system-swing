@@ -10,7 +10,7 @@ public class Rating {
 
 
 
-    private double rating;
+        private double rating;
 
     public Rating(){
     }

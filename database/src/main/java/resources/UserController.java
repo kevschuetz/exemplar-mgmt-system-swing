@@ -27,8 +27,21 @@ public class UserController {
     @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public User addUser(@RequestBody User u) {
-        return userRepository.save(u);
+        Optional<User> user = getUserRepository().findById(u.getUsername());
+        if(user.isPresent()){
+            return null;
+        } else return userRepository.save(u);
     }
+
+    @PutMapping(value="/{username}", consumes = {"application/json"})
+    public User updateUser(@RequestBody User u, @PathVariable String username){
+        Optional<User> user = getUserRepository().findById(u.getUsername());
+        if(user.isPresent()){
+            getUserRepository().delete(user.get());
+            return getUserRepository().save(u);
+        }else return null;
+    }
+
 
     @GetMapping("")
     public List<User> getUsers() {
