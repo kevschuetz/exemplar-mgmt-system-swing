@@ -31,9 +31,9 @@ public class TestClient {
         testUser.setPassword("password");
         String json = mapper.writeValueAsString(testUser);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user"))
+                .uri(URI.create(url+"/users"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
@@ -45,7 +45,7 @@ public class TestClient {
          * Test for getUsers()
          */
          request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user"))
+                .uri(URI.create(url+"/users"))
                 .build();
         System.out.println("getUsers()");
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -62,7 +62,7 @@ public class TestClient {
          */
         System.out.println("getUser()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user/kevin"))
+                .uri(URI.create(url+"/users/kevin"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -75,9 +75,9 @@ public class TestClient {
         System.out.println("adding fetched user again: ");
          json = mapper.writeValueAsString(testUser2);
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user"))
+                .uri(URI.create(url+"/users"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
@@ -92,9 +92,9 @@ public class TestClient {
         Label label = new Label("java");
         json = mapper.writeValueAsString(label);
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/label"))
+                .uri(URI.create(url+"/labels"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
@@ -104,7 +104,7 @@ public class TestClient {
          * Test for getLabels()
          */
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/label"))
+                .uri(URI.create(url+"/labels"))
                 .build();
         System.out.println("getLabels()");
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -113,7 +113,7 @@ public class TestClient {
 
         Label[] labelArray = mapper.readValue(response.body(), Label[].class);
         for(int i = 0; i < labelArray.length; i++)
-            System.out.println(labelArray[i].toString());
+            System.out.println(labelArray[i].getValue());
 
 
         /**
@@ -122,7 +122,7 @@ public class TestClient {
          */
         System.out.println("getLabel()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user/kevin"))
+                .uri(URI.create(url+"/labels/java"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -151,7 +151,22 @@ public class TestClient {
         System.out.println("addExemplar()");
         json= mapper.writeValueAsString(exemplar);
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/exemplar"))
+                .uri(URI.create(url+"/exemplars"))
+                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+        /**
+         * Test for updateExemplar()
+         */
+        String oldName = exemplar.getName();
+        exemplar.setName("newExemplarName");
+        json = mapper.writeValueAsString(exemplar);
+        System.out.println("updateExemplar()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/exemplars/"+oldName))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -162,7 +177,7 @@ public class TestClient {
          * Test for getExemplars()
          */
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/exemplar"))
+                .uri(URI.create(url+"/exemplars"))
                 .build();
         System.out.println("getExemplars()");
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -179,7 +194,7 @@ public class TestClient {
          */
         System.out.println("getExemplar()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/exemplar/exemplar1"))
+                .uri(URI.create(url+"/exemplars/newExemplarName"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -201,18 +216,35 @@ public class TestClient {
         System.out.println("addCommunity()");
         json= mapper.writeValueAsString(community);
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/community"))
+                .uri(URI.create(url+"/communities"))
+                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
+
+        /**
+         * Test for updateCommunity (assertion= only one community by get)
+         */
+        String oldCommunityName = community.getName();
+        community.setName("newName");
+        json= mapper.writeValueAsString(community);
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/communities/"+oldCommunityName))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
 
+
+
         /**
          * Test for getCommunities()
          */
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/community"))
+                .uri(URI.create(url+"/communities"))
                 .build();
         System.out.println("getCommunities()");
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -228,7 +260,7 @@ public class TestClient {
          */
         System.out.println("getCommunity()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/community/community1"))
+                .uri(URI.create(url+"/communities/newName"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -251,9 +283,9 @@ public class TestClient {
         System.out.println("addRating()");
         json= mapper.writeValueAsString(rating);
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/rating"))
+                .uri(URI.create(url+"/ratings"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
@@ -262,7 +294,7 @@ public class TestClient {
          * Test for getRatings()
          */
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/rating"))
+                .uri(URI.create(url+"/ratings"))
                 .build();
         System.out.println("getRatings()");
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -279,7 +311,7 @@ public class TestClient {
          */
         System.out.println("getRating()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/rating?username=kevin&&exemplarname=exemplar1"))
+                .uri(URI.create(url+"/ratings/newExemplarName?username=kevin"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -294,7 +326,7 @@ public class TestClient {
          */
         System.out.println("deleteUser()");
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url+"/user/Kevin"))
+                .uri(URI.create(url+"/users/Kevin"))
                 .DELETE()
                 .build();
         // response = client.send(request, HttpResponse.BodyHandlers.ofString());

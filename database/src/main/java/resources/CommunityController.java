@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/community")
+@RequestMapping("/communities")
 public class CommunityController {
     private CommunityRepository repository;
 
@@ -20,12 +20,25 @@ public class CommunityController {
         return repository.findAll();
     }
 
-    @PutMapping(value="", consumes = {"application/json"})
+    @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Community addCommunity(@RequestBody Community c) {
-        return repository.save(c);
+        Optional<Community> community = repository.findById(c.getName());
+        if(community.isPresent()){
+            return null;
+        }
+        else return repository.save(c);
     }
 
+    @PutMapping(value="/{name}", consumes = {"application/json"})
+    public Community updateCommunity(@RequestBody Community c, @PathVariable String name){
+        Optional<Community> community = repository.findById(name);
+        if (community.isPresent()){
+            repository.delete(community.get());
+            return repository.save(c);
+        }
+        else return null;
+    }
 
     @GetMapping("/{name}")
     public Community getCommunity(@PathVariable String name){

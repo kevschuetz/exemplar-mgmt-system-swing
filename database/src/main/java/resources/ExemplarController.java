@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/exemplar")
+@RequestMapping("/exemplars")
 public class ExemplarController {
     public static ExemplarRepository repository;
 
@@ -28,12 +28,24 @@ public class ExemplarController {
          return repository.findAll();
      }
 
-    @PutMapping(value="", consumes = {"application/json"})
+    @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Exemplar addExemplar(@RequestBody Exemplar e) {
-        return repository.save(e);
+        Optional<Exemplar> exemplar = repository.findById(e.getName());
+        if(exemplar.isPresent()){
+            return null;
+        } else return repository.save(e);
     }
 
+
+    @PutMapping(value="/{name}", consumes = {"application/json"})
+    public Exemplar updateExemplar(@RequestBody Exemplar e, @PathVariable String name){
+        Optional<Exemplar> exemplar = repository.findById(name);
+        if(exemplar.isPresent()){
+            repository.delete(exemplar.get());
+            return repository.save(e);
+        } else return null;
+    }
 
     @GetMapping("/{name}")
     public Exemplar getExemplar(@PathVariable String name){

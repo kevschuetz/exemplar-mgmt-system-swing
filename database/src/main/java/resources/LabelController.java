@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/label")
+@RequestMapping("/labels")
 public class LabelController {
     private LabelRepository repository;
 
@@ -20,14 +20,14 @@ public class LabelController {
         return repository.findAll();
     }
 
-    @PutMapping(value="", consumes = {"application/json"})
+    @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Label addLabel(@RequestBody Label l) {
         return repository.save(l);
     }
 
 
-    @GetMapping("/{name}")
+    @GetMapping("/{value}")
     public Label getLabel(@PathVariable String value){
         Optional<Label> result = repository.findById(value);
         return result.orElse(null);

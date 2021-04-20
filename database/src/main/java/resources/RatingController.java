@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rating")
+@RequestMapping("/ratings")
 public class RatingController {
     private RatingRepository repository;
     public RatingController(RatingRepository repository){
@@ -19,20 +19,37 @@ public class RatingController {
         return repository.findAll();
     }
 
-    @PutMapping(value="", consumes = {"application/json"})
+    @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Rating addRating(@RequestBody Rating r) {
-        System.out.println(r.getKey().getExemplar().getName());
-        System.out.println(r.getRating());
-        System.out.println(r.getKey().getUser().getUsername());
+        Optional<Rating> rating = repository.findById(r.getKey());
+        if(rating.isPresent()){
+            return repository.save(r);
+        } else return repository.save(r);
+    }
 
-        return repository.save(r);
+    @PutMapping(value="/{exemplarName}", consumes = {"application/json"})
+    public Rating updateRating(@RequestBody Rating r, @PathVariable String exemplarName, @RequestParam String userName){
+        Optional<Exemplar> exemplar = ExemplarController.getRepository().findById(exemplarName);
+        if(exemplar.isPresent()){
+            Optional<User> user = UserController.getUserRepository().findById(userName);
+            if(user.isPresent()){
+               RatingPK key = new RatingPK();
+               key.setExemplar(exemplar.get());
+               key.setUser(user.get());
+               Optional<Rating> rating = repository.findById(key);
+               if(rating.isPresent()){
+                   repository.delete(rating.get());
+                   return repository.save(r);
+               }else return null;
+            }else return null;
+        } else return null;
     }
 
 
-    @GetMapping("/{name}")
-    public Rating getRating(@RequestParam String username, @RequestParam String exemplarname){
-        Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
+    @GetMapping("/{exemplarName}")
+    public Rating getRating(@RequestParam String username, @PathVariable String exemplarName){
+        Exemplar e = ExemplarController.getRepository().findById(exemplarName).get();
         User u = UserController.getUserRepository().findById(username).get();
         RatingPK key = new RatingPK();
         key.setExemplar(e);
@@ -41,7 +58,7 @@ public class RatingController {
         return result.orElse(null);
     }
 
-    @DeleteMapping("/{value}")
+    @DeleteMapping("")
     public void deleteRating(@RequestParam String username, @RequestParam String exemplarname){
         Exemplar e = ExemplarController.getRepository().findById(exemplarname).get();
         User u = UserController.getUserRepository().findById(username).get();

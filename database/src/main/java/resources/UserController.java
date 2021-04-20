@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private static UserRepository userRepository;
 
@@ -24,7 +24,7 @@ public class UserController {
         UserController.userRepository = userRepository;
     }
 
-    @PutMapping(value="", consumes = {"application/json"})
+    @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public User addUser(@RequestBody User u) {
         return userRepository.save(u);
