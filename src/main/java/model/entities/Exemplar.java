@@ -61,6 +61,7 @@ public class Exemplar {
     public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

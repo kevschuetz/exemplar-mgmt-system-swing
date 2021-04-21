@@ -37,6 +37,12 @@ public class FrameController<Usrs> {
                 System.out.println(s);
             }
         };
+
+        //login
+
+
+
+        //show MainFrame
         mainFrame.setVisible(true);
     }
 }

@@ -42,6 +42,10 @@ public class MainFrame extends JFrame{
         exemplarList = new AllExemplarsPanel();
         add(BorderLayout.WEST, exemplarList);
 
-        jPanel.setVisible(false);
+
+
+
+        //set all components to visible except this
+        jPanel.setVisible(true);
     }
 }
