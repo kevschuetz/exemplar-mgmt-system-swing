@@ -4,6 +4,7 @@ import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-
+@Ignore
 public class TestRatingClient {
     private RatingClient client;
     private Rating testEntity;

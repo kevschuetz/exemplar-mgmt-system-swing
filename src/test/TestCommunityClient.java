@@ -3,6 +3,7 @@ import model.entities.Exemplar;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+@Ignore
 public class TestCommunityClient {
     private CommunityClient client;
     private Community testEntity;
