@@ -1,15 +1,14 @@
 package view.frames;
 
-import view.listeners.CustomListener;
+import view.listeners.mainframe.MainFrameListener;
 import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class MainFrame extends JFrame{
-    public CustomListener customListener;
+    private MainFrameListener listener;
     private AllExemplarsPanel exemplarList;
 
     public MainFrame() {
@@ -32,20 +31,14 @@ public class MainFrame extends JFrame{
         jPanel.add(button);
         add(BorderLayout.PAGE_START, jPanel);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                customListener.listenerActivated(textField.getText());
-            }
-        });
+        button.addActionListener((x)->listener.listenerActivated(textField.getText()));
 
-        exemplarList = new AllExemplarsPanel();
-        add(BorderLayout.WEST, exemplarList);
-
-
-
-
-        //set all components to visible except this
+        //set all components to visible except "this"
         jPanel.setVisible(true);
+    }
+
+
+    public void setListener(MainFrameListener listener) {
+        this.listener = listener;
     }
 }
