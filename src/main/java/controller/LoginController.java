@@ -3,19 +3,29 @@ package controller;
 import model.entities.User;
 import model.httpclients.UserClient;
 import view.frames.login.LoginFrame;
+import view.frames.login.RegisterForm;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class LoginController {
     private UserClient userClient = new UserClient();
+
     private LoginFrame loginFrame;
+    private RegisterForm registerForm;
+
     private User currentUser;
-    private ActionListener actionListener;
+    private ActionListener loginListener;
 
     public LoginController(){
         initializeLoginFrame();
-        loginFrame.setLoginListener((u,p) ->processLoginRequest(u,p));
+        loginFrame.setLoginListener((u,p) ->{
+            processLoginRequest(u,p);
+        });
+
+
+        initializeRegisterForm();
+        loginFrame.setRegisterListener(()->registerForm.setVisible(true));
     }
     /**
      * Method is called when the LoginListener of the LoginFrame is activated(Login-Button)
@@ -32,8 +42,11 @@ public class LoginController {
             User user = userClient.get(username);
             if(user != null && user.getPassword().equals(password)) {
                 loginFrame.setVisible(false);
+                JOptionPane.showMessageDialog(loginFrame, "Login Successful");
                 currentUser = user;
-                actionListener.actionPerformed(null);
+                loginListener.actionPerformed(null);
+            }else{
+                JOptionPane.showMessageDialog(loginFrame, "Invalid Username or Password");
             }
         }catch(Exception e){e.printStackTrace();}
     }
@@ -48,14 +61,21 @@ public class LoginController {
         loginFrame.setBounds(10,10,370,600);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setResizable(false);
+
+    }
+    // REGISTER
+    void initializeRegisterForm(){
+        registerForm = new RegisterForm();
+        registerForm.setVisible(false);
+        registerForm.setTitle("Register");
     }
 
     public void startLoginProcess(){
         loginFrame.setVisible(true);
     }
 
-    public void setActionListener(ActionListener actionListener) {
-        this.actionListener = actionListener;
+    public void setLoginListener(ActionListener loginListener) {
+        this.loginListener = loginListener;
     }
 
     public LoginFrame getLoginFrame() {
@@ -69,4 +89,7 @@ public class LoginController {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+
+
+
 }

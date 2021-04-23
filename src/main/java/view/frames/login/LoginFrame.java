@@ -1,6 +1,7 @@
 package view.frames.login;
 
 import view.listeners.login.LoginListener;
+import view.listeners.login.RegisterListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,11 @@ public class LoginFrame extends JFrame implements ActionListener {
     JPasswordField passwordField=new JPasswordField();
     JButton loginButton=new JButton("LOGIN");
     JButton resetButton=new JButton("RESET");
+    JButton guestButton=new JButton("GUEST");
+    JButton registerButton=new JButton("REGISTER");
     JCheckBox showPassword=new JCheckBox("Show Password");
     LoginListener loginListener;
+    RegisterListener registerListener;
 
     public LoginFrame(){
         setLayoutManager();
@@ -41,7 +45,8 @@ public class LoginFrame extends JFrame implements ActionListener {
         showPassword.setBounds(150,250,150,30);
         loginButton.setBounds(50,300,100,30);
         resetButton.setBounds(200,300,100,30);
-
+        guestButton.setBounds(50,350,100,30);
+        registerButton.setBounds(200,350,100,30);
 
     }
     public void addComponentsToContainer()
@@ -54,10 +59,20 @@ public class LoginFrame extends JFrame implements ActionListener {
         container.add(showPassword);
         container.add(loginButton);
         container.add(resetButton);
+        container.add(guestButton);
+        container.add(registerButton);
     }
 
     public void addListenersToComponents(){
-        loginButton.addActionListener((x)-> loginListener.loginRequested(userTextField.getText(), passwordField.getText()));
+        loginButton.addActionListener(x-> loginListener.loginRequested(userTextField.getText(), passwordField.getText()));
+        showPassword.addActionListener(x->{
+            if (showPassword.isSelected()) {
+                passwordField.setEchoChar((char) 0);
+            } else {
+                passwordField.setEchoChar('*');
+            }
+        });
+        registerButton.addActionListener(x->registerListener.registerFormRequested());
     }
 
     public LoginListener getLoginListener() {
@@ -71,5 +86,13 @@ public class LoginFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public void setRegisterListener(RegisterListener registerListener) {
+        this.registerListener = registerListener;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
     }
 }

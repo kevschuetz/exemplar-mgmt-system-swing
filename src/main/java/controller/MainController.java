@@ -3,10 +3,7 @@ package controller;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.UserClient;
-import view.frames.login.LoginFrame;
 import view.frames.MainFrame;
-
-import javax.swing.*;
 
 public class MainController {
     public static void main(String[] args) {
@@ -27,7 +24,7 @@ public class MainController {
     public MainController(){
         //login
        loginController = new LoginController();
-       loginController.setActionListener(x->{
+       loginController.setLoginListener(x->{
            currentUser = loginController.getCurrentUser();
            loginSuccesfull();
        });
