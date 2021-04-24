@@ -1,7 +1,7 @@
 package view.frames.login;
 
 import view.listeners.login.LoginListener;
-import view.listeners.login.RegisterListener;
+import view.listeners.login.RegisterButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,8 @@ public class LoginFrame extends JFrame implements ActionListener {
     JButton registerButton=new JButton("REGISTER");
     JCheckBox showPassword=new JCheckBox("Show Password");
     LoginListener loginListener;
-    RegisterListener registerListener;
+    RegisterButtonListener registerListener;
+    JLabel title = new JLabel("LOGIN");
 
     public LoginFrame(){
         setLayoutManager();
@@ -47,7 +48,8 @@ public class LoginFrame extends JFrame implements ActionListener {
         resetButton.setBounds(200,300,100,30);
         guestButton.setBounds(50,350,100,30);
         registerButton.setBounds(200,350,100,30);
-
+        title.setBounds(130,50,100,30);
+        title.setFont(new Font("Arial", Font.PLAIN, 30));
     }
     public void addComponentsToContainer()
     {
@@ -61,6 +63,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         container.add(resetButton);
         container.add(guestButton);
         container.add(registerButton);
+        container.add(title);
     }
 
     public void addListenersToComponents(){
@@ -88,11 +91,19 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     }
 
-    public void setRegisterListener(RegisterListener registerListener) {
+    public void setRegisterListener(RegisterButtonListener registerListener) {
         this.registerListener = registerListener;
     }
 
     public JButton getLoginButton() {
         return loginButton;
+    }
+
+    public Container getContainer() {
+        return container;
+    }
+
+    public JCheckBox getShowPassword() {
+        return showPassword;
     }
 }
