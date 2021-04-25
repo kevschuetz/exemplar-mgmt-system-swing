@@ -9,34 +9,25 @@ import java.awt.*;
 
 public class MainFrame extends JFrame{
     private MainFrameListener listener;
-    private AllExemplarsPanel exemplarList;
+    private JTabbedPane tabPanel = new JTabbedPane();
+
+
 
     public MainFrame() {
-        setVisible(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(1000, 750));
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        setLayout(new BorderLayout());
-
-        JPanel jPanel = new JPanel();
-        jPanel.setVisible(false);
-        jPanel.setSize(100, 100);
-
-        JTextField textField = new JTextField(10);
-        JButton button = new JButton("Print");
-
-
-        jPanel.add(textField);
-        jPanel.add(button);
-        add(BorderLayout.PAGE_START, jPanel);
-
-        button.addActionListener((x)->listener.listenerActivated(textField.getText()));
-
-        //set all components to visible except "this"
-        jPanel.setVisible(true);
+        addComponents();
     }
 
+    void addComponents(){
+        add(tabPanel);
+    }
+
+    public void addTab(String title, Component component){
+        tabPanel.addTab(title, component);
+    }
+
+    public void removeTab(Component component){
+        tabPanel.remove(component);
+    }
 
     public void setListener(MainFrameListener listener) {
         this.listener = listener;
