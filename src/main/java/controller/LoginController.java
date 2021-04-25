@@ -36,7 +36,7 @@ public class LoginController {
 
         initializeRegisterForm();
         registerForm.setRegisterFormListener((e)->{
-            processRegistration(e);
+            processRegistrationRequest(e);
         });
 
 
@@ -54,19 +54,25 @@ public class LoginController {
      */
     void processLoginRequest(String username, String password)  {
         try {
-            User user = userClient.get(username);
-            if(user != null && user.getPassword().equals(password)) {
+            if(username.equalsIgnoreCase("guest")) {
                 loginFrame.setVisible(false);
-                JOptionPane.showMessageDialog(loginFrame, "Login Successful");
-                currentUser = user;
                 loginListener.actionPerformed(null);
             }else{
-                JOptionPane.showMessageDialog(loginFrame, "Invalid Username or Password");
+                User user = userClient.get(username);
+                if(user != null && user.getPassword().equals(password)) {
+                    loginFrame.setVisible(false);
+                    JOptionPane.showMessageDialog(loginFrame, "Login Successful");
+                    currentUser = user;
+                    loginListener.actionPerformed(null);
+                }else{
+                    JOptionPane.showMessageDialog(loginFrame, "Invalid Username or Password");
+                }
             }
+
         }catch(Exception e){e.printStackTrace();}
     }
 
-    void processRegistration(RegisterEvent e){
+    void processRegistrationRequest(RegisterEvent e){
         if(e.getUsername().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
         else if(e.getFullname().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
         else if(e.getPassword().length()<8) JOptionPane.showMessageDialog(registerForm, "Password must have at least 8 characters");

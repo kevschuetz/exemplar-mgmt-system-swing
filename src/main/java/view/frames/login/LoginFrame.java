@@ -76,6 +76,13 @@ public class LoginFrame extends JFrame implements ActionListener {
             }
         });
         registerButton.addActionListener(x->registerListener.registerFormRequested());
+        resetButton.addActionListener((x)->{
+            userTextField.setText("");
+            passwordField.setText("");
+        });
+        guestButton.addActionListener((x)->{
+            loginListener.loginRequested("guest","");
+        });
     }
 
     public LoginListener getLoginListener() {

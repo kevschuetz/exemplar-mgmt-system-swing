@@ -5,6 +5,7 @@ import view.events.RegisterEvent;
 import view.listeners.login.RegisterFormListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class RegisterForm  extends JFrame {
@@ -22,6 +23,8 @@ public class RegisterForm  extends JFrame {
     JPasswordField passwordField2 = new JPasswordField();
     JButton submitButton = new JButton("SUBMIT");
     JButton resetButton = new JButton("RESET");
+    JTextArea welcomeArea = new JTextArea();
+    Border border = BorderFactory.createLineBorder(Color.BLACK);
 
     private RegisterFormListener registerFormListener;
 
@@ -30,20 +33,15 @@ public class RegisterForm  extends JFrame {
         addComponents();
         setLocationAndSize();
         styleComponents();
+        addActionListeners();
 
-        submitButton.addActionListener((x)-> {
-            String username = userNameText.getText();
-            String fullname = fullNameText.getText();
-            String password1 = passwordField1.getText();
-            String password2 = passwordField2.getText();
-            int contributor = contributorCheckBox.isEnabled() ? 1 : 0;
-            if(!password1.equalsIgnoreCase(password2)){
-                JOptionPane.showMessageDialog(this, "Passwords do not match");
-            }else{
-                RegisterEvent event = new RegisterEvent(username, fullname,password1, contributor);
-                registerFormListener.registrationSubmitted(event);
-            }
-        });
+
+        welcomeArea.append("Welcome to the Exemplar " +
+                "\n Management System! " +
+                "\n Join by becoming a contributor, " +
+                "\n or as a regular user." +
+                "\n" +
+                "\n Your details: ");
 
     }
 
@@ -81,7 +79,8 @@ public class RegisterForm  extends JFrame {
         resetButton.setSize(100,20);
         submitButton.setLocation(100, 350);
         resetButton.setLocation(210,350);
-
+        welcomeArea.setLocation(400,100);
+        welcomeArea.setSize(300, 270);
     }
 
     public void styleComponents(){
@@ -95,7 +94,11 @@ public class RegisterForm  extends JFrame {
         passwordLabel1.setFont(new Font("Arial", Font.PLAIN, 20));
         passwordLabel2.setFont(new Font("Arial", Font.PLAIN, 20));
         contributorLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-
+        welcomeArea.setBorder(border);
+        userNameText.setBorder(border);
+        fullNameText.setBorder(border);
+        passwordField1.setBorder(border);
+        passwordField2.setBorder(border);
 
     }
 
@@ -113,8 +116,33 @@ public class RegisterForm  extends JFrame {
         container.add(resetButton);
         container.add(contributorLabel);
         container.add(contributorCheckBox);
+        container.add(welcomeArea);
     }
 
+    void addActionListeners(){
+        submitButton.addActionListener((x)-> {
+            String username = userNameText.getText();
+            String fullname = fullNameText.getText();
+            String password1 = passwordField1.getText();
+            String password2 = passwordField2.getText();
+            int contributor = contributorCheckBox.isSelected() ? 1 : 0;
+            if(!password1.equalsIgnoreCase(password2)){
+                JOptionPane.showMessageDialog(this, "Passwords do not match");
+            }else{
+                RegisterEvent event = new RegisterEvent(username, fullname,password1, contributor);
+                registerFormListener.registrationSubmitted(event);
+            }
+        });
+
+        resetButton.addActionListener((x -> {
+            userNameText.setText("");
+            fullNameText.setText("");
+            passwordField1.setText("");
+            passwordField2.setText("");
+            if(contributorCheckBox.isSelected()) contributorCheckBox.doClick();
+        }));
+
+    }
     public RegisterFormListener getRegisterFormListener() {
         return registerFormListener;
     }
