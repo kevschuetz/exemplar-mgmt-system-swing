@@ -2,7 +2,7 @@ package controller;
 
 import model.entities.User;
 import model.httpclients.UserClient;
-import view.events.RegisterEvent;
+import view.events.UserEvent;
 import view.frames.login.LoginFrame;
 import view.frames.login.RegisterForm;
 
@@ -72,7 +72,7 @@ public class LoginController {
         }catch(Exception e){e.printStackTrace();}
     }
 
-    void processRegistrationRequest(RegisterEvent e){
+    void processRegistrationRequest(UserEvent e){
         if(e.getUsername().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
         else if(e.getFullname().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
         else if(e.getPassword().length()<8) JOptionPane.showMessageDialog(registerForm, "Password must have at least 8 characters");

@@ -1,6 +1,7 @@
 package view.panels.mainFrame.homeTab;
 
 import model.entities.User;
+import view.listeners.mainframe.homeTab.UpdateUserListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -44,5 +45,18 @@ public class HomeTab extends JPanel {
         return BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    }
+
+    public void setUpdateUserListener(UpdateUserListener listener){
+        profilePanel.setUpdateUserListener(listener);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        profilePanel.setUser(user);
+    }
+
+    public ProfilePanel getProfilePanel() {
+        return profilePanel;
     }
 }

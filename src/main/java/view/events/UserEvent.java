@@ -1,12 +1,12 @@
 package view.events;
 
-public class RegisterEvent {
+public class UserEvent {
     private String username;
     private String fullname;
     private String password;
     private int isContributor;
 
-    public RegisterEvent(String username, String fullname, String password, int isContributor){
+    public UserEvent(String username, String fullname, String password, int isContributor){
         this.username=username;
         this.fullname=fullname;
         this.password=password;

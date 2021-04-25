@@ -1,7 +1,7 @@
 package view.listeners.login;
 
-import view.events.RegisterEvent;
+import view.events.UserEvent;
 
 public interface RegisterFormListener {
-    public void registrationSubmitted(RegisterEvent e);
+    public void registrationSubmitted(UserEvent e);
 }

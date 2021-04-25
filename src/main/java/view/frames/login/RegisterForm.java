@@ -1,7 +1,7 @@
 package view.frames.login;
 
 
-import view.events.RegisterEvent;
+import view.events.UserEvent;
 import view.listeners.login.RegisterFormListener;
 
 import javax.swing.*;
@@ -126,10 +126,10 @@ public class RegisterForm  extends JFrame {
             String password1 = passwordField1.getText();
             String password2 = passwordField2.getText();
             int contributor = contributorCheckBox.isSelected() ? 1 : 0;
-            if(!password1.equalsIgnoreCase(password2)){
+            if(!password1.equals(password2)){
                 JOptionPane.showMessageDialog(this, "Passwords do not match");
             }else{
-                RegisterEvent event = new RegisterEvent(username, fullname,password1, contributor);
+                UserEvent event = new UserEvent(username, fullname,password1, contributor);
                 registerFormListener.registrationSubmitted(event);
             }
         });

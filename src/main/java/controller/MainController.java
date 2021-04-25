@@ -8,6 +8,7 @@ import view.panels.mainFrame.homeTab.HomeTab;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainController {
     public static void main(String[] args) {
@@ -35,7 +36,6 @@ public class MainController {
            loginSuccesfull();
        });
        loginController.startLoginProcess();
-
     }
 
     /**
@@ -46,6 +46,7 @@ public class MainController {
         if(currentUser != null){
             mainFrame.setTitle("Welcome, "+currentUser.getUsername()+" !");
             homeTab = new HomeTab(currentUser);
+            addListenersToHomeTab();
             mainFrame.addTab("Home", homeTab);
         }
         else mainFrame.setTitle("Welcome!");
@@ -58,6 +59,20 @@ public class MainController {
         mainFrame.setSize(new Dimension(1000, 750));
     }
 
-
-
+    void addListenersToHomeTab(){
+        homeTab.setUpdateUserListener((u)-> {
+            try {
+                User updated = userClient.update(u.getUsername(), u);
+                if (updated != null) {
+                    this.currentUser = updated;
+                    homeTab.setUser(updated);
+                    JOptionPane.showMessageDialog(homeTab.getProfilePanel(), "Update successfull");
+                }else JOptionPane.showMessageDialog(homeTab.getProfilePanel(), "Update failed");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }
