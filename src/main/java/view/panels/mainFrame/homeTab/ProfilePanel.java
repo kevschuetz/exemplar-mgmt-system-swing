@@ -22,6 +22,8 @@ public class ProfilePanel extends JPanel {
     JButton updateButton = new JButton("UPDATE");
     User user;
     UpdateUserListener updateUserListener;
+
+
     public ProfilePanel(User user){
         this.user = user;
         setLayout(new GridLayout(7,2));
@@ -79,6 +81,8 @@ public class ProfilePanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Passwords do not match");
             }else if(fullname.length()<1){
                 JOptionPane.showMessageDialog(this, "Fullname cannot be empty");
+            }else if(newPassword1.length()<8){
+                JOptionPane.showMessageDialog(this, "Password must have at least 4 characters");
             }else{
                 User toBeUpdated = new User(user.getUsername(), fullname, newPassword1, isContributor);
                 updateUserListener.updateRequested(toBeUpdated);
