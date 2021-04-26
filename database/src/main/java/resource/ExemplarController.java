@@ -57,4 +57,11 @@ public class ExemplarController {
         Exemplar e = repository.findById(name).orElse(null);
         if (e != null) repository.delete(e);
     }
+
+    @GetMapping("/creator")
+    public List<Exemplar> findExemplarsForCreator(@RequestParam String creator){
+        System.out.println("arrived");
+        return repository.findExemplarsForCreator(creator);
+    }
+
 }

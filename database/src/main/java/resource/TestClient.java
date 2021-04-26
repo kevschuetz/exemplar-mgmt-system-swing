@@ -200,6 +200,18 @@ public class TestClient {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
 
+     /**
+      *Test getExemplarForCreator()
+      *
+      */
+     String creator = "admin";
+     System.out.println("getExemplarForCreator()");
+     request = HttpRequest.newBuilder()
+             .uri(URI.create(url+"/exemplars/creator?creator="+creator))
+             .build();
+
+     response = client.send(request, HttpResponse.BodyHandlers.ofString());
+     System.out.println(response.body());
 
         /**
          *Test addCommunity
@@ -266,6 +278,17 @@ public class TestClient {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
 
+        /**
+         *Test getCommunity()
+         *
+         */
+        System.out.println("getCommunitiesForUser/Member()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/communities/member?member=kevin"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
         /**
          *Test addRating

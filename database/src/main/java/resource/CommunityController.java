@@ -51,5 +51,10 @@ public class CommunityController {
         if (e != null) repository.delete(e);
     }
 
+    @GetMapping("/member")
+    public List<Community> getCommunitiesForMember(@RequestParam String member){
+        return repository.getCommunitiesForUser(member);
+    }
+
 
 }
