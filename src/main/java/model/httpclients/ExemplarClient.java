@@ -98,4 +98,18 @@ public class ExemplarClient extends Client<Exemplar>{
             return null;
         }
     }
+
+    public List<Exemplar> getExemplarForCreator(String creator){
+        try{
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+"/creator?creator="+creator))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
+            return exemplars;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Exemplar>();
+        }
+    }
 }
