@@ -48,7 +48,7 @@ public class MyExemplarsPanel extends JPanel {
             JLabel name = new JLabel("Name: ");
             JLabel exemplarName = new JLabel(e.getName());
             JLabel ratingLabel = new JLabel("Rating:");
-            JCheckBox checkBox = new JCheckBox("select");
+            JCheckBox checkBox = new JCheckBox();
             panel.add(name);
             panel.add(exemplarName);
             panel.add(new JLabel(""));

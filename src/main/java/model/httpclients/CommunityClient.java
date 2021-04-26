@@ -17,7 +17,6 @@ public class CommunityClient extends Client<Community>{
     private final HttpClient client;
     private final String URL;
     private final ObjectMapper mapper;
-
     private HttpRequest request;
     private HttpResponse<String> response;
     public CommunityClient(){

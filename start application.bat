@@ -1,0 +1,1 @@
+java -jar ./out/artifacts/application_jar/application.jar
