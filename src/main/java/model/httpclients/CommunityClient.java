@@ -97,5 +97,22 @@ public class CommunityClient extends Client<Community>{
         }
     }
 
+    public List<Community> getCommunitiesForUser(String username){
+        try{
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+"/member?member="+username))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
+            return all;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Community>();
+        }
+
+
+    }
+
 
 }

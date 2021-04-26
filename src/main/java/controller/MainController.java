@@ -2,8 +2,10 @@ package controller;
 
 import model.entities.Exemplar;
 import model.entities.User;
+import model.httpclients.ExemplarClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
+import view.panels.mainFrame.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
 import javax.swing.*;
@@ -16,9 +18,7 @@ public class MainController {
     }
     private LoginController loginController;
 
-    private Exemplar currentExemplar;
     private User currentUser;
-
     private UserClient userClient = new UserClient();
 
     private MainFrame mainFrame;
@@ -72,6 +72,23 @@ public class MainController {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        });
+
+        homeTab.setOpenExemplarListener((list)->{
+            try {
+                for(String s : list){
+                    Exemplar e = new ExemplarClient().get(s);
+                    if(e != null){
+                        ExemplarTab newExemplarTab = new ExemplarTab(e);
+                        newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
+                        mainFrame.addTab(s,newExemplarTab);
+                    }
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
             }
         });
     }

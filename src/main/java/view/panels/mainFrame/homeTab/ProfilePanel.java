@@ -82,7 +82,7 @@ public class ProfilePanel extends JPanel {
             }else if(fullname.length()<1){
                 JOptionPane.showMessageDialog(this, "Fullname cannot be empty");
             }else if(newPassword1.length()<8){
-                JOptionPane.showMessageDialog(this, "Password must have at least 4 characters");
+                JOptionPane.showMessageDialog(this, "Password must have at least 8 characters");
             }else{
                 User toBeUpdated = new User(user.getUsername(), fullname, newPassword1, isContributor);
                 updateUserListener.updateRequested(toBeUpdated);
