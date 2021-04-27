@@ -9,7 +9,9 @@ public class Exemplar {
     @Id
     private String name;
 
+    @Column(length=2048)
     private String problem;
+    @Column(length=2048)
     private String solution;
 
     @ManyToOne
