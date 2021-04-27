@@ -1,4 +1,4 @@
-package resource;
+package resourcea;
 
 import javax.persistence.*;
 import java.util.List;

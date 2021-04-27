@@ -1,8 +1,8 @@
 package view.panels.mainFrame.homeTab;
 
 import model.entities.User;
-import view.listeners.mainframe.homeTab.OpenExemplarListener;
-import view.listeners.mainframe.homeTab.UpdateUserListener;
+import view.listeners.mainframe.homeTab.NewTabListener;
+import view.listeners.mainframe.homeTab.ProfilePanelListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,7 +33,7 @@ public class HomeTab extends JPanel {
         myCommunitiesPanel = new MyCommunitiesPanel(user);
 
         myExemplarsPanel.setBorder(createBorder("Exemplars"));
-        myCommunitiesPanel.setBorder(createBorder("Communities"));
+        myCommunitiesPanel.setBorder(createBorder("Communities (double click to open)"));
         profilePanel.setBorder(createBorder("Profile"));
 
         communitiesAndProfile = new JPanel();
@@ -48,11 +48,15 @@ public class HomeTab extends JPanel {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
 
-    public void setUpdateUserListener(UpdateUserListener listener){
+    public void setUpdateUserListener(ProfilePanelListener listener){
         profilePanel.setUpdateUserListener(listener);
     }
 
-    public void setOpenExemplarListener(OpenExemplarListener listener){myExemplarsPanel.setExemplarListener(listener);}
+    public void setDeleteUserListener(ProfilePanelListener listener){profilePanel.setDeleteListener(listener);}
+
+    public void setOpenExemplarListener(NewTabListener listener){myExemplarsPanel.setExemplarListener(listener);}
+
+    public void setOpenCommunityListener(NewTabListener listener){myCommunitiesPanel.setNewTabListener(listener);}
 
     public void setUser(User user) {
         this.user = user;

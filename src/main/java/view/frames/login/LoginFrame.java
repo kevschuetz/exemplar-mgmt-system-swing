@@ -28,6 +28,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         setLocationAndSize();
         addComponentsToContainer();
         addListenersToComponents();
+        getRootPane().setDefaultButton(loginButton);
     }
 
     public void setLayoutManager()

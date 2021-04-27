@@ -43,6 +43,7 @@ public class RegisterForm  extends JFrame {
                 "\n" +
                 "\n Your details: ");
 
+        getRootPane().setDefaultButton(submitButton);
     }
 
 

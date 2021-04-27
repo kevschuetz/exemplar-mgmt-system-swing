@@ -1,4 +1,4 @@
-package resource;
+package resourcea;
 
 import java.net.http.HttpClient;
 import java.io.IOException;

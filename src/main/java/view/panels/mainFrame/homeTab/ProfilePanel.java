@@ -1,10 +1,11 @@
 package view.panels.mainFrame.homeTab;
 
 import model.entities.User;
-import view.listeners.mainframe.homeTab.UpdateUserListener;
+import view.listeners.mainframe.homeTab.ProfilePanelListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ProfilePanel extends JPanel {
     JLabel userNameLabel = new JLabel("Username");
@@ -20,8 +21,11 @@ public class ProfilePanel extends JPanel {
     JLabel contributorLabel = new JLabel("Contributor ?");
     JCheckBox contributorCheckBox = new JCheckBox();
     JButton updateButton = new JButton("UPDATE");
+    JButton deleteUserButton = new JButton("DELETE");
     User user;
-    UpdateUserListener updateUserListener;
+    ProfilePanelListener updateListener;
+    ProfilePanelListener deleteListener;
+    private ConfirmDeletalFrame confirmFrame;
 
 
     public ProfilePanel(User user){
@@ -30,7 +34,7 @@ public class ProfilePanel extends JPanel {
         addComponents();
         setData();
         addActionListener();
-
+        initializeConfirmFrame();
     }
 
     void addComponents(){
@@ -47,6 +51,7 @@ public class ProfilePanel extends JPanel {
         add(contributorLabel);
         add(contributorCheckBox);
         add(updateButton);
+        add(deleteUserButton);
     }
 
     void setData(){
@@ -63,9 +68,7 @@ public class ProfilePanel extends JPanel {
         }
     }
 
-    public void setUpdateUserListener(UpdateUserListener updateUserListener) {
-        this.updateUserListener = updateUserListener;
-    }
+
 
     void addActionListener(){
         updateButton.addActionListener((x)->{
@@ -85,14 +88,66 @@ public class ProfilePanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Password must have at least 8 characters");
             }else{
                 User toBeUpdated = new User(user.getUsername(), fullname, newPassword1, isContributor);
-                updateUserListener.updateRequested(toBeUpdated);
+                updateListener.updateRequested(toBeUpdated);
             }
+        });
+
+        deleteUserButton.addActionListener((x)->{
+            confirmFrame.setVisible(true);
+        });
+    }
+
+    void initializeConfirmFrame(){
+        confirmFrame = new ConfirmDeletalFrame();
+        confirmFrame.setSize(250,200);
+        confirmFrame.setVisible(false);
+        confirmFrame.setCancelledListener((x)->confirmFrame.setVisible(false));
+        confirmFrame.setConfirmedListener((x)->{
+            confirmFrame.setVisible(false);
+            deleteListener.updateRequested(user);
         });
     }
     public void setUser(User user) {
         this.user = user;
         setData();
     }
+    public void setUpdateUserListener(ProfilePanelListener profilePanelListener) {
+        this.updateListener = profilePanelListener;
+    }
 
+    public void setDeleteListener(ProfilePanelListener deleteListener) {
+        this.deleteListener = deleteListener;
+    }
 
+    private class ConfirmDeletalFrame extends JFrame{
+        ActionListener confirmedListener;
+        ActionListener cancelledListener;
+        private JButton confirmButton = new JButton("Confirm");
+        private JButton cancelButton = new JButton("Cancel");
+        private JPanel buttonPanel = new JPanel();
+        private JPanel panel = new JPanel();
+        private JLabel label = new JLabel("Attention! Deleting cannot be undone. \n Are you sure?");
+        public ConfirmDeletalFrame(){
+            panel.setLayout(new GridLayout(2,1));
+            panel.add(label);
+            buttonPanel.setLayout(new GridLayout(1,2));
+            buttonPanel.add(confirmButton);
+            buttonPanel.add(cancelButton);
+            panel.add(buttonPanel);
+            addListeners();
+            add(panel);
+        }
+
+        void addListeners(){
+            confirmButton.addActionListener((x)-> confirmedListener.actionPerformed(x));
+            cancelButton.addActionListener((x)->cancelledListener.actionPerformed(x));
+        }
+        public void setConfirmedListener(ActionListener confirmedListener) {
+            this.confirmedListener = confirmedListener;
+        }
+
+        public void setCancelledListener(ActionListener cancelledListener) {
+            this.cancelledListener = cancelledListener;
+        }
+    }
 }

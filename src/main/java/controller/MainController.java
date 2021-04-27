@@ -1,10 +1,13 @@
 package controller;
 
+import model.entities.Community;
 import model.entities.Exemplar;
 import model.entities.User;
+import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
+import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
@@ -77,8 +80,9 @@ public class MainController {
 
         homeTab.setOpenExemplarListener((list)->{
             try {
+                ExemplarClient client = new ExemplarClient();
                 for(String s : list){
-                    Exemplar e = new ExemplarClient().get(s);
+                    Exemplar e = client.get(s);
                     if(e != null){
                         ExemplarTab newExemplarTab = new ExemplarTab(e);
                         newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
@@ -89,6 +93,34 @@ public class MainController {
                 ioException.printStackTrace();
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
+            }
+        });
+
+        homeTab.setOpenCommunityListener((list)->{
+            try {
+                CommunityClient client = new CommunityClient();
+                for(String s : list){
+                    Community c = client.get(s);
+                    if(c != null){
+                        CommunityTab tab = new CommunityTab(c);
+                        tab.setCloseListener((x)->mainFrame.removeTab(x));
+                        mainFrame.addTab(s,tab);
+                    }
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        });
+
+        homeTab.setDeleteUserListener((user)->{
+            try{
+                userClient.delete(user.getUsername());
+                mainFrame.setVisible(false);
+                loginController.startLoginProcess();
+            }catch(Exception e){
+                e.printStackTrace();
             }
         });
     }

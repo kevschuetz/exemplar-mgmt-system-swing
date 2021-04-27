@@ -1,4 +1,4 @@
-package resource;
+package resourcea;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

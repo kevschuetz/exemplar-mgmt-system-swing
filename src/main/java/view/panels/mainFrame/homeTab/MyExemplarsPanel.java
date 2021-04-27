@@ -3,11 +3,13 @@ package view.panels.mainFrame.homeTab;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
-import view.listeners.mainframe.homeTab.OpenExemplarListener;
+import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class MyExemplarsPanel extends JPanel {
     private List<Exemplar> myExemplars;
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
-    private OpenExemplarListener exemplarListener;
+    private NewTabListener exemplarListener;
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
 
@@ -42,13 +44,25 @@ public class MyExemplarsPanel extends JPanel {
     }
 
     public void addExemplarsToScrollPane(){
+        int i = 0;
         for(Exemplar e : myExemplars){
             JPanel panel = new JPanel();
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent event) {
+                    if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
+                        List<String> exemplar = new ArrayList<>();
+                        exemplar.add(e.getName());
+                        exemplarListener.tabRequested(exemplar);
+                    }
+                }
+            });
             panel.setLayout(new GridLayout(2,3));
             JLabel name = new JLabel("Name: ");
             JLabel exemplarName = new JLabel(e.getName());
             JLabel ratingLabel = new JLabel("Rating:");
             JCheckBox checkBox = new JCheckBox();
+            if(i%2==0)checkBox.setBackground(Color.LIGHT_GRAY);
             panel.add(name);
             panel.add(exemplarName);
             panel.add(new JLabel(""));
@@ -57,8 +71,10 @@ public class MyExemplarsPanel extends JPanel {
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
+            if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             selectedExemplarMap.put(e.getName(), checkBox);
             exemplarPanelParent.add(panel);
+            i++;
         }
 
     }
@@ -104,10 +120,10 @@ public class MyExemplarsPanel extends JPanel {
                 e.getValue().doClick();
             }
         }
-        exemplarListener.exemplarRequested(selectedExemplars);
+        exemplarListener.tabRequested(selectedExemplars);
     }
 
-    public void setExemplarListener(OpenExemplarListener exemplarListener) {
+    public void setExemplarListener(NewTabListener exemplarListener) {
         this.exemplarListener = exemplarListener;
     }
 }
