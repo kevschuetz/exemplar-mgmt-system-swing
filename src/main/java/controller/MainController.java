@@ -62,6 +62,7 @@ public class MainController {
         mainFrame.setSize(new Dimension(1000, 750));
     }
 
+
     void addListenersToHomeTab(){
         homeTab.setUpdateUserListener((u)-> {
             try {
@@ -123,5 +124,9 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+    }
+    void repaintHomeTab(){
+        homeTab.repaint();
+        addListenersToHomeTab();
     }
 }

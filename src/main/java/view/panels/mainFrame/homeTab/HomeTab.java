@@ -62,7 +62,12 @@ public class HomeTab extends JPanel {
         this.user = user;
         profilePanel.setUser(user);
     }
-
+    public void repaint(){
+        removeAll();
+        initializePanels();
+        add(myExemplarsPanel);
+        add(communitiesAndProfile);
+    }
     public ProfilePanel getProfilePanel() {
         return profilePanel;
     }
