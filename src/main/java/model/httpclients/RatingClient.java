@@ -47,7 +47,7 @@ public class RatingClient extends Client<Rating> {
         String[] array = id.split(",");
         if (array.length != 2) return;
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+array[0]+"?username="+array[1]))
+                .uri(URI.create(URL+"/"+array[0]+"?username="+array[1]))
                 .DELETE()
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());

@@ -8,7 +8,7 @@ import model.httpclients.ExemplarClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
 import view.panels.mainFrame.CommunityTab;
-import view.panels.mainFrame.ExemplarTab;
+import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
 import javax.swing.*;
@@ -23,6 +23,7 @@ public class MainController {
 
     private User currentUser;
     private UserClient userClient = new UserClient();
+    ExemplarClient exemplarClient = new ExemplarClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
@@ -81,12 +82,16 @@ public class MainController {
 
         homeTab.setOpenExemplarListener((list)->{
             try {
-                ExemplarClient client = new ExemplarClient();
                 for(String s : list){
-                    Exemplar e = client.get(s);
+                    Exemplar e = exemplarClient.get(s);
                     if(e != null){
-                        ExemplarTab newExemplarTab = new ExemplarTab(e);
+                        boolean editable = e.getCreator().equals(currentUser) ? true : false;
+                        ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
                         newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
+                        newExemplarTab.setUpdateExemplarListener((exemplar)->{
+                            exemplarClient.update(exemplar.getName(), exemplar);
+                            JOptionPane.showMessageDialog(newExemplarTab, "Update successfull");
+                        });
                         mainFrame.addTab(s,newExemplarTab);
                     }
                 }
@@ -95,6 +100,10 @@ public class MainController {
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
+        });
+
+        homeTab.setCreateExemplarListener((e)->{
+            System.out.println("ok");
         });
 
         homeTab.setOpenCommunityListener((list)->{

@@ -75,7 +75,6 @@ public class TestRatingClient {
      * the entity returned by the get()-method is expected to be null
      */
     @Test
-    @Ignore
     public void Test_deleteEntity(){
         try {
             client.add(testEntity);
@@ -94,10 +93,9 @@ public class TestRatingClient {
      * list  before adding
      */
     @Test
-    @Ignore
     public void Test_getAllEntites(){
         try {
-            client.delete(testEntity.getKey().toString());
+            //client.delete(testEntity.getKey().toString());
             List<Rating> before = client.getAll();
             int sizeBefore = before.size();
             client.add(testEntity);

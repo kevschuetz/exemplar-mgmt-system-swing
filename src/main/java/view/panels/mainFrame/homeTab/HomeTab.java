@@ -7,6 +7,7 @@ import view.listeners.mainframe.homeTab.ProfilePanelListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class HomeTab extends JPanel {
     User user;
@@ -15,6 +16,7 @@ public class HomeTab extends JPanel {
     MyExemplarsPanel myExemplarsPanel;
     MyCommunitiesPanel myCommunitiesPanel;
     Border border = BorderFactory.createCompoundBorder();
+
 
     public HomeTab(User user){
         this.user = user;
@@ -55,6 +57,9 @@ public class HomeTab extends JPanel {
 
     public void setOpenCommunityListener(NewTabListener listener){myCommunitiesPanel.setNewTabListener(listener);}
 
+    public void setCreateExemplarListener(ActionListener createExemplarListener) { myExemplarsPanel.setCreateExemplarListener(createExemplarListener);}
+
+
     public void setUser(User user) {
         this.user = user;
         profilePanel.setUser(user);
@@ -62,4 +67,6 @@ public class HomeTab extends JPanel {
     public ProfilePanel getProfilePanel() {
         return profilePanel;
     }
+
+
 }

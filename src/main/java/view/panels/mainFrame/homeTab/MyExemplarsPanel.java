@@ -8,6 +8,7 @@ import view.listeners.mainframe.homeTab.NewTabListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -23,6 +24,9 @@ public class MyExemplarsPanel extends JPanel {
     private NewTabListener exemplarListener;
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
+
+
+    private ActionListener createExemplarListener;
 
     public MyExemplarsPanel(User user){
         this.user=user;
@@ -88,6 +92,7 @@ public class MyExemplarsPanel extends JPanel {
         buttonPanel.add(openExemplarsButton);
         openExemplarsButton.addActionListener((x)->openExemplars());
         buttonPanel.add(createExemplarButton);
+        createExemplarButton.addActionListener(x-> createExemplarListener.actionPerformed(x));
         buttonPanel.add(searchAllButton);
         buttonPanel.setBorder(border);
     }
@@ -126,4 +131,5 @@ public class MyExemplarsPanel extends JPanel {
     public void setExemplarListener(NewTabListener exemplarListener) {
         this.exemplarListener = exemplarListener;
     }
+    public void setCreateExemplarListener(ActionListener listener){this.createExemplarListener = listener;}
 }
