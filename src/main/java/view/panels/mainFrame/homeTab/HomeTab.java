@@ -20,9 +20,6 @@ public class HomeTab extends JPanel {
         this.user = user;
         setLayout(new GridLayout(1,2));
         initializePanels();
-
-
-
         add(myExemplarsPanel);
         add(communitiesAndProfile);
     }
@@ -61,12 +58,6 @@ public class HomeTab extends JPanel {
     public void setUser(User user) {
         this.user = user;
         profilePanel.setUser(user);
-    }
-    public void repaint(){
-        removeAll();
-        initializePanels();
-        add(myExemplarsPanel);
-        add(communitiesAndProfile);
     }
     public ProfilePanel getProfilePanel() {
         return profilePanel;

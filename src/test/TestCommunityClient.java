@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-@Ignore
+
 public class TestCommunityClient {
     private CommunityClient client;
     private Community testEntity;
@@ -144,5 +144,4 @@ public class TestCommunityClient {
         }
         assertFalse(errorOccured);
     }
-
 }

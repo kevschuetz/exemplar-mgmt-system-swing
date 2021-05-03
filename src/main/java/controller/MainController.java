@@ -125,8 +125,5 @@ public class MainController {
             }
         });
     }
-    void repaintHomeTab(){
-        homeTab.repaint();
-        addListenersToHomeTab();
-    }
+
 }
