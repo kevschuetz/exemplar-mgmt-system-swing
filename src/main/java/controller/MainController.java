@@ -7,6 +7,7 @@ import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
+import view.frames.NewExemplarFrame;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
@@ -27,11 +28,13 @@ public class MainController {
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
+    private NewExemplarFrame newExemplarFrame;
     /**
      * Initializes the LoginController and starts the login process
      */
     public MainController(){
         initializeMainFrame();
+        initializeNewExemplarFrame();
 
         //login
        loginController = new LoginController();
@@ -62,6 +65,22 @@ public class MainController {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(new Dimension(1000, 750));
     }
+    void initializeNewExemplarFrame(){
+        newExemplarFrame = new NewExemplarFrame();
+        newExemplarFrame.setVisible(false);
+        newExemplarFrame.setSize(new Dimension(350, 200));
+        newExemplarFrame.setLocationRelativeTo(mainFrame);
+        newExemplarFrame.setListener((s)->{
+            boolean ok = verifyExemplarName(s);
+            if(ok){
+                newExemplarFrame.setVisible(false);
+                newExemplarFrame.clean();
+                createNewExemplarTab(s);
+            }else{
+                JOptionPane.showMessageDialog(newExemplarFrame, "Name already taken");
+            }
+        });
+    }
 
 
     void addListenersToHomeTab(){
@@ -86,12 +105,9 @@ public class MainController {
                     Exemplar e = exemplarClient.get(s);
                     if(e != null){
                         boolean editable = e.getCreator().equals(currentUser) ? true : false;
+                        if(e.getContributors().contains(currentUser)) editable = true;
                         ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
-                        newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
-                        newExemplarTab.setUpdateExemplarListener((exemplar)->{
-                            exemplarClient.update(exemplar.getName(), exemplar);
-                            JOptionPane.showMessageDialog(newExemplarTab, "Update successfull");
-                        });
+                        addListenersToExemplarTab(newExemplarTab);
                         mainFrame.addTab(s,newExemplarTab);
                     }
                 }
@@ -103,7 +119,7 @@ public class MainController {
         });
 
         homeTab.setCreateExemplarListener((e)->{
-            System.out.println("ok");
+            newExemplarFrame.setVisible(true);
         });
 
         homeTab.setOpenCommunityListener((list)->{
@@ -133,6 +149,51 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+    }
+
+    void createNewExemplarTab(String s){
+        Exemplar e = new Exemplar();
+        e.setName(s);
+        e.setCreator(currentUser);
+        try {
+            exemplarClient.add(e);
+            ExemplarTab newExemplarTab = new ExemplarTab(e, true);
+            addListenersToExemplarTab(newExemplarTab);
+            mainFrame.addTab(s,newExemplarTab);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+
+
+    }
+
+    void addListenersToExemplarTab(ExemplarTab newExemplarTab){
+        newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
+        newExemplarTab.setUpdateExemplarListener((exemplar)->{
+            exemplarClient.update(exemplar.getName(), exemplar);
+            JOptionPane.showMessageDialog(newExemplarTab, "Update successfull");
+        });
+        newExemplarTab.setDeleteExemplarListener((id, tab)->{
+            try {
+                exemplarClient.delete(id);
+                mainFrame.removeTab(tab);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    boolean verifyExemplarName(String s){
+        try{
+            Exemplar exists = exemplarClient.get(s);
+            if(exists == null) return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

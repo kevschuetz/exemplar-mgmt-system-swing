@@ -47,6 +47,10 @@ public class HomeTab extends JPanel {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
 
+    void refresh(){
+
+    }
+
     public void setUpdateUserListener(ProfilePanelListener listener){
         profilePanel.setUpdateUserListener(listener);
     }

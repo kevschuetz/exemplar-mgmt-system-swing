@@ -7,6 +7,7 @@ import model.entities.Rating;
 import model.entities.User;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
 import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
 import javax.swing.*;
@@ -41,10 +42,12 @@ public class ExemplarTab extends JPanel {
     JButton commentButton = new JButton("Leave Commment");
     JButton addContributorButton = new JButton("Add Contributor");
     JButton updateButton = new JButton ("Update");
+    JButton deleteButton = new JButton("Delete");
 
 
     private CloseTabListener closeListener;
     private UpdateExemplarListener updateExemplarListener;
+    private DeleteExemplarListener deleteExemplarListener;
 
     boolean editable = false;
 
@@ -59,12 +62,10 @@ public class ExemplarTab extends JPanel {
         setEditable();
         addComponents();
         addActionListener();
-
-
     }
 
     void setLayout(){
-        setLayout(new GridLayout(1,1));
+        setLayout(new GridBagLayout());
         parentPanel.setLayout(new GridBagLayout());
 
     }
@@ -79,7 +80,7 @@ public class ExemplarTab extends JPanel {
         metaInfoPanel = new JPanel();
         JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
         JLabel creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
-        long avgRating = getAvgRating();
+        double avgRating = getAvgRating();
         JLabel avgRatingLabel = new JLabel("Rating: " + getAvgRating());
         metaInfoPanel.setBorder(getBorder("Info"));
         metaInfoPanel.setLayout(new GridLayout(1,3));
@@ -105,23 +106,17 @@ public class ExemplarTab extends JPanel {
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
 
-
-
-
-        configurationPanel.setLayout(new GridLayout(1, 5));
+        configurationPanel.setLayout(new GridLayout(1, 6));
         if(editable){
             configurationPanel.add(updateButton);
             configurationPanel.add(addContributorButton);
+            configurationPanel.add(deleteButton);
         }
 
         configurationPanel.add(ratingButton);
         configurationPanel.add(commentButton);
         configurationPanel.add(closeButton);
     }
-
-
-
-
 
     void setEditable(){
             solutionTextArea.setEditable(editable);
@@ -138,33 +133,26 @@ public class ExemplarTab extends JPanel {
         //c.anchor= Anchor.HORIZONTAL;
         parentPanel.add(metaInfoPanel, c);
 
-
         c.weighty = 0.4;
         c.gridy = 1;
         parentPanel.add(problemPanel, c);
-
-
 
         c.gridy= 2;
         c.weighty = 0.4;
         parentPanel.add(solutionPanel, c);
 
-
-        c.weighty= 0.1;
-        c.gridy = 3;
-        c.gridx = 0;
-        parentPanel.add(configurationPanel, c);
-
-
-
-
-
         scrollPane = new JScrollPane(parentPanel);
-        add(scrollPane);
+        c.weighty=0.97;
+        c.gridy = 0;
+        add(scrollPane,c);
+
+        c.weighty=0.03;
+        c.gridy=1;
+        add(configurationPanel,c);
 
     }
 
-    long getAvgRating()  {
+    double getAvgRating()  {
         RatingClient client = new RatingClient();
         java.util.List<Rating> ratings = new ArrayList<>();
         boolean ok = false;
@@ -176,16 +164,17 @@ public class ExemplarTab extends JPanel {
             e.printStackTrace();
         }
         if(ok) {
-            long sum = ratings
+            double sum = ratings
                     .stream()
                     .filter(x -> x.getKey().getExemplar().equals(exemplar))
                     .map(x -> x.getRating())
-                    .count();
+                    .reduce(0.0, (a, b) -> a + b);
 
             java.util.List<Rating> relevantRatings = ratings
                     .stream()
                     .filter(x -> x.getKey().getExemplar().equals(exemplar))
                     .collect(Collectors.toList());
+
             if(relevantRatings.size()>0)return sum/relevantRatings.size();
             else return 0;
         }
@@ -199,7 +188,7 @@ public class ExemplarTab extends JPanel {
             exemplar.setProblem(problemTextArea.getText());
             updateExemplarListener.updateRequested(exemplar);
         });
-
+        deleteButton.addActionListener((e)->deleteExemplarListener.deleteRequested(exemplar.getName(), this));
     }
 
     public void setCloseListener(CloseTabListener closeListener) {
@@ -208,5 +197,9 @@ public class ExemplarTab extends JPanel {
 
     public void setUpdateExemplarListener(UpdateExemplarListener updateExemplarListener) {
         this.updateExemplarListener = updateExemplarListener;
+    }
+
+    public void setDeleteExemplarListener(DeleteExemplarListener deleteExemplarListener) {
+        this.deleteExemplarListener = deleteExemplarListener;
     }
 }

@@ -82,6 +82,7 @@ public class RegisterForm  extends JFrame {
         resetButton.setLocation(210,350);
         welcomeArea.setLocation(400,100);
         welcomeArea.setSize(300, 270);
+        welcomeArea.setEditable(false);
     }
 
     public void styleComponents(){
