@@ -1,7 +1,9 @@
 package view.frames;
 
+import model.entities.Exemplar;
 import view.listeners.mainframe.NewExemplarListener;
 import view.listeners.mainframe.NewLabelListener;
+import view.panels.mainFrame.exemplarTab.ExemplarTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,7 @@ public class NewLabelPopupFrame extends JFrame{
     private JLabel nameLabel = new JLabel("Name:");
     private JTextField nameField = new JTextField();
     private JButton button = new JButton("Add to Exemplar");
+    private ExemplarTab tab;
 
     private NewLabelListener listener;
     public NewLabelPopupFrame(){
@@ -41,7 +44,15 @@ public class NewLabelPopupFrame extends JFrame{
         this.listener = listener;
     }
 
+    public ExemplarTab getTab() {
+        return tab;
+    }
 
+    public void setTab(ExemplarTab tab) {
+        this.tab = tab;
+    }
 
-
+    public void clean(){
+        nameField.setText("");
+    }
 }

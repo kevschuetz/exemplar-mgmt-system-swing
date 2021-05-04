@@ -45,7 +45,7 @@ public class ExemplarTab extends JPanel {
     JButton addContributorButton = new JButton("Add Contributor");
     JButton updateButton = new JButton ("Update");
     JButton deleteButton = new JButton("Delete");
-    JButton addLabelButton = new JButton("Add");
+    JButton addLabelButton = new JButton("Add Label");
 
     private CloseTabListener closeListener;
     private UpdateExemplarListener updateExemplarListener;
@@ -100,10 +100,11 @@ public class ExemplarTab extends JPanel {
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
 
-        configurationPanel.setLayout(new GridLayout(1, 6));
+        configurationPanel.setLayout(new GridLayout(1, 7));
         if(editable){
             configurationPanel.add(updateButton);
             configurationPanel.add(addContributorButton);
+            configurationPanel.add(addLabelButton);
             configurationPanel.add(deleteButton);
         }
 
@@ -114,22 +115,27 @@ public class ExemplarTab extends JPanel {
 
     private void initializeMetaInfoPanel() {
         metaInfoPanel = new JPanel();
-        metaInfoPanel.setSize(new Dimension(100,100));
-        metaInfoPanel.setPreferredSize(new Dimension(100,100));
+
         JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
+        nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
         JLabel creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
+        creatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
         double avgRating = getAvgRating();
         JLabel avgRatingLabel = new JLabel("Rating: " + getAvgRating());
+
         metaInfoPanel.setBorder(getBorder("Info"));
-        metaInfoPanel.setLayout(new GridLayout(2,3));
+        metaInfoPanel.setLayout(new GridLayout(5,1));
+
+
+        labelPanel = initializeLabelPanel();
+        contributorPanel = initializeContributorPanel();
+
+
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
         metaInfoPanel.add(avgRatingLabel);
-        labelPanel = initializeLabelPanel();
-        contributorPanel = initializeContributorPanel();
-        labelPanel.add(addLabelButton);
         metaInfoPanel.add(labelPanel);
-        metaInfoPanel.add(new JPanel());
         metaInfoPanel.add(contributorPanel);
     }
 
@@ -142,30 +148,30 @@ public class ExemplarTab extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
-        //c.anchor= Anchor.HORIZONTAL;
         parentPanel.add(metaInfoPanel, c);
     }
 
     private JPanel initializeContributorPanel() {
         JPanel contributorPanel = new JPanel();
-        contributorPanel.setLayout(new GridLayout(1,exemplar.getContributors().size()+1));
+        contributorPanel.setLayout(new GridLayout(1,exemplar.getContributors().size()+2));
         JLabel contributors = new JLabel("Contributors:");
         contributorPanel.add(contributors);
         for(User u : exemplar.getContributors()){
             JLabel newLabel = new JLabel(u.getUsername());
             contributorPanel.add(newLabel);
         }
-        
         return contributorPanel;
     }
 
     private JPanel initializeLabelPanel() {
         JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new GridLayout(1, exemplar.getLabels().size()+2));
-        JLabel labels = new JLabel("Lables:");
+        JLabel labels = new JLabel("Labels:");
         labelPanel.add(labels);
         for(Label l : exemplar.getLabels()){
-            labelPanel.add(new JLabel(l.getValue()));
+            JLabel newLabel = new JLabel(l.getValue());
+            newLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            labelPanel.add(newLabel);
         }
         return labelPanel;
     }
@@ -177,7 +183,7 @@ public class ExemplarTab extends JPanel {
 
     void addComponents(){
         GridBagConstraints c = new GridBagConstraints();
-        c.weighty = 0.1;
+        c.weighty = 0.3;
         c.weightx=1;
         c.gridy = 0;
         c.gridx = 0;

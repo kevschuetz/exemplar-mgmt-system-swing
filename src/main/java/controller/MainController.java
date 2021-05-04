@@ -5,6 +5,7 @@ import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
+import model.httpclients.LabelClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
 import view.frames.NewExemplarPopupFrame;
@@ -27,7 +28,7 @@ public class MainController {
     private User currentUser;
     private UserClient userClient = new UserClient();
     ExemplarClient exemplarClient = new ExemplarClient();
-
+    private LabelClient labelClient = new LabelClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
@@ -68,7 +69,7 @@ public class MainController {
         mainFrame = new MainFrame();
         mainFrame.setVisible(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(1300, 800));
+        mainFrame.setSize(new Dimension(1300, 1000));
     }
     void initializeNewExemplarFrame(){
         newExemplarPopupFrame = new NewExemplarPopupFrame();
@@ -81,6 +82,8 @@ public class MainController {
                 newExemplarPopupFrame.setVisible(false);
                 newExemplarPopupFrame.clean();
                 createNewExemplarTab(s);
+                homeTab.refresh();
+                addListenersToHomeTab();
             }else{
                 JOptionPane.showMessageDialog(newExemplarPopupFrame, "Name already taken");
             }
@@ -93,7 +96,14 @@ public class MainController {
         newLabelPopupFrame.setSize(new Dimension(350, 200));
         newLabelPopupFrame.setLocationRelativeTo(mainFrame);
         newLabelPopupFrame.setListener((s)->{
-
+            model.entities.Label label = new model.entities.Label();
+            label.setValue(s);
+            model.entities.Label added = labelClient.add(label);
+            newLabelPopupFrame.getTab().getExemplar().getLabels().add(added);
+            exemplarClient.update(newLabelPopupFrame.getTab().getExemplar().getName(),newLabelPopupFrame.getTab().getExemplar());
+            newLabelPopupFrame.getTab().refreshInfoPanel();
+            newLabelPopupFrame.setVisible(false);
+            newLabelPopupFrame.clean();
         });
     }
 
@@ -194,6 +204,8 @@ public class MainController {
             try {
                 exemplarClient.delete(id);
                 mainFrame.removeTab(tab);
+                homeTab.refresh();
+                addListenersToHomeTab();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -202,6 +214,7 @@ public class MainController {
         });
         newExemplarTab.setAddLabelListener((tab)->{
             newLabelPopupFrame.setVisible(true);
+            newLabelPopupFrame.setTab(tab);
         });
     }
 
