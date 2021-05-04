@@ -16,8 +16,6 @@ public class CommunityTab extends JPanel {
         add(label);
         addComponents();
         addActionListener();
-
-
     }
 
     void addComponents(){
