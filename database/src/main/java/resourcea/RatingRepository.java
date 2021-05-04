@@ -8,6 +8,6 @@ import java.util.List;
 public interface RatingRepository extends JpaRepository<Rating, RatingPK> {
 
 
-    @Query(value="SELECT * FROM ratings where exemplar_name = ?1", nativeQuery = true)
+    @Query(value="SELECT * FROM rating where exemplar_name = ?1", nativeQuery = true)
     List<Rating> findRatingsForExemplar(String exemplar_name);
 }

@@ -64,4 +64,9 @@ public class ExemplarController {
         return repository.findExemplarsForCreator(creator);
     }
 
+    @GetMapping("/contributor")
+    public List<Exemplar> findExemplarsForContributor(@RequestParam String contributor){
+        return repository.findExemplarsForContributor(contributor);
+    }
+
 }

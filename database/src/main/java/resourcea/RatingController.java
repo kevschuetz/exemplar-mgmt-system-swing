@@ -71,7 +71,7 @@ public class RatingController {
         }
     }
 
-    @GetMapping(value="")
+    @GetMapping(value="/forexemplar")
     public List<Rating> getRatingsForExemplar(@RequestParam String exemplarname){
         return repository.findRatingsForExemplar(exemplarname);
     }

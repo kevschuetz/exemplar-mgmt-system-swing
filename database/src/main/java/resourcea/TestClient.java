@@ -214,6 +214,19 @@ public class TestClient {
      System.out.println(response.body());
 
         /**
+         *Test getExemplarForContributor()
+         *
+         */
+        String contributor = creator;
+        System.out.println("getExemplarForContributor()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/exemplars/contributor?contributor="+creator))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        /**
          *Test addCommunity
          *
          */
@@ -335,6 +348,18 @@ public class TestClient {
         System.out.println("getRating()");
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url+"/ratings/newExemplarName?username=kevin"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        /**
+         *Test getRatingforExemplar()
+         *
+         */
+        System.out.println("getRatingForExemplar()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/ratings/forexemplar?exemplarname=exemplar1"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
