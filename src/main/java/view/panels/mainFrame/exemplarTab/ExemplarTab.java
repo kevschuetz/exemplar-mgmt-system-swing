@@ -70,7 +70,6 @@ public class ExemplarTab extends JPanel {
     void setLayout(){
         setLayout(new GridBagLayout());
         parentPanel.setLayout(new GridBagLayout());
-
     }
 
     Border getBorder (String s){
@@ -104,10 +103,9 @@ public class ExemplarTab extends JPanel {
         if(editable){
             configurationPanel.add(updateButton);
             configurationPanel.add(addContributorButton);
-            configurationPanel.add(addLabelButton);
             configurationPanel.add(deleteButton);
         }
-
+        configurationPanel.add(addLabelButton);
         configurationPanel.add(ratingButton);
         configurationPanel.add(commentButton);
         configurationPanel.add(closeButton);
