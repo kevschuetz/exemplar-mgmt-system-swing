@@ -1,4 +1,4 @@
-package resourcea;
+package resources;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

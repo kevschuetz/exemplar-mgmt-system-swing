@@ -7,7 +7,8 @@ import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
-import view.frames.NewExemplarFrame;
+import view.frames.NewExemplarPopupFrame;
+import view.frames.NewLabelPopupFrame;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
@@ -15,6 +16,7 @@ import view.panels.mainFrame.homeTab.HomeTab;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainController {
     public static void main(String[] args) {
@@ -26,15 +28,18 @@ public class MainController {
     private UserClient userClient = new UserClient();
     ExemplarClient exemplarClient = new ExemplarClient();
 
+
     private MainFrame mainFrame;
     private HomeTab homeTab;
-    private NewExemplarFrame newExemplarFrame;
+    private NewExemplarPopupFrame newExemplarPopupFrame;
+    private NewLabelPopupFrame newLabelPopupFrame;
     /**
      * Initializes the LoginController and starts the login process
      */
     public MainController(){
         initializeMainFrame();
         initializeNewExemplarFrame();
+        initializeNewLabelPopupFrame();
 
         //login
        loginController = new LoginController();
@@ -63,22 +68,32 @@ public class MainController {
         mainFrame = new MainFrame();
         mainFrame.setVisible(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(1000, 750));
+        mainFrame.setSize(new Dimension(1300, 800));
     }
     void initializeNewExemplarFrame(){
-        newExemplarFrame = new NewExemplarFrame();
-        newExemplarFrame.setVisible(false);
-        newExemplarFrame.setSize(new Dimension(350, 200));
-        newExemplarFrame.setLocationRelativeTo(mainFrame);
-        newExemplarFrame.setListener((s)->{
+        newExemplarPopupFrame = new NewExemplarPopupFrame();
+        newExemplarPopupFrame.setVisible(false);
+        newExemplarPopupFrame.setSize(new Dimension(350, 200));
+        newExemplarPopupFrame.setLocationRelativeTo(mainFrame);
+        newExemplarPopupFrame.setListener((s)->{
             boolean ok = verifyExemplarName(s);
             if(ok){
-                newExemplarFrame.setVisible(false);
-                newExemplarFrame.clean();
+                newExemplarPopupFrame.setVisible(false);
+                newExemplarPopupFrame.clean();
                 createNewExemplarTab(s);
             }else{
-                JOptionPane.showMessageDialog(newExemplarFrame, "Name already taken");
+                JOptionPane.showMessageDialog(newExemplarPopupFrame, "Name already taken");
             }
+        });
+    }
+
+    void initializeNewLabelPopupFrame(){
+        newLabelPopupFrame = new NewLabelPopupFrame();
+        newLabelPopupFrame.setVisible(false);
+        newLabelPopupFrame.setSize(new Dimension(350, 200));
+        newLabelPopupFrame.setLocationRelativeTo(mainFrame);
+        newLabelPopupFrame.setListener((s)->{
+
         });
     }
 
@@ -119,7 +134,7 @@ public class MainController {
         });
 
         homeTab.setCreateExemplarListener((e)->{
-            newExemplarFrame.setVisible(true);
+            newExemplarPopupFrame.setVisible(true);
         });
 
         homeTab.setOpenCommunityListener((list)->{
@@ -155,6 +170,8 @@ public class MainController {
         Exemplar e = new Exemplar();
         e.setName(s);
         e.setCreator(currentUser);
+        e.setLabels(new ArrayList<>());
+        e.setContributors(new ArrayList<>());
         try {
             exemplarClient.add(e);
             ExemplarTab newExemplarTab = new ExemplarTab(e, true);
@@ -165,8 +182,6 @@ public class MainController {
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }
-
-
     }
 
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
@@ -185,7 +200,13 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+        newExemplarTab.setAddLabelListener((tab)->{
+            newLabelPopupFrame.setVisible(true);
+        });
     }
+
+
+
     boolean verifyExemplarName(String s){
         try{
             Exemplar exists = exemplarClient.get(s);
@@ -195,5 +216,7 @@ public class MainController {
         }
         return false;
     }
+
+
 
 }

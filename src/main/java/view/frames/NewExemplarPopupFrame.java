@@ -5,7 +5,7 @@ import view.listeners.mainframe.NewExemplarListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class NewExemplarFrame extends JFrame {
+public class NewExemplarPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Please provide a name for your new Exemplar");
     private JPanel namePanel = new JPanel();
@@ -14,9 +14,14 @@ public class NewExemplarFrame extends JFrame {
     private JButton button = new JButton("Create");
 
     private NewExemplarListener listener;
-    public NewExemplarFrame(){
+    public NewExemplarPopupFrame(){
+        JPanel parentPanel = new JPanel();
+        parentPanel.setLayout(new GridLayout(3,1));
+        parentPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("New Exemplar"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         setSize(new Dimension(100,100));
-        setLayout(new GridLayout(3,1));
+        setLayout(new GridLayout(1,1));
         infoPanel.add(infoLabel);
         namePanel.setLayout(new GridLayout(1,2));
         namePanel.add(nameLabel);
@@ -24,9 +29,10 @@ public class NewExemplarFrame extends JFrame {
 
         button.addActionListener(x->listener.NewExemplarRequested(nameField.getText()));
 
-        add(infoPanel);
-        add(namePanel);
-        add(button);
+        parentPanel.add(infoPanel);
+        parentPanel.add(namePanel);
+        parentPanel.add(button);
+        add(parentPanel);
         getRootPane().setDefaultButton(button);
     }
 

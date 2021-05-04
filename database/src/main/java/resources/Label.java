@@ -1,4 +1,4 @@
-package resourcea;
+package resources;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

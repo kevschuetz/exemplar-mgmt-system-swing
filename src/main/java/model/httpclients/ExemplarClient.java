@@ -112,4 +112,20 @@ public class ExemplarClient extends Client<Exemplar>{
             return new LinkedList<Exemplar>();
         }
     }
+    /*
+    container mit methode noch nicht gehosted
+    public List<Exemplar> getExemplarsForContributor(String contributor){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/contributor?contributor="+contributor))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
+            return exemplars;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Exemplar>();
+        }
+    }
+     */
 }

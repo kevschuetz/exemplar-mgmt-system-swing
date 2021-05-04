@@ -7,6 +7,7 @@ import model.entities.Rating;
 import model.entities.User;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.exemplarTab.AddLabelListener;
 import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
 import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
@@ -32,7 +33,8 @@ public class ExemplarTab extends JPanel {
     private JPanel solutionPanel= new JPanel();
     private JPanel configurationPanel= new JPanel();
     private JPanel commentPanel= new JPanel();
-
+    private JPanel labelPanel;
+    private JPanel contributorPanel;
 
     JTextArea problemTextArea = new JTextArea();
     JTextArea solutionTextArea = new JTextArea();
@@ -43,11 +45,12 @@ public class ExemplarTab extends JPanel {
     JButton addContributorButton = new JButton("Add Contributor");
     JButton updateButton = new JButton ("Update");
     JButton deleteButton = new JButton("Delete");
-
+    JButton addLabelButton = new JButton("Add");
 
     private CloseTabListener closeListener;
     private UpdateExemplarListener updateExemplarListener;
     private DeleteExemplarListener deleteExemplarListener;
+    private AddLabelListener addLabelListener;
 
     boolean editable = false;
 
@@ -77,16 +80,7 @@ public class ExemplarTab extends JPanel {
     }
 
     void initializeComponents(){
-        metaInfoPanel = new JPanel();
-        JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
-        JLabel creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
-        double avgRating = getAvgRating();
-        JLabel avgRatingLabel = new JLabel("Rating: " + getAvgRating());
-        metaInfoPanel.setBorder(getBorder("Info"));
-        metaInfoPanel.setLayout(new GridLayout(1,3));
-        metaInfoPanel.add(nameLabel);
-        metaInfoPanel.add(creatorLabel);
-        metaInfoPanel.add(avgRatingLabel);
+        initializeMetaInfoPanel();
 
         problemPanel.setLayout(new GridLayout(1,1));
         problemPanel.setBorder(getBorder("Description"));
@@ -116,6 +110,64 @@ public class ExemplarTab extends JPanel {
         configurationPanel.add(ratingButton);
         configurationPanel.add(commentButton);
         configurationPanel.add(closeButton);
+    }
+
+    private void initializeMetaInfoPanel() {
+        metaInfoPanel = new JPanel();
+        metaInfoPanel.setSize(new Dimension(100,100));
+        metaInfoPanel.setPreferredSize(new Dimension(100,100));
+        JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
+        JLabel creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
+        double avgRating = getAvgRating();
+        JLabel avgRatingLabel = new JLabel("Rating: " + getAvgRating());
+        metaInfoPanel.setBorder(getBorder("Info"));
+        metaInfoPanel.setLayout(new GridLayout(2,3));
+        metaInfoPanel.add(nameLabel);
+        metaInfoPanel.add(creatorLabel);
+        metaInfoPanel.add(avgRatingLabel);
+        labelPanel = initializeLabelPanel();
+        contributorPanel = initializeContributorPanel();
+        labelPanel.add(addLabelButton);
+        metaInfoPanel.add(labelPanel);
+        metaInfoPanel.add(new JPanel());
+        metaInfoPanel.add(contributorPanel);
+    }
+
+    public void refreshInfoPanel(){
+        parentPanel.remove(metaInfoPanel);
+        initializeMetaInfoPanel();
+        GridBagConstraints c = new GridBagConstraints();
+        c.weighty = 0.1;
+        c.weightx=1;
+        c.gridy = 0;
+        c.gridx = 0;
+        c.fill= GridBagConstraints.BOTH;
+        //c.anchor= Anchor.HORIZONTAL;
+        parentPanel.add(metaInfoPanel, c);
+    }
+
+    private JPanel initializeContributorPanel() {
+        JPanel contributorPanel = new JPanel();
+        contributorPanel.setLayout(new GridLayout(1,exemplar.getContributors().size()+1));
+        JLabel contributors = new JLabel("Contributors:");
+        contributorPanel.add(contributors);
+        for(User u : exemplar.getContributors()){
+            JLabel newLabel = new JLabel(u.getUsername());
+            contributorPanel.add(newLabel);
+        }
+        
+        return contributorPanel;
+    }
+
+    private JPanel initializeLabelPanel() {
+        JPanel labelPanel = new JPanel();
+        labelPanel.setLayout(new GridLayout(1, exemplar.getLabels().size()+2));
+        JLabel labels = new JLabel("Lables:");
+        labelPanel.add(labels);
+        for(Label l : exemplar.getLabels()){
+            labelPanel.add(new JLabel(l.getValue()));
+        }
+        return labelPanel;
     }
 
     void setEditable(){
@@ -189,6 +241,9 @@ public class ExemplarTab extends JPanel {
             updateExemplarListener.updateRequested(exemplar);
         });
         deleteButton.addActionListener((e)->deleteExemplarListener.deleteRequested(exemplar.getName(), this));
+        addLabelButton.addActionListener((e)->{
+            addLabelListener.buttonClicked(this);
+        });
     }
 
     public void setCloseListener(CloseTabListener closeListener) {
@@ -201,5 +256,13 @@ public class ExemplarTab extends JPanel {
 
     public void setDeleteExemplarListener(DeleteExemplarListener deleteExemplarListener) {
         this.deleteExemplarListener = deleteExemplarListener;
+    }
+
+    public void setAddLabelListener(AddLabelListener addLabelListener) {
+        this.addLabelListener = addLabelListener;
+    }
+
+    public Exemplar getExemplar() {
+        return exemplar;
     }
 }

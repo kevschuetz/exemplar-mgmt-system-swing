@@ -54,12 +54,13 @@ public class RatingClient extends Client<Rating> {
     }
 
     @Override
-    public List<Rating> getAll() throws IOException, InterruptedException {
+    public List<Rating> getAll() {
+        try{
         request = HttpRequest.newBuilder()
                 .uri(URI.create(URL))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        try{
+
             List<Rating> all = mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
             return all;
         }catch(Exception e){
@@ -89,4 +90,22 @@ public class RatingClient extends Client<Rating> {
     public Rating update(String exemplarId, Rating value) throws IOException, InterruptedException {
        return add(value);
     }
+    /*
+    Container mit methode noch nicht gehosted
+    public List<Rating> getRatingsForExemplar(String exemplarname){
+        try{
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+"/forexemplar?exemplarname="+exemplarname))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        List<Rating> ratings = mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
+        return ratings;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Rating>();
+        }
+    }
+    */
+
 }
