@@ -61,7 +61,7 @@ public class MyCommunitiesPanel extends JPanel {
                    }
                 }
             });
-           // panel.setLayout(new GridLayout(2,3));
+            panel.setLayout(new GridLayout(2,3));
             JLabel name = new JLabel("Name: ");
             JLabel communityName = new JLabel(c.getName());
             JLabel randomlabel = new JLabel("");
@@ -86,7 +86,7 @@ public class MyCommunitiesPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
 
         //adding scrollpane
-        c.fill = GridBagConstraints.EAST; //BOTH
+        c.fill = GridBagConstraints.BOTH;
         c.weighty=0.95;
         c.weightx=1;
         c.gridx=0;
