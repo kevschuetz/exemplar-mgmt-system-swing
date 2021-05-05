@@ -32,7 +32,7 @@ public class HomeTab extends JPanel {
         myCommunitiesPanel = new MyCommunitiesPanel(user);
 
         myExemplarsPanel.setBorder(createBorder("Exemplars"));
-        myCommunitiesPanel.setBorder(createBorder("Communities (double click to open)"));
+        myCommunitiesPanel.setBorder(createBorder("My Communities"));
         profilePanel.setBorder(createBorder("Profile"));
 
         communitiesAndProfile = new JPanel();

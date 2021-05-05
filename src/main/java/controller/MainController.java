@@ -9,6 +9,7 @@ import model.httpclients.LabelClient;
 import model.httpclients.UserClient;
 import view.frames.MainFrame;
 import view.frames.NewExemplarPopupFrame;
+import view.frames.NewCommunityPopupFrame;
 import view.frames.NewLabelPopupFrame;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
@@ -34,6 +35,7 @@ public class MainController {
     private HomeTab homeTab;
     private NewExemplarPopupFrame newExemplarPopupFrame;
     private NewLabelPopupFrame newLabelPopupFrame;
+    private NewCommunityPopupFrame newCommunityPopupFrame;
     /**
      * Initializes the LoginController and starts the login process
      */

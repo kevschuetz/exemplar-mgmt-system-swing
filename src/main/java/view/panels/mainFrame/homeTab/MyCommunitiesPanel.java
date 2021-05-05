@@ -8,6 +8,7 @@ import view.listeners.mainframe.homeTab.NewTabListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class MyCommunitiesPanel extends JPanel {
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
     private NewTabListener newTabListener;
+    JPanel buttonPanel;
+
+    private ActionListener createCommunityListener;
 
     public MyCommunitiesPanel(User user){
         this.user=user;
@@ -31,9 +35,10 @@ public class MyCommunitiesPanel extends JPanel {
         fetchCommunites();
 
         communityPanelParent.setLayout(new GridLayout(myCommunities.size(), 1));
-
+        initializeButtonPanel();
         addCommunites();
         add(scrollPane);
+        addComponentsCommunity();
     }
 
     void fetchCommunites(){
@@ -56,7 +61,7 @@ public class MyCommunitiesPanel extends JPanel {
                    }
                 }
             });
-
+           // panel.setLayout(new GridLayout(2,3));
             JLabel name = new JLabel("Name: ");
             JLabel communityName = new JLabel(c.getName());
             JLabel randomlabel = new JLabel("");
@@ -76,7 +81,43 @@ public class MyCommunitiesPanel extends JPanel {
         }
     }
 
+    void addComponentsCommunity(){
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        //adding scrollpane
+        c.fill = GridBagConstraints.EAST; //BOTH
+        c.weighty=0.95;
+        c.weightx=1;
+        c.gridx=0;
+        c.gridy=0;
+        add(scrollPane, c);
+
+        //adding button
+        c.weighty=0.05;
+        c.gridx=0;
+        c.gridy=1;
+        add(buttonPanel, c);
+
+    }
+
+    void initializeButtonPanel(){
+        buttonPanel= new JPanel();
+        buttonPanel.setLayout(new GridLayout(1,2));
+        JButton createCommunityButton = new JButton("Create New Community");
+        JButton searchAllButton = new JButton("Search All Communities");
+        buttonPanel.add(createCommunityButton);
+        createCommunityButton.addActionListener(x->createCommunityListener.actionPerformed(x));
+        buttonPanel.add(searchAllButton);
+        buttonPanel.setBorder(border);
+    }
     public void setNewTabListener(NewTabListener newTabListener) {
         this.newTabListener = newTabListener;
     }
+
+
+    public void setCommuniyListener(NewTabListener communiyListener) {
+        this.newTabListener = communiyListener;
+    }
+    public void setCreateExemplarListener(ActionListener listener){this.createCommunityListener = listener;}
 }
