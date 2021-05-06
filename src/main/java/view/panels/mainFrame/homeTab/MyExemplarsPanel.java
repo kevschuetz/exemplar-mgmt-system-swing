@@ -4,6 +4,7 @@ import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
 import view.listeners.mainframe.homeTab.NewTabListener;
+import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,6 +26,7 @@ public class MyExemplarsPanel extends JPanel {
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
 
+    AllExemplarsPanel exemplarLibrary = new AllExemplarsPanel();
 
     private ActionListener createExemplarListener;
 
@@ -89,11 +91,14 @@ public class MyExemplarsPanel extends JPanel {
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton createExemplarButton = new JButton("Create New");
         JButton searchAllButton = new JButton("Search All");
+        JButton exemplarLibraryButton =  new JButton("Exemplar Library");
+
         buttonPanel.add(openExemplarsButton);
         openExemplarsButton.addActionListener((x)->openExemplars());
         buttonPanel.add(createExemplarButton);
         createExemplarButton.addActionListener(x-> createExemplarListener.actionPerformed(x));
         buttonPanel.add(searchAllButton);
+        buttonPanel.add(exemplarLibraryButton);
         buttonPanel.setBorder(border);
     }
     void addComponents(){

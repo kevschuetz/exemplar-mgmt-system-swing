@@ -17,6 +17,8 @@ public class AllExemplarsPanel extends JPanel {
     private JButton showExemplarButton;
     private ExemplarClient exemplarClient;
 
+    private JButton closeButton = new JButton("Close Library");
+
     public AllExemplarsPanel()  {
         exemplarClient = new ExemplarClient();
 
