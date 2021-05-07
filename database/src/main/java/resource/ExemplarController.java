@@ -82,4 +82,9 @@ public class ExemplarController {
         System.out.println(search);
         return repository.findExemplarsNameLikeXY(search);
     }
+
+    @GetMapping("/search/label")
+    public List<Exemplar> findExemplarsByLabel(@RequestParam String value){
+        return repository.findExemplarsByLabels(value);
+    }
 }

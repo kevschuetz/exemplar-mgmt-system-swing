@@ -3,6 +3,7 @@ package view.panels.mainFrame.homeTab;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
+import model.httpclients.RatingClient;
 import view.listeners.mainframe.homeTab.NewTabListener;
 import view.panels.mainFrame.AllExemplarsPanel;
 
@@ -46,11 +47,12 @@ public class MyExemplarsPanel extends JPanel {
 
 
     public void fetchExemplars(){
-        myExemplars = new ExemplarClient().getExemplarForCreator(user.getUsername());
+        myExemplars = new ExemplarClient().getExemplarsForUser(user.getUsername());
     }
 
     public void addExemplarsToScrollPane(){
         int i = 0;
+        RatingClient client = new RatingClient();
         for(Exemplar e : myExemplars){
             JPanel panel = new JPanel();
             panel.addMouseListener(new MouseAdapter() {
@@ -73,7 +75,9 @@ public class MyExemplarsPanel extends JPanel {
             panel.add(exemplarName);
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
-            panel.add(new JLabel(""));
+            String rating = "";
+            rating += client.getAvgRatingForExemplar(e.getName());
+            panel.add(new JLabel(rating));
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));

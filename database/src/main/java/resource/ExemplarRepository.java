@@ -29,4 +29,8 @@ public interface ExemplarRepository extends JpaRepository<Exemplar, String> {
 
     @Query(value="select * from exemplar where name like ?1", nativeQuery = true)
     List<Exemplar> findExemplarsNameLikeXY(String search);
+
+
+    @Query(value="select * from exemplar e join exemplar_labels l on l.exemplar_name = e.name where labels_value = ?1", nativeQuery = true)
+    List<Exemplar> findExemplarsByLabels(String label);
 }

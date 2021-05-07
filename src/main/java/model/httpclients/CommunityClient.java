@@ -109,8 +109,20 @@ public class CommunityClient extends Client<Community>{
             //e.printStackTrace();
             return new LinkedList<Community>();
         }
+    }
 
-
+    public List<Community> searchCommunities(String value){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/search?value="+value))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
+            return all;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Community>();
+        }
     }
 
 

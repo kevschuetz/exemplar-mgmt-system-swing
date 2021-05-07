@@ -131,7 +131,9 @@ public class MainController {
                 for(String s : list){
                     Exemplar e = exemplarClient.get(s);
                     if(e != null){
-                        boolean editable = e.getCreator().equals(currentUser) ? true : false;
+                        boolean editable = false;
+                        if(e.getCreator() == null) editable = false;
+                        else editable = e.getCreator().equals(currentUser) ? true : false;
                         if(e.getContributors().contains(currentUser)) editable = true;
                         ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
                         addListenersToExemplarTab(newExemplarTab);

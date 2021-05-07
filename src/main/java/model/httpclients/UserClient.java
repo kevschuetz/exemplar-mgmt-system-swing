@@ -101,4 +101,20 @@ public class UserClient extends Client<User> {
             return null;
         }
     }
+
+
+    public List<User> searchUsers(String value) {
+        try{
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+"/search?value="+value))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        List<User> users = mapper.readValue(response.body(), new TypeReference<List<User>>(){});
+        return users;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<User>();
+        }
+    }
 }

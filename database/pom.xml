@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>jku-win-se.teaching-2021.prse-exemplar-team4</groupId>
 	<artifactId>database</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>database</name>
 	<description>Spring Boot Application (REST API) that handles database queries</description>
 	<url>https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/tree/main/database</url>

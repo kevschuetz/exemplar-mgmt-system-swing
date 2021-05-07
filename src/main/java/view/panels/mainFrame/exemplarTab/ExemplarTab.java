@@ -116,7 +116,8 @@ public class ExemplarTab extends JPanel {
 
         JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
         nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        JLabel creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
+        JLabel creatorLabel = new JLabel("");
+        if(exemplar.getCreator() != null)  creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
         creatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         double avgRating = getAvgRating();
@@ -209,32 +210,7 @@ public class ExemplarTab extends JPanel {
     }
 
     double getAvgRating()  {
-        RatingClient client = new RatingClient();
-        java.util.List<Rating> ratings = new ArrayList<>();
-        boolean ok = false;
-        try{
-            ratings = client.getAll();
-            ok = true;
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        if(ok) {
-            double sum = ratings
-                    .stream()
-                    .filter(x -> x.getKey().getExemplar().equals(exemplar))
-                    .map(x -> x.getRating())
-                    .reduce(0.0, (a, b) -> a + b);
-
-            java.util.List<Rating> relevantRatings = ratings
-                    .stream()
-                    .filter(x -> x.getKey().getExemplar().equals(exemplar))
-                    .collect(Collectors.toList());
-
-            if(relevantRatings.size()>0)return sum/relevantRatings.size();
-            else return 0;
-        }
-        return 0;
+       return new RatingClient().getAvgRatingForExemplar(exemplar.getName());
     }
 
     void addActionListener(){

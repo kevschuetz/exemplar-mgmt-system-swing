@@ -90,8 +90,7 @@ public class RatingClient extends Client<Rating> {
     public Rating update(String exemplarId, Rating value) throws IOException, InterruptedException {
        return add(value);
     }
-    /*
-    Container mit methode noch nicht gehosted
+
     public List<Rating> getRatingsForExemplar(String exemplarname){
         try{
         request = HttpRequest.newBuilder()
@@ -106,6 +105,21 @@ public class RatingClient extends Client<Rating> {
             return new LinkedList<Rating>();
         }
     }
-    */
+
+    public double getAvgRatingForExemplar(String id) {
+        try {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+"/average/"+id))
+                .build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Double avg = mapper.readValue(response.body(), Double.class);
+        return avg;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return 0;
+        }
+    }
+
 
 }

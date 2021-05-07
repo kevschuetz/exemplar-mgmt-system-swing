@@ -112,6 +112,50 @@ public class ExemplarClient extends Client<Exemplar>{
             return new LinkedList<Exemplar>();
         }
     }
+
+    public List<Exemplar> getExemplarsForUser(String user){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/user?user="+user))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
+            return exemplars;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Exemplar>();
+        }
+    }
+    public List<Exemplar> searchExemplars(String value){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/search?value="+value))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
+            return exemplars;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Exemplar>();
+        }
+    }
+
+    public List<Exemplar> searchExemplarsByLabel(String label){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/search/label?value="+label))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
+            return exemplars;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Exemplar>();
+        }
+    }
+
+
+
     /*
     container mit methode noch nicht gehosted
     public List<Exemplar> getExemplarsForContributor(String contributor){
