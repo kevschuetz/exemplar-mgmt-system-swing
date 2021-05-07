@@ -1,4 +1,4 @@
-package resources;
+package resource;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +13,8 @@ public interface CommunityRepository extends JpaRepository<Community, String> {
             "                   group by c.name, c.creator_username, m.members_username",
     nativeQuery = true)
     List<Community> getCommunitiesForUser(String member);
+
+
+    //UNION Methode, die alle Communties zurückgibt, in denen jemand creator oder mitglied ist
 
 }

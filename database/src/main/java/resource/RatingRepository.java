@@ -1,4 +1,4 @@
-package resources;
+package resource;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +10,6 @@ public interface RatingRepository extends JpaRepository<Rating, RatingPK> {
 
     @Query(value="SELECT * FROM rating where exemplar_name = ?1", nativeQuery = true)
     List<Rating> findRatingsForExemplar(String exemplar_name);
+
+    //AVG-Rating für Exemplar (hier oder bei ExemplarRepository?)
 }
