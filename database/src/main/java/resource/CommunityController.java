@@ -56,5 +56,15 @@ public class CommunityController {
         return repository.getCommunitiesForUser(member);
     }
 
+    @GetMapping("/search")
+    public List<Community> searchCommunities(@RequestParam String value){
+        String search = "%";
+        search += value;
+        search += "%";
+        return repository.searchCommunity_NameLikeXY(search);
+    }
+
+
+
 
 }

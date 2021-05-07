@@ -67,9 +67,22 @@ public class TestClient {
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
+        User testUser2 = mapper.readValue(response.body(), User.class);
+
+        /**
+         *Test getUser()
+         *
+        */
+        System.out.println("searchusers()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/users/search?value=ad"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
 
         //fetch testUser and change fullname
-        User testUser2 = mapper.readValue(response.body(), User.class);
         testUser2.setFullName("Mimsi");
         //add again
         System.out.println("adding fetched user again: ");
@@ -227,6 +240,33 @@ public class TestClient {
         System.out.println(response.body());
 
         /**
+         *Test ExemplarForUser()
+         *
+         */
+        String user = creator;
+        System.out.println("getExemplarForUser()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/exemplars/user?user="+user))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+
+        /**
+         *Test SearchExemplars()
+         *
+         */
+        String value = "exempl";
+        System.out.println("searchExemplars");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/exemplars/search?value="+value))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        System.out.println(response);
+        /**
          *Test addCommunity
          *
          */
@@ -295,9 +335,21 @@ public class TestClient {
          *Test getCommunity()
          *
          */
-        System.out.println("getCommunitiesForUser/Member()");
+        System.out.println("getCommunitiesForUser()");
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url+"/communities/member?member=kevin"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        /**
+         *Test getCommunity()
+         *
+         */
+        System.out.println("searchCommunity()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/communities/search?value=c"))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -365,7 +417,17 @@ public class TestClient {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
 
+        /**
+         *Test getRatingforExemplar()
+         *
+         */
+        System.out.println("getAvgRatingForExemplar()");
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(url+"/ratings/average/exemplar1"))
+                .build();
 
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
 
         /**

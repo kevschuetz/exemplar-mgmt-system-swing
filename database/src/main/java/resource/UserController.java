@@ -58,4 +58,13 @@ public class UserController {
         User u = userRepository.findById(username).orElse(null);
         if (u != null) userRepository.delete(u);
     }
+    @GetMapping("/search")
+    public List<User> searchUsers(@RequestParam String value)
+    {
+        String search = "%";
+        search+= value;
+        search+="%";
+        return userRepository.searchUsers(search);
+    }
+
 }

@@ -76,4 +76,9 @@ public class RatingController {
         return repository.findRatingsForExemplar(exemplarname);
     }
 
+    @GetMapping(value = "/average/{exemplarname}")
+    public double getAvgRatingForExemplar(@PathVariable String exemplarname){
+        return repository.getAvgRatingForExemlar(exemplarname);
+    }
+
 }

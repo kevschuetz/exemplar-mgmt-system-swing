@@ -69,4 +69,17 @@ public class ExemplarController {
         return repository.findExemplarsForContributor(contributor);
     }
 
+    @GetMapping("/user")
+    public List<Exemplar> findExemplarsForUser(@RequestParam String user){
+        return repository.findExemplarsForUser(user);
+    }
+
+    @GetMapping("/search")
+    public List<Exemplar> findExemplarsNameLikeXY(@RequestParam String value){
+        String search = "%";
+        search = search + value;
+        search = search + "%";
+        System.out.println(search);
+        return repository.findExemplarsNameLikeXY(search);
+    }
 }

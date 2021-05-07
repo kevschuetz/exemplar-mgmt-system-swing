@@ -11,5 +11,7 @@ public interface RatingRepository extends JpaRepository<Rating, RatingPK> {
     @Query(value="SELECT * FROM rating where exemplar_name = ?1", nativeQuery = true)
     List<Rating> findRatingsForExemplar(String exemplar_name);
 
-    //AVG-Rating für Exemplar (hier oder bei ExemplarRepository?)
+   @Query(value="Select AVG(rating) from rating where exemplar_name = ?1",
+           nativeQuery = true)
+    double getAvgRatingForExemlar(String exemplar_name);
 }

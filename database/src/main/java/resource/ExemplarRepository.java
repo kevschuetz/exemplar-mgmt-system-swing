@@ -18,7 +18,15 @@ public interface ExemplarRepository extends JpaRepository<Exemplar, String> {
     List<Exemplar> findExemplarsForContributor(String contributor);
 
 
-    //UNION Methode, die alle Exemplars zurückgibt, in denen jemand creator oder contributor ist (ober zwei verbinden)
+    @Query(value="(Select * from exemplar e where e.creator_username = ?1) \n" +
+            "UNION\n" +
+            "(\n" +
+            "select e.name, e.problem, e.solution, e.creator_username \n" +
+            "from exemplar e join exemplar_contributors c on e.name = c.exemplar_name\n" +
+            "where c.contributors_username =?1)"
+                            ,nativeQuery = true)
+    List<Exemplar> findExemplarsForUser(String user);
 
-    //Custom funktion ... where name like '%?!%'
+    @Query(value="select * from exemplar where name like ?1", nativeQuery = true)
+    List<Exemplar> findExemplarsNameLikeXY(String search);
 }
