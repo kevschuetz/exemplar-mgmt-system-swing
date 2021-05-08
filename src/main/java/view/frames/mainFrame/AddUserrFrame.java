@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class AddContributorFrame extends JFrame {
+public class AddUserrFrame extends JFrame {
     private ExemplarTab tab;
     private JPanel parentPanel = new JPanel();
     private JTextField searchField = new JTextField();
@@ -23,7 +23,7 @@ public class AddContributorFrame extends JFrame {
     private AddContributorListener listener;
 
 
-    public AddContributorFrame(){
+    public AddUserrFrame(){
         setLayout(new GridLayout(1,1));
         parentPanel.setLayout(new GridBagLayout());
         parentPanel.setBorder(BorderFactory.createCompoundBorder(

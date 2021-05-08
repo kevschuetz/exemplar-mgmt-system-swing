@@ -6,6 +6,7 @@ import model.entities.Label;
 import model.entities.Rating;
 import model.entities.User;
 import model.httpclients.RatingClient;
+import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.CloseTabListener;
 import view.listeners.mainframe.exemplarTab.*;
 
@@ -52,6 +53,8 @@ public class ExemplarTab extends JPanel {
     private RatingListener ratingListener;
     private ContributorListener contributorListener;
 
+    private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
+
     boolean editable = false;
 
 
@@ -65,6 +68,7 @@ public class ExemplarTab extends JPanel {
         setEditable();
         addComponents();
         addActionListener();
+        initializeDeletalFrame();
     }
 
     void setLayout(){
@@ -221,7 +225,9 @@ public class ExemplarTab extends JPanel {
             exemplar.setProblem(problemTextArea.getText());
             updateExemplarListener.updateRequested(exemplar);
         });
-        deleteButton.addActionListener((e)->deleteExemplarListener.deleteRequested(exemplar.getName(), this));
+        deleteButton.addActionListener((e)->{
+            confirmExemplarDeletionFrame.setVisible(true);
+        });
         addLabelButton.addActionListener((e)->{
             addLabelListener.buttonClicked(this);
         });
@@ -229,6 +235,17 @@ public class ExemplarTab extends JPanel {
         addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
     }
 
+    void initializeDeletalFrame(){
+        confirmExemplarDeletionFrame = new ConfirmExemplarDeletionFrame(exemplar.getName());
+        confirmExemplarDeletionFrame.setVisible(false);
+        confirmExemplarDeletionFrame.setSize(new Dimension(400
+                ,300));
+        confirmExemplarDeletionFrame.setLocationRelativeTo(this);
+        confirmExemplarDeletionFrame.setConfirmListener((x)->{
+            confirmExemplarDeletionFrame.setVisible(false);
+            deleteExemplarListener.deleteRequested(exemplar.getName(), this);
+        });
+    }
     public void setCloseListener(CloseTabListener closeListener) {
         this.closeListener = closeListener;
     }
@@ -255,5 +272,13 @@ public class ExemplarTab extends JPanel {
 
     public Exemplar getExemplar() {
         return exemplar;
+    }
+
+    public JButton getUpdateButton() {
+        return updateButton;
+    }
+
+    public void setUpdateButton(JButton updateButton) {
+        this.updateButton = updateButton;
     }
 }

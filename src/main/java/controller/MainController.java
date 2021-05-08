@@ -30,7 +30,7 @@ public class MainController {
     private NewLabelPopupFrame newLabelPopupFrame;
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
-    private AddContributorFrame addContributorFrame;
+    private AddUserrFrame addContributorFrame;
     /**
      * Initializes the LoginController and starts the login process
      */
@@ -138,7 +138,7 @@ public class MainController {
     }
 
     void initializeAddContributorFrame(){
-        addContributorFrame = new AddContributorFrame();
+        addContributorFrame = new AddUserrFrame();
         addContributorFrame.setVisible(false);
         addContributorFrame.setSize(new Dimension(350, 500));
         addContributorFrame.setLocationRelativeTo(mainFrame);
@@ -240,10 +240,14 @@ public class MainController {
     }
 
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
-        newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
+        newExemplarTab.setCloseListener((c)->{
+            ExemplarTab tab = (ExemplarTab)c;
+            JButton updateButton = tab.getUpdateButton();
+            updateButton.doClick();
+            mainFrame.removeTab(c);
+        });
         newExemplarTab.setUpdateExemplarListener((exemplar)->{
             exemplarClient.update(exemplar.getName(), exemplar);
-            JOptionPane.showMessageDialog(newExemplarTab, "Update successfull");
         });
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
