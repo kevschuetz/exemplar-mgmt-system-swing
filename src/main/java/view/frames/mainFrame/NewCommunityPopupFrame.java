@@ -1,4 +1,4 @@
-package view.frames;
+package view.frames.mainFrame;
 
 import view.listeners.mainframe.NewCommunityListener;
 import view.listeners.mainframe.NewExemplarListener;

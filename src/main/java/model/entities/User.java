@@ -68,8 +68,7 @@ public class User {
     }
 
     public String toString(){
-        String s = isContributor == 1 ? "yes" : "no";
-        return "User " + username + " is " + s + " contributor";
+        return username;
     }
 
 

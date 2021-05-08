@@ -7,10 +7,7 @@ import model.entities.Rating;
 import model.entities.User;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.CloseTabListener;
-import view.listeners.mainframe.exemplarTab.AddLabelListener;
-import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
-import view.listeners.mainframe.exemplarTab.RatingListener;
-import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
+import view.listeners.mainframe.exemplarTab.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -53,6 +50,7 @@ public class ExemplarTab extends JPanel {
     private DeleteExemplarListener deleteExemplarListener;
     private AddLabelListener addLabelListener;
     private RatingListener ratingListener;
+    private ContributorListener contributorListener;
 
     boolean editable = false;
 
@@ -150,6 +148,7 @@ public class ExemplarTab extends JPanel {
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
         parentPanel.add(metaInfoPanel, c);
+
     }
 
     private JPanel initializeContributorPanel() {
@@ -227,6 +226,7 @@ public class ExemplarTab extends JPanel {
             addLabelListener.buttonClicked(this);
         });
         ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
+        addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
     }
 
     public void setCloseListener(CloseTabListener closeListener) {
@@ -247,6 +247,10 @@ public class ExemplarTab extends JPanel {
 
     public void setRatingListener(RatingListener ratingListener) {
         this.ratingListener = ratingListener;
+    }
+
+    public void setContributorListener(ContributorListener contributorListener) {
+        this.contributorListener = contributorListener;
     }
 
     public Exemplar getExemplar() {

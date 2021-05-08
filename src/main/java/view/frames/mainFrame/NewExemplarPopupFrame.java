@@ -1,28 +1,24 @@
-package view.frames;
+package view.frames.mainFrame;
 
-import model.entities.Exemplar;
 import view.listeners.mainframe.NewExemplarListener;
-import view.listeners.mainframe.NewLabelListener;
-import view.panels.mainFrame.exemplarTab.ExemplarTab;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class NewLabelPopupFrame extends JFrame{
+public class NewExemplarPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
-    private JLabel infoLabel = new JLabel("Enter a value for the label");
+    private JLabel infoLabel = new JLabel("Please provide a name for your new Exemplar");
     private JPanel namePanel = new JPanel();
     private JLabel nameLabel = new JLabel("Name:");
     private JTextField nameField = new JTextField();
-    private JButton button = new JButton("Add to Exemplar");
-    private ExemplarTab tab;
+    private JButton button = new JButton("Create");
 
-    private NewLabelListener listener;
-    public NewLabelPopupFrame(){
+    private NewExemplarListener listener;
+    public NewExemplarPopupFrame(){
         JPanel parentPanel = new JPanel();
         parentPanel.setLayout(new GridLayout(3,1));
         parentPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("New Label"),
+                BorderFactory.createTitledBorder("New Exemplar"),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         setSize(new Dimension(100,100));
         setLayout(new GridLayout(1,1));
@@ -31,7 +27,7 @@ public class NewLabelPopupFrame extends JFrame{
         namePanel.add(nameLabel);
         namePanel.add(nameField);
 
-        button.addActionListener(x->listener.labelRequested(nameField.getText()));
+        button.addActionListener(x->listener.NewExemplarRequested(nameField.getText()));
 
         parentPanel.add(infoPanel);
         parentPanel.add(namePanel);
@@ -40,19 +36,13 @@ public class NewLabelPopupFrame extends JFrame{
         getRootPane().setDefaultButton(button);
     }
 
-    public void setListener(NewLabelListener listener) {
+    public void setListener(NewExemplarListener listener) {
         this.listener = listener;
-    }
 
-    public ExemplarTab getTab() {
-        return tab;
-    }
-
-    public void setTab(ExemplarTab tab) {
-        this.tab = tab;
     }
 
     public void clean(){
         nameField.setText("");
     }
+
 }

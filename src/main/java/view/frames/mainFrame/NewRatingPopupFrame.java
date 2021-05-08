@@ -1,4 +1,4 @@
-package view.frames;
+package view.frames.mainFrame;
 
 import model.entities.Exemplar;
 import view.listeners.mainframe.NewRatingListener;
