@@ -1,16 +1,12 @@
 package controller;
 
-import model.entities.Community;
-import model.entities.Exemplar;
-import model.entities.User;
-import model.httpclients.CommunityClient;
-import model.httpclients.ExemplarClient;
-import model.httpclients.LabelClient;
-import model.httpclients.UserClient;
+import model.entities.*;
+import model.httpclients.*;
 import view.frames.MainFrame;
 import view.frames.NewExemplarPopupFrame;
 import view.frames.NewCommunityPopupFrame;
 import view.frames.NewLabelPopupFrame;
+import view.frames.NewRatingPopupFrame;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
@@ -28,14 +24,16 @@ public class MainController {
 
     private User currentUser;
     private UserClient userClient = new UserClient();
-    ExemplarClient exemplarClient = new ExemplarClient();
+    private ExemplarClient exemplarClient = new ExemplarClient();
     private LabelClient labelClient = new LabelClient();
+    private RatingClient ratingClient = new RatingClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
     private NewExemplarPopupFrame newExemplarPopupFrame;
     private NewLabelPopupFrame newLabelPopupFrame;
     private NewCommunityPopupFrame newCommunityPopupFrame;
+    private NewRatingPopupFrame newRatingPopupFrame;
     /**
      * Initializes the LoginController and starts the login process
      */
@@ -43,6 +41,7 @@ public class MainController {
         initializeMainFrame();
         initializeNewExemplarFrame();
         initializeNewLabelPopupFrame();
+        initializeNewRatingPopupFrame();
 
         //login
        loginController = new LoginController();
@@ -109,6 +108,35 @@ public class MainController {
         });
     }
 
+    void initializeNewRatingPopupFrame(){
+        newRatingPopupFrame = new NewRatingPopupFrame();
+        newRatingPopupFrame.setVisible(false);
+        newRatingPopupFrame.setSize(new Dimension(350, 250));
+        newRatingPopupFrame.setLocationRelativeTo(mainFrame);
+        newRatingPopupFrame.setListener((i)->{
+            Rating r = new Rating();
+            RatingPK key = new RatingPK();
+            key.setExemplar(newRatingPopupFrame.getTab().getExemplar());
+            key.setUser(currentUser);
+            r.setKey(key);
+            r.setRating(i);
+            try {
+                Rating newRating = ratingClient.add(r);
+                newRatingPopupFrame.setVisible(false);
+                if(newRating != null){
+                    JOptionPane.showMessageDialog(newRatingPopupFrame, "Thank you for Rating " + newRatingPopupFrame.getTab().getExemplar().getName());
+                }
+                newRatingPopupFrame.getTab().refreshInfoPanel();
+                homeTab.refresh();
+                addListenersToHomeTab();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     void addListenersToHomeTab(){
         homeTab.setUpdateUserListener((u)-> {
@@ -134,7 +162,7 @@ public class MainController {
                         boolean editable = false;
                         if(e.getCreator() == null) editable = false;
                         else editable = e.getCreator().equals(currentUser) ? true : false;
-                        if(e.getContributors().contains(currentUser)) editable = true;
+                        if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
                         ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
                         addListenersToExemplarTab(newExemplarTab);
                         mainFrame.addTab(s,newExemplarTab);
@@ -219,6 +247,12 @@ public class MainController {
         newExemplarTab.setAddLabelListener((tab)->{
             newLabelPopupFrame.setVisible(true);
             newLabelPopupFrame.setTab(tab);
+        });
+
+        newExemplarTab.setRatingListener((t)->{
+            newRatingPopupFrame.setTab(t);
+            newRatingPopupFrame.setTitle(t.getExemplar().getName());
+            newRatingPopupFrame.setVisible(true);
         });
     }
 

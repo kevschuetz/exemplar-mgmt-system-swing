@@ -9,6 +9,7 @@ import model.httpclients.RatingClient;
 import view.listeners.mainframe.CloseTabListener;
 import view.listeners.mainframe.exemplarTab.AddLabelListener;
 import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
+import view.listeners.mainframe.exemplarTab.RatingListener;
 import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
 import javax.swing.*;
@@ -51,6 +52,7 @@ public class ExemplarTab extends JPanel {
     private UpdateExemplarListener updateExemplarListener;
     private DeleteExemplarListener deleteExemplarListener;
     private AddLabelListener addLabelListener;
+    private RatingListener ratingListener;
 
     boolean editable = false;
 
@@ -224,6 +226,7 @@ public class ExemplarTab extends JPanel {
         addLabelButton.addActionListener((e)->{
             addLabelListener.buttonClicked(this);
         });
+        ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
     }
 
     public void setCloseListener(CloseTabListener closeListener) {
@@ -240,6 +243,10 @@ public class ExemplarTab extends JPanel {
 
     public void setAddLabelListener(AddLabelListener addLabelListener) {
         this.addLabelListener = addLabelListener;
+    }
+
+    public void setRatingListener(RatingListener ratingListener) {
+        this.ratingListener = ratingListener;
     }
 
     public Exemplar getExemplar() {
