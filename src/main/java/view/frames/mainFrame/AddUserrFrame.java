@@ -84,7 +84,7 @@ public class AddUserrFrame extends JFrame {
         });
         addButton.addActionListener((x)->{
             User u = searchList.getSelectedValue();
-            listener.addingRequested(u);
+            if(u!=null)listener.addingRequested(u);
         });
     }
 

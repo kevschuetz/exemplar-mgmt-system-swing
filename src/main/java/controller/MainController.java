@@ -144,11 +144,16 @@ public class MainController {
         addContributorFrame.setLocationRelativeTo(mainFrame);
         addContributorFrame.setListener((u)->{
             ExemplarTab tab = addContributorFrame.getTab();
-            Exemplar e = tab.getExemplar();
-            e.getContributors().add(u);
-            Exemplar updated = exemplarClient.update(e.getName(), e);
-            tab.refreshInfoPanel();
-            if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+            if(u.getIsContributor()==1){
+                Exemplar e = tab.getExemplar();
+                e.getContributors().add(u);
+                Exemplar updated = exemplarClient.update(e.getName(), e);
+                tab.refreshInfoPanel();
+                if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+            }else{
+                JOptionPane.showMessageDialog(tab, u.getUsername() + " does not have Contributor status");
+            }
+
         });
     }
     void addListenersToHomeTab(){
