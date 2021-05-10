@@ -1,6 +1,6 @@
 package controller;
 
-<<<<<<< HEAD
+
 import model.entities.Community;
 import model.entities.Exemplar;
 import model.entities.User;
@@ -8,16 +8,10 @@ import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.LabelClient;
 import model.httpclients.UserClient;
-import view.frames.MainFrame;
-import view.frames.NewExemplarPopupFrame;
-import view.frames.NewCommunityPopupFrame;
-import view.frames.NewLabelPopupFrame;
-import view.panels.mainFrame.AllExemplarsPanel;
-=======
+
 import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
->>>>>>> b828af886f6d073e34e1463ae9e734579ec56c37
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ExemplarLibraryTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
