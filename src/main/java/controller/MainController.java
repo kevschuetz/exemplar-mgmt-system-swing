@@ -12,7 +12,9 @@ import model.httpclients.UserClient;
 import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
+import view.listeners.mainframe.CloseTabListener;
 import view.panels.mainFrame.CommunityTab;
+import view.panels.mainFrame.ContributorLibraryTab;
 import view.panels.mainFrame.ExemplarLibraryTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
@@ -237,12 +239,31 @@ public class MainController {
             }
         });
 
-        //ergänzt
         homeTab.setCreateExemplarLibraryListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ExemplarLibraryTab exemplarLibrary = new ExemplarLibraryTab();
+                    exemplarLibrary.setCloseListener(new CloseTabListener (){
+                        @Override
+                        public void shutdownRequested(Component c){
+                         mainFrame.removeTab(c);
+                        }
+                    });
                     mainFrame.addTab("Exemplar Library",exemplarLibrary);
+            }
+        });
+
+        homeTab.setCreateContributorLibraryListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ContributorLibraryTab contributorLibrary = new ContributorLibraryTab();
+                contributorLibrary.setCloseListener(new CloseTabListener (){
+                    @Override
+                    public void shutdownRequested(Component c){
+                        mainFrame.removeTab(c);
+                    }
+                });
+                mainFrame.addTab("Contributor Library", contributorLibrary);
             }
         });
 

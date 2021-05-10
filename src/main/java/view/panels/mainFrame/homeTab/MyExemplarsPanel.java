@@ -28,6 +28,7 @@ public class MyExemplarsPanel extends JPanel {
     JPanel buttonPanel;
 
     ActionListener exemplarLibraryListener;
+    ActionListener contributorLibraryListener;
 
     private ActionListener createExemplarListener;
 
@@ -96,6 +97,7 @@ public class MyExemplarsPanel extends JPanel {
         JButton createExemplarButton = new JButton("Create New");
         JButton searchAllButton = new JButton("Search All");
         JButton exemplarLibraryButton =  new JButton("Exemplar Library");
+        JButton contributorLibraryButton =  new JButton("Contributor Library");
 
         buttonPanel.add(openExemplarsButton);
         openExemplarsButton.addActionListener((x)->openExemplars());
@@ -106,6 +108,8 @@ public class MyExemplarsPanel extends JPanel {
         buttonPanel.add(searchAllButton);
         exemplarLibraryButton.addActionListener(x -> exemplarLibraryListener.actionPerformed(x));
         buttonPanel.add(exemplarLibraryButton);
+        contributorLibraryButton.addActionListener(x -> contributorLibraryListener.actionPerformed(x));
+        buttonPanel.add(contributorLibraryButton);
         buttonPanel.setBorder(border);
     }
     void addComponents(){
@@ -145,7 +149,8 @@ public class MyExemplarsPanel extends JPanel {
     }
     public void setCreateExemplarListener(ActionListener listener){this.createExemplarListener = listener;}
 
-    // ergänzt
+
     public void setCreateExemplarLibraryListener(ActionListener exemplarLibraryListener){this.exemplarLibraryListener = exemplarLibraryListener;}
+    public void setCreateContributorLibraryListener(ActionListener contributorLibraryListener){this.contributorLibraryListener = contributorLibraryListener;}
 }
 

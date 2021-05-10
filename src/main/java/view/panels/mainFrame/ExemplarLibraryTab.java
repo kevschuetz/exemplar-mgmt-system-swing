@@ -4,17 +4,17 @@ import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
+import view.listeners.mainframe.CloseTabListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ExemplarLibraryTab extends JPanel{
@@ -26,6 +26,7 @@ public class ExemplarLibraryTab extends JPanel{
     private NewTabListener exemplarListener;
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
+    private CloseTabListener closeListener;
 
 
 
@@ -114,12 +115,32 @@ public class ExemplarLibraryTab extends JPanel{
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
-        String [] sortingComboBoxList = {"Sort by Rating", "Sort by Number of Users"};
+        String [] sortingComboBoxList = {"Sort by creation date", "Sort by Rating", "Sort by Number of Users"};
         String [] sortingComboBoxList2 = {"descending", "ascending"};
         JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
         JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         JButton filterButton = new JButton("Filter by Label");
         JButton closeLibraryButton = new JButton("Close Library");
+        sortingComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                RatingClient ratingClient = new RatingClient();
+                if(sortingComboBox.getSelectedIndex() == 1) {
+                    if(sortingComboBox2.getSelectedIndex() == 0)
+                        allExemplars = allExemplars.stream().
+                            sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
+                    else
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
+                }
+                updateTab();
+                repaint();
+
+            }
+
+        });
+
+        closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
@@ -137,5 +158,23 @@ public class ExemplarLibraryTab extends JPanel{
             }
         }
         exemplarListener.tabRequested(selectedExemplars);
+    }
+
+    public void setCloseListener(CloseTabListener closeListener) {
+        this.closeListener = closeListener;
+    }
+
+    public void updateTab (){
+        remove(scrollPane);
+        scrollPane.removeAll();
+        exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
+        addExemplarsToScrollPane();
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weighty=0.95;
+        c.weightx=1;
+        c.gridx=0;
+        c.gridy=0;
+        add(scrollPane, c);
     }
 }
