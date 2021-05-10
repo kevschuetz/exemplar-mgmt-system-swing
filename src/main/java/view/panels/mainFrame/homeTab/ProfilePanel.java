@@ -61,6 +61,11 @@ public class ProfilePanel extends JPanel {
         oldPasswordField.setText("");
         passwordField1.setText("");
         passwordField2.setText("");
+        if(user.getIsContributor()==1){
+            contributorCheckBox.addActionListener((x)->{
+                if(!contributorCheckBox.isSelected()) contributorCheckBox.doClick();
+            });
+        }
         if(user.getIsContributor() == 1 && !contributorCheckBox.isSelected()){
             contributorCheckBox.doClick();
         }else if(user.getIsContributor() == 0 && contributorCheckBox.isSelected() ){
@@ -77,18 +82,21 @@ public class ProfilePanel extends JPanel {
             String newPassword1 = passwordField1.getText();
             String newPassword2 = passwordField2.getText();
             int isContributor = contributorCheckBox.isSelected() ? 1 : 0;
-
+            boolean setsNewPassword = true;
+            if(newPassword1.equals("")) setsNewPassword= false;
             if(!oldPassword.equals(user.getPassword())){
                 JOptionPane.showMessageDialog(this, "Old Password not correct");
-            }else if(!newPassword1.equals(newPassword2)){
+            }else if(!newPassword1.equals(newPassword2) && setsNewPassword){
                 JOptionPane.showMessageDialog(this, "Passwords do not match");
             }else if(fullname.length()<1){
                 JOptionPane.showMessageDialog(this, "Fullname cannot be empty");
-            }else if(newPassword1.length()<8){
+            }else if(newPassword1.length()<8 && setsNewPassword){
                 JOptionPane.showMessageDialog(this, "Password must have at least 8 characters");
             }else{
                 User toBeUpdated = new User(user.getUsername(), fullname, newPassword1, isContributor);
+                if(!setsNewPassword) toBeUpdated.setPassword(user.getPassword());
                 updateListener.updateRequested(toBeUpdated);
+                setData();
             }
         });
 

@@ -1,5 +1,6 @@
 package controller;
 
+<<<<<<< HEAD
 import model.entities.Community;
 import model.entities.Exemplar;
 import model.entities.User;
@@ -12,6 +13,11 @@ import view.frames.NewExemplarPopupFrame;
 import view.frames.NewCommunityPopupFrame;
 import view.frames.NewLabelPopupFrame;
 import view.panels.mainFrame.AllExemplarsPanel;
+=======
+import model.entities.*;
+import model.httpclients.*;
+import view.frames.mainFrame.*;
+>>>>>>> b828af886f6d073e34e1463ae9e734579ec56c37
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ExemplarLibraryTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
@@ -32,14 +38,17 @@ public class MainController {
 
     private User currentUser;
     private UserClient userClient = new UserClient();
-    ExemplarClient exemplarClient = new ExemplarClient();
+    private ExemplarClient exemplarClient = new ExemplarClient();
     private LabelClient labelClient = new LabelClient();
+    private RatingClient ratingClient = new RatingClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
     private NewExemplarPopupFrame newExemplarPopupFrame;
     private NewLabelPopupFrame newLabelPopupFrame;
     private NewCommunityPopupFrame newCommunityPopupFrame;
+    private NewRatingPopupFrame newRatingPopupFrame;
+    private AddUserrFrame addContributorFrame;
     /**
      * Initializes the LoginController and starts the login process
      */
@@ -47,6 +56,8 @@ public class MainController {
         initializeMainFrame();
         initializeNewExemplarFrame();
         initializeNewLabelPopupFrame();
+        initializeNewRatingPopupFrame();
+        initializeAddContributorFrame();
 
         //login
        loginController = new LoginController();
@@ -62,11 +73,13 @@ public class MainController {
      */
     void loginSuccesfull(){
         mainFrame.setVisible(true);
+
         if(currentUser != null){
             mainFrame.setTitle("Welcome, "+currentUser.getUsername()+" !");
             homeTab = new HomeTab(currentUser);
             addListenersToHomeTab();
             mainFrame.addTab("Home", homeTab);
+
         }
         else mainFrame.setTitle("Welcome!");
     }
@@ -113,7 +126,54 @@ public class MainController {
         });
     }
 
+    void initializeNewRatingPopupFrame(){
+        newRatingPopupFrame = new NewRatingPopupFrame();
+        newRatingPopupFrame.setVisible(false);
+        newRatingPopupFrame.setSize(new Dimension(350, 250));
+        newRatingPopupFrame.setLocationRelativeTo(mainFrame);
+        newRatingPopupFrame.setListener((i)->{
+            Rating r = new Rating();
+            RatingPK key = new RatingPK();
+            key.setExemplar(newRatingPopupFrame.getTab().getExemplar());
+            key.setUser(currentUser);
+            r.setKey(key);
+            r.setRating(i);
+            try {
+                Rating newRating = ratingClient.add(r);
+                newRatingPopupFrame.setVisible(false);
+                if(newRating != null){
+                    JOptionPane.showMessageDialog(newRatingPopupFrame, "Thank you for Rating " + newRatingPopupFrame.getTab().getExemplar().getName());
+                }
+                newRatingPopupFrame.getTab().refreshInfoPanel();
+                homeTab.refresh();
+                addListenersToHomeTab();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    void initializeAddContributorFrame(){
+        addContributorFrame = new AddUserrFrame();
+        addContributorFrame.setVisible(false);
+        addContributorFrame.setSize(new Dimension(350, 500));
+        addContributorFrame.setLocationRelativeTo(mainFrame);
+        addContributorFrame.setListener((u)->{
+            ExemplarTab tab = addContributorFrame.getTab();
+            if(u.getIsContributor()==1){
+                Exemplar e = tab.getExemplar();
+                e.getContributors().add(u);
+                Exemplar updated = exemplarClient.update(e.getName(), e);
+                tab.refreshInfoPanel();
+                if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+            }else{
+                JOptionPane.showMessageDialog(tab, u.getUsername() + " does not have Contributor status");
+            }
+
+        });
+    }
     void addListenersToHomeTab(){
         homeTab.setUpdateUserListener((u)-> {
             try {
@@ -138,7 +198,7 @@ public class MainController {
                         boolean editable = false;
                         if(e.getCreator() == null) editable = false;
                         else editable = e.getCreator().equals(currentUser) ? true : false;
-                        if(e.getContributors().contains(currentUser)) editable = true;
+                        if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
                         ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
                         addListenersToExemplarTab(newExemplarTab);
                         mainFrame.addTab(s,newExemplarTab);
@@ -197,6 +257,10 @@ public class MainController {
     void createNewExemplarTab(String s){
         Exemplar e = new Exemplar();
         e.setName(s);
+        e.setProblem("You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \n" +
+                "Also consider adding labels so that interested users can find your exemplar more easily. \n\n" +
+                "If you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \n" +
+                "Users must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!");
         e.setCreator(currentUser);
         e.setLabels(new ArrayList<>());
         e.setContributors(new ArrayList<>());
@@ -213,10 +277,14 @@ public class MainController {
     }
 
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
-        newExemplarTab.setCloseListener((c)->mainFrame.removeTab(c));
+        newExemplarTab.setCloseListener((c)->{
+            ExemplarTab tab = (ExemplarTab)c;
+            JButton updateButton = tab.getUpdateButton();
+            updateButton.doClick();
+            mainFrame.removeTab(c);
+        });
         newExemplarTab.setUpdateExemplarListener((exemplar)->{
             exemplarClient.update(exemplar.getName(), exemplar);
-            JOptionPane.showMessageDialog(newExemplarTab, "Update successfull");
         });
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
@@ -233,6 +301,18 @@ public class MainController {
         newExemplarTab.setAddLabelListener((tab)->{
             newLabelPopupFrame.setVisible(true);
             newLabelPopupFrame.setTab(tab);
+        });
+
+        newExemplarTab.setRatingListener((t)->{
+            newRatingPopupFrame.setTab(t);
+            newRatingPopupFrame.setTitle(t.getExemplar().getName());
+            newRatingPopupFrame.setVisible(true);
+        });
+
+        newExemplarTab.setContributorListener((t)->{
+            addContributorFrame.setTab(t);
+            addContributorFrame.setTitle(t.getExemplar().getName());
+            addContributorFrame.setVisible(true);
         });
     }
 
