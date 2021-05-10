@@ -58,8 +58,8 @@ public class LoginController {
                 loginFrame.setVisible(false);
                 loginListener.actionPerformed(null);
             }else{
-                User user = userClient.get(username);
-                if(user != null && user.getPassword().equals(password)) {
+                User user = userClient.get(username.trim());
+                if(user != null && user.getPassword().trim().equals(password.trim())) {
                     loginFrame.setVisible(false);
                     JOptionPane.showMessageDialog(loginFrame, "Login Successful");
                     currentUser = user;
@@ -73,11 +73,11 @@ public class LoginController {
     }
 
     void processRegistrationRequest(UserEvent e){
-        if(e.getUsername().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
-        else if(e.getFullname().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
-        else if(e.getPassword().length()<8) JOptionPane.showMessageDialog(registerForm, "Password must have at least 8 characters");
+        if(e.getUsername().trim().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
+        else if(e.getFullname().trim().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
+        else if(e.getPassword().trim().length()<8) JOptionPane.showMessageDialog(registerForm, "Password must have at least 8 characters");
         else{
-            User newUser = new User(e.getUsername(), e.getFullname(), e.getPassword(), e.getIsContributor());
+            User newUser = new User(e.getUsername().trim(), e.getFullname().trim(), e.getPassword().trim(), e.getIsContributor());
             try{
                 User response = userClient.add(newUser);
                 if (newUser.equals(response)) {
