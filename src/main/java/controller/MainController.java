@@ -11,12 +11,16 @@ import view.frames.MainFrame;
 import view.frames.NewExemplarPopupFrame;
 import view.frames.NewCommunityPopupFrame;
 import view.frames.NewLabelPopupFrame;
+import view.panels.mainFrame.AllExemplarsPanel;
 import view.panels.mainFrame.CommunityTab;
+import view.panels.mainFrame.ExemplarLibraryTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -178,6 +182,16 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+
+        //ergänzt
+        homeTab.setCreateExemplarLibraryListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ExemplarLibraryTab exemplarLibrary = new ExemplarLibraryTab();
+                    mainFrame.addTab("Exemplar Library",exemplarLibrary);
+            }
+        });
+
     }
 
     void createNewExemplarTab(String s){

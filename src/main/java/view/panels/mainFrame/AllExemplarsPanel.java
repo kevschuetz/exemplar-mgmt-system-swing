@@ -20,6 +20,7 @@ public class AllExemplarsPanel extends JPanel {
     private JButton closeButton = new JButton("Close Library");
 
     public AllExemplarsPanel()  {
+
         exemplarClient = new ExemplarClient();
 
         try {

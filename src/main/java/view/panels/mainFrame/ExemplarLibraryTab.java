@@ -1,11 +1,10 @@
-package view.panels.mainFrame.homeTab;
+package view.panels.mainFrame;
 
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.homeTab.NewTabListener;
-import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,47 +12,50 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 
-public class MyExemplarsPanel extends JPanel {
-    private User user;
+public class ExemplarLibraryTab extends JPanel{
+
     JPanel exemplarPanelParent = new JPanel();
-    private List<Exemplar> myExemplars;
+    private List<Exemplar> allExemplars;
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
     private NewTabListener exemplarListener;
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
 
-    ActionListener exemplarLibraryListener;
 
-    private ActionListener createExemplarListener;
 
-    public MyExemplarsPanel(User user){
-        this.user=user;
+    public ExemplarLibraryTab(){
         scrollPane = new JScrollPane(exemplarPanelParent);
         scrollPane.setLayout(new ScrollPaneLayout());
 
         fetchExemplars();
 
-        exemplarPanelParent.setLayout(new GridLayout(myExemplars.size()+1, 1));
+        exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
         addExemplarsToScrollPane();
 
         initializeButtonPanel();
         addComponents();
     }
 
-
     public void fetchExemplars(){
-        myExemplars = new ExemplarClient().getExemplarsForUser(user.getUsername());
+        try {
+            allExemplars = new ExemplarClient().getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addExemplarsToScrollPane(){
         int i = 0;
         RatingClient client = new RatingClient();
-        for(Exemplar e : myExemplars){
+        for(Exemplar e : allExemplars){
             JPanel panel = new JPanel();
             panel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -89,23 +91,6 @@ public class MyExemplarsPanel extends JPanel {
 
     }
 
-    void initializeButtonPanel(){
-        buttonPanel= new JPanel();
-        buttonPanel.setLayout(new GridLayout(1,3));
-        JButton openExemplarsButton = new JButton("Open Selected");
-        JButton createExemplarButton = new JButton("Create New");
-        JButton searchAllButton = new JButton("Search All");
-        JButton exemplarLibraryButton =  new JButton("Exemplar Library");
-
-        buttonPanel.add(openExemplarsButton);
-        openExemplarsButton.addActionListener((x)->openExemplars());
-        buttonPanel.add(createExemplarButton);
-        createExemplarButton.addActionListener(x-> createExemplarListener.actionPerformed(x));
-        buttonPanel.add(searchAllButton);
-        exemplarLibraryButton.addActionListener(x -> exemplarLibraryListener.actionPerformed(x));
-        buttonPanel.add(exemplarLibraryButton);
-        buttonPanel.setBorder(border);
-    }
     void addComponents(){
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -126,6 +111,22 @@ public class MyExemplarsPanel extends JPanel {
 
     }
 
+    void initializeButtonPanel(){
+        buttonPanel= new JPanel();
+        buttonPanel.setLayout(new GridLayout(1,3));
+        String [] sortingComboBoxList = {"Sort by Rating", "Sort by Number of Users"};
+        String [] sortingComboBoxList2 = {"descending", "ascending"};
+        JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
+        JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
+        JButton filterButton = new JButton("Filter by Label");
+        JButton closeLibraryButton = new JButton("Close Library");
+        buttonPanel.add(sortingComboBox);
+        buttonPanel.add(sortingComboBox2);
+        buttonPanel.add(filterButton);
+        buttonPanel.add(closeLibraryButton);
+        buttonPanel.setBorder(border);
+    }
+
     void openExemplars(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
         List<String> selectedExemplars = new ArrayList<>();
@@ -137,13 +138,4 @@ public class MyExemplarsPanel extends JPanel {
         }
         exemplarListener.tabRequested(selectedExemplars);
     }
-
-    public void setExemplarListener(NewTabListener exemplarListener) {
-        this.exemplarListener = exemplarListener;
-    }
-    public void setCreateExemplarListener(ActionListener listener){this.createExemplarListener = listener;}
-
-    // ergänzt
-    public void setCreateExemplarLibraryListener(ActionListener exemplarLibraryListener){this.exemplarLibraryListener = exemplarLibraryListener;}
 }
-

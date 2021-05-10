@@ -74,5 +74,9 @@ public class HomeTab extends JPanel {
         return profilePanel;
     }
 
+    // Ergänzung
+
+    public void setCreateExemplarLibraryListener(ActionListener exemplarLibraryListener) { myExemplarsPanel.setCreateExemplarLibraryListener(exemplarLibraryListener);}
+
 
 }
