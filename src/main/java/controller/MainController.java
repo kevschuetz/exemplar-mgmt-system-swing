@@ -229,6 +229,10 @@ public class MainController {
     void createNewExemplarTab(String s){
         Exemplar e = new Exemplar();
         e.setName(s);
+        e.setProblem("You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \n" +
+                "Also consider adding labels so that interested users can find your exemplar more easily. \n\n" +
+                "If you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \n" +
+                "Users must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!");
         e.setCreator(currentUser);
         e.setLabels(new ArrayList<>());
         e.setContributors(new ArrayList<>());
