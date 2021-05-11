@@ -117,7 +117,8 @@ public class ContributorLibraryTab extends JPanel {
         String [] sortingComboBoxList2 = {"descending", "ascending"};
         JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
         JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
-        JButton filterButton = new JButton("Filter by Label of contributed Exemplars");
+        JButton filterButton = new JButton("Filter by Label");
+        JButton openContributorsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
         sortingComboBox.addItemListener(new ItemListener() {
             @Override
@@ -127,12 +128,26 @@ public class ContributorLibraryTab extends JPanel {
 
         });
 
+        openContributorsButton.addActionListener((x)->openContributors());
         closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
+        buttonPanel.add(openContributorsButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
+    }
+
+    void openContributors(){
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedContributorMap.entrySet();
+        List<String> selectedContributors = new ArrayList<>();
+        for(Map.Entry<String, JCheckBox> e: entrySet){
+            if(e.getValue().isSelected()) {
+                selectedContributors.add(e.getKey());
+                e.getValue().doClick();
+            }
+        }
+        contributorListener.tabRequested(selectedContributors);
     }
 
     public void setCloseListener(CloseTabListener closeListener) {

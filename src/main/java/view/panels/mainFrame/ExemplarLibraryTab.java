@@ -120,6 +120,7 @@ public class ExemplarLibraryTab extends JPanel{
         JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
         JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         JButton filterButton = new JButton("Filter by Label");
+        JButton openExemplarsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
         sortingComboBox.addItemListener(new ItemListener() {
             @Override
@@ -140,9 +141,11 @@ public class ExemplarLibraryTab extends JPanel{
         });
 
         closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        openExemplarsButton.addActionListener((x)->openExemplars());
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
+        buttonPanel.add(openExemplarsButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
     }
@@ -163,11 +166,14 @@ public class ExemplarLibraryTab extends JPanel{
         this.closeListener = closeListener;
     }
 
+    public void setExemplarListener(NewTabListener exemplarListener) {
+        this.exemplarListener = exemplarListener;
+    }
+
     public void updateTab (){
         scrollPane.removeAll();
         addExemplarsToScrollPane();
         scrollPane.revalidate();
         scrollPane.repaint();
-
     }
 }

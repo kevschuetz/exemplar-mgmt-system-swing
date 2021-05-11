@@ -249,7 +249,15 @@ public class MainController {
                     exemplarLibrary.setCloseListener(new CloseTabListener (){
                         @Override
                         public void shutdownRequested(Component c){
-                         mainFrame.removeTab(c);
+                            mainFrame.removeTab(c);
+                        }
+                    });
+                    exemplarLibrary.setExemplarListener(new NewTabListener() {
+                        @Override
+                        public void tabRequested(List<String> selectedEntities) {
+                            for(String e : selectedEntities){
+                                    createNewExemplarTab(e);
+                            }
                         }
                     });
                     mainFrame.addTab("Exemplar Library",exemplarLibrary);

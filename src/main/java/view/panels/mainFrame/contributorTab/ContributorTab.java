@@ -44,8 +44,7 @@ public class ContributorTab extends JPanel {
     public ContributorTab(User contributor){
         this.contributor = contributor;
         ExemplarClient exemplarClient = new ExemplarClient();
-        //this.exemplars = exemplarClient.getExemplarForCreator(contributor.getUsername());
-        this.exemplars = getExemplars();
+        this.exemplars = exemplarClient.getExemplarForCreator(contributor.getUsername());
         this.avgRating = getAvgRating();
         this.labels = getLabels();
         setLayout();
