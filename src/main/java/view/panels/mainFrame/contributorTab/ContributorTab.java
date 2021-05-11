@@ -44,7 +44,7 @@ public class ContributorTab extends JPanel {
     public ContributorTab(User contributor){
         this.contributor = contributor;
         ExemplarClient exemplarClient = new ExemplarClient();
-        this.exemplars = exemplarClient.getExemplarForCreator(contributor.getUsername());
+        this.exemplars = exemplarClient.getExemplarsForUser(contributor.getUsername());
         this.avgRating = getAvgRating();
         this.labels = getLabels();
         setLayout();
@@ -87,7 +87,6 @@ public class ContributorTab extends JPanel {
         metaInfoPanel.setLayout(new GridLayout(5,1));
 
         labelPanel = initializeLabelPanel();
-        //contributorPanel = initializeContributorPanel();
 
 
         metaInfoPanel.add(nameLabel);
@@ -144,25 +143,13 @@ public class ContributorTab extends JPanel {
 
     }
 
-    List <Exemplar> getExemplars(){
-        List <Exemplar> allExemplars = new ArrayList<>();
-        try {
-             allExemplars = new ExemplarClient().getAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return allExemplars.stream().filter(e -> e.getContributors().contains(contributor)).collect(Collectors.toList());
-    }
-
     double getAvgRating()  {
         RatingClient ratingClient = new RatingClient();
         return exemplars.stream().mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).average().orElse(0);
     }
 
     List <Label> getLabels (){
-        return exemplars.stream().flatMap(e -> e.getLabels().stream()).sorted().collect(Collectors.toList());
+        return exemplars.stream().flatMap(e -> e.getLabels().stream()).collect(Collectors.toList());
     }
 
 
