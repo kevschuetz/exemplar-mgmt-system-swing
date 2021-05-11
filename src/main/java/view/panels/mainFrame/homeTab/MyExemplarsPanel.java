@@ -96,8 +96,8 @@ public class MyExemplarsPanel extends JPanel {
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton createExemplarButton = new JButton("Create New");
         JButton searchAllButton = new JButton("Search All");
-        JButton exemplarLibraryButton =  new JButton("Exemplar Library");
-        JButton contributorLibraryButton =  new JButton("Contributor Library");
+        JButton exemplarLibraryButton =  new JButton("All Exemplars");
+        JButton contributorLibraryButton =  new JButton("All Contributors");
 
         buttonPanel.add(openExemplarsButton);
         openExemplarsButton.addActionListener((x)->openExemplars());

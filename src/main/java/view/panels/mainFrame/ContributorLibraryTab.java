@@ -25,7 +25,7 @@ public class ContributorLibraryTab extends JPanel {
     private List<User> allContributors;
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
-    private NewTabListener exemplarListener;
+    private NewTabListener contributorListener;
     private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     JPanel buttonPanel;
     private CloseTabListener closeListener;
@@ -61,6 +61,16 @@ public class ContributorLibraryTab extends JPanel {
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
                 panel.setLayout(new GridLayout(2, 3));
+                panel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent event) {
+                        if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
+                            List<String> contributors = new ArrayList<>();
+                            contributors.add(u.getUsername());
+                            contributorListener.tabRequested(contributors);
+                        }
+                    }
+                });
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
                 JCheckBox checkBox = new JCheckBox();
@@ -127,5 +137,9 @@ public class ContributorLibraryTab extends JPanel {
 
     public void setCloseListener(CloseTabListener closeListener) {
         this.closeListener = closeListener;
+    }
+
+    public void setContributorListener(NewTabListener contributorListener) {
+        this.contributorListener = contributorListener;
     }
 }

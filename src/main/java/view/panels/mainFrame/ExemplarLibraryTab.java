@@ -134,7 +134,6 @@ public class ExemplarLibraryTab extends JPanel{
                                 sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
                 }
                 updateTab();
-                repaint();
 
             }
 
@@ -165,16 +164,10 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     public void updateTab (){
-        remove(scrollPane);
         scrollPane.removeAll();
-        exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
         addExemplarsToScrollPane();
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weighty=0.95;
-        c.weightx=1;
-        c.gridx=0;
-        c.gridy=0;
-        add(scrollPane, c);
+        scrollPane.revalidate();
+        scrollPane.repaint();
+
     }
 }

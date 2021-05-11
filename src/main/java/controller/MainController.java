@@ -13,9 +13,11 @@ import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
 import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.homeTab.NewTabListener;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ContributorLibraryTab;
 import view.panels.mainFrame.ExemplarLibraryTab;
+import view.panels.mainFrame.contributorTab.ContributorTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
@@ -25,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainController {
     public static void main(String[] args) {
@@ -263,6 +266,20 @@ public class MainController {
                         mainFrame.removeTab(c);
                     }
                 });
+                contributorLibrary.setContributorListener(new NewTabListener(){
+                    @Override
+                    public void tabRequested(List<String> selectedEntities){
+                        for(String e : selectedEntities){
+                            try {
+                                createNewContributorTab(e);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            } catch (InterruptedException interruptedException) {
+                                interruptedException.printStackTrace();
+                            }
+                        }
+                    }
+                });
                 mainFrame.addTab("Contributor Library", contributorLibrary);
             }
         });
@@ -289,6 +306,18 @@ public class MainController {
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }
+    }
+
+    void createNewContributorTab(String username) throws IOException, InterruptedException {
+        User contributor = userClient.get(username);
+        ContributorTab newContributorTab = new ContributorTab(contributor);
+        newContributorTab.setCloseListener(new CloseTabListener (){
+            @Override
+            public void shutdownRequested(Component c){
+                mainFrame.removeTab(c);
+            }
+        });
+        mainFrame.addTab(username,newContributorTab);
     }
 
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
