@@ -68,7 +68,7 @@ public class MainController {
     }
 
     /**
-     * Method is triggered by LoginController after succesfull login
+     * Method is triggered by LoginController after succesfull login. Opens new HomeTab if User is not a guest.
      */
     void loginSuccesfull(){
         mainFrame.setVisible(true);
@@ -89,17 +89,26 @@ public class MainController {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(new Dimension(1300, 1000));
     }
+
+    /**
+     * Initializes the Frame where an Exemplar-Name can be entered for creating a given exemplar
+     */
     void initializeNewExemplarFrame(){
         newExemplarPopupFrame = new NewExemplarPopupFrame();
         newExemplarPopupFrame.setVisible(false);
         newExemplarPopupFrame.setSize(new Dimension(350, 200));
         newExemplarPopupFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener of the Frame to check if the entered name is available (verifyExemplarName())and if so,
+         * creates the exemplar and opens it in a new Tab (createNewExemplarAndInitializeTab()).
+         * Refreshes hometab afterwards to include newly created exemplar.
+         */
         newExemplarPopupFrame.setListener((s)->{
             boolean ok = verifyExemplarName(s);
             if(ok){
                 newExemplarPopupFrame.setVisible(false);
                 newExemplarPopupFrame.clean();
-                createNewExemplarTab(s);
+                createNewExemplarAndInitializeTab(s);
                 homeTab.refresh();
                 addListenersToHomeTab();
             }else{
@@ -108,11 +117,20 @@ public class MainController {
         });
     }
 
+    /**
+     * Initializes the frame that can be used to enter a value for a label meant to be assigned to an exemplar.
+     * If the add Label button is clicked, the tab gets referred inside the frame. (see addListenersExemplarTab())
+     */
     void initializeNewLabelPopupFrame(){
         newLabelPopupFrame = new NewLabelPopupFrame();
         newLabelPopupFrame.setVisible(false);
         newLabelPopupFrame.setSize(new Dimension(350, 200));
         newLabelPopupFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener to take the entered value, initialize a new Label with it, add it to the database and to the exemplar.
+         * Updates the exemplar in the database afterwards to reflect the changes.
+         * Refreshes the infoPanel of the tab afterwards.
+         */
         newLabelPopupFrame.setListener((s)->{
             model.entities.Label label = new model.entities.Label();
             label.setValue(s);
@@ -125,11 +143,20 @@ public class MainController {
         });
     }
 
+    /**
+     * Initializes the RatingFrame to assign Ratings to Exemplars.
+     */
     void initializeNewRatingPopupFrame(){
         newRatingPopupFrame = new NewRatingPopupFrame();
         newRatingPopupFrame.setVisible(false);
         newRatingPopupFrame.setSize(new Dimension(350, 250));
         newRatingPopupFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener of the frame to initialize a new Rating with the selected value i, the Exemplar according to
+         * the ExemplarTab which gets referenced (see addListenersToExemplarTab()) when clicking the add Rating button
+         * inside the Exemplar Tab and the current user. Persists the rating in the database and refreshes the InfoPanel
+         * of the ExemplarTab to reflect the rating change.
+         */
         newRatingPopupFrame.setListener((i)->{
             Rating r = new Rating();
             RatingPK key = new RatingPK();
@@ -154,11 +181,19 @@ public class MainController {
         });
     }
 
+    /**
+     * Initializes the Frame used to add Contributors to an Exemplar
+     */
     void initializeAddContributorFrame(){
         addContributorFrame = new AddUserrFrame();
         addContributorFrame.setVisible(false);
         addContributorFrame.setSize(new Dimension(350, 500));
         addContributorFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener of the frame to check if the selected user has contributor status,
+         * adds the contributor to the exemplar and persists the update.
+         * Refreshes the info panel from the ExemplarTab to reflect changes.
+         */
         addContributorFrame.setListener((u)->{
             ExemplarTab tab = addContributorFrame.getTab();
             if(u.getIsContributor()==1){
@@ -173,7 +208,14 @@ public class MainController {
 
         });
     }
+
+    /**
+     * Adds all the listeners required for the home tab
+     */
     void addListenersToHomeTab(){
+        /**
+         * Takes the UserEvent created by the HomeTab and updates the information in the database
+         */
         homeTab.setUpdateUserListener((u)-> {
             try {
                 User updated = userClient.update(u.getUsername(), u);
@@ -189,31 +231,26 @@ public class MainController {
             }
         });
 
+        /**
+         * Takes a list with exemplar names and opens a ExemplarTab for every exemplar in the list (identified by name)
+         */
         homeTab.setOpenExemplarListener((list)->{
-            try {
                 for(String s : list){
-                    Exemplar e = exemplarClient.get(s);
-                    if(e != null){
-                        boolean editable = false;
-                        if(e.getCreator() == null) editable = false;
-                        else editable = e.getCreator().equals(currentUser) ? true : false;
-                        if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
-                        ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
-                        addListenersToExemplarTab(newExemplarTab);
-                        mainFrame.addTab(s,newExemplarTab);
-                    }
+                    addExemplarTabToMainframe(s);
                 }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
         });
 
+        /**
+         * Makes the NewExemplarPopupFrame visible to enter name
+         */
         homeTab.setCreateExemplarListener((e)->{
             newExemplarPopupFrame.setVisible(true);
         });
 
+        /**
+         * Fetches all communities from the database according to their names in the list and opens
+         * a CommunityTab for each of them
+         */
         homeTab.setOpenCommunityListener((list)->{
             try {
                 CommunityClient client = new CommunityClient();
@@ -232,6 +269,10 @@ public class MainController {
             }
         });
 
+        /**
+         * Deletes the user from the database and makes mainFrame invisible.
+         * Starts the login process.
+         */
         homeTab.setDeleteUserListener((user)->{
             try{
                 userClient.delete(user.getUsername());
@@ -256,7 +297,7 @@ public class MainController {
                         @Override
                         public void tabRequested(List<String> selectedEntities) {
                             for(String e : selectedEntities){
-                                    createNewExemplarTab(e);
+                                   addExemplarTabToMainframe(e);
                             }
                         }
                     });
@@ -293,8 +334,10 @@ public class MainController {
         });
 
     }
-
-    void createNewExemplarTab(String s){
+    /**
+     *Gets called if a new Exemplar is meant to be created, adds the exemplar to the database and opens a new tab
+     */
+    void createNewExemplarAndInitializeTab(String s){
         Exemplar e = new Exemplar();
         e.setName(s);
         e.setProblem("You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \n" +
@@ -328,6 +371,34 @@ public class MainController {
         mainFrame.addTab(username,newContributorTab);
     }
 
+    /**
+     * Fetches the exemplar with the given id, initializes a ExemplarTab with it and adds the tab to the mainFrame
+     * @param s
+     */
+    void addExemplarTabToMainframe(String s){
+        Exemplar e = null;
+        try {
+            e = exemplarClient.get(s);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+        if(e != null){
+            boolean editable = false;
+            if(e.getCreator() == null) editable = false;
+            else editable = e.getCreator().equals(currentUser) ? true : false;
+            if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
+            ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
+            addListenersToExemplarTab(newExemplarTab);
+            mainFrame.addTab(s,newExemplarTab);
+        }
+    }
+
+    /**
+     * Sets all required listeners for a given ExemplarTab
+     * @param newExemplarTab the given tab to add the listeners
+     */
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
         newExemplarTab.setCloseListener((c)->{
             ExemplarTab tab = (ExemplarTab)c;
@@ -368,8 +439,11 @@ public class MainController {
         });
     }
 
-
-
+    /**
+     * Verifies if an Exemplar with the given String as ID already exists and returns false if so.
+     * @param s the given ExemplarName
+     * @return true if the name is free, false if not
+     */
     boolean verifyExemplarName(String s){
         try{
             Exemplar exists = exemplarClient.get(s);
