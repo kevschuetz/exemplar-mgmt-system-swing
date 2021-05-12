@@ -26,3 +26,9 @@ Other documents and documentation files can be found unde /Documents
 * [Prototype User Guide (also includes link to prototype)](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/GR04_PrototypeUserGuide.pdf)
 * [Prototype Presentation](https://pr.to/XKZ9SR/)
 
+## **Release 2**
+
+*The Deliverables for Release 2 can be found under the following links:*
+
+* [Use Cases] (https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/Use%20Cases.docx)
+
