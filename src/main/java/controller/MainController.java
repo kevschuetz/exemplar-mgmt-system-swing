@@ -190,26 +190,12 @@ public class MainController {
         });
 
         homeTab.setOpenExemplarListener((list)->{
-            try {
                 for(String s : list){
-                    Exemplar e = exemplarClient.get(s);
-                    if(e != null){
-                        System.out.println(e.getCreator());
-                        boolean editable = false;
-                        if(e.getCreator() == null) editable = false;
-                        else editable = e.getCreator().equals(currentUser) ? true : false;
-                        if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
-                        ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
-                        addListenersToExemplarTab(newExemplarTab);
-                        mainFrame.addTab(s,newExemplarTab);
-                    }
+                    addExemplarTabToMainframe(s);
                 }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
         });
+
+
 
         homeTab.setCreateExemplarListener((e)->{
             newExemplarPopupFrame.setVisible(true);
@@ -257,7 +243,7 @@ public class MainController {
                         @Override
                         public void tabRequested(List<String> selectedEntities) {
                             for(String e : selectedEntities){
-                                    createNewExemplarAndInitializeTab(e);
+                                   addExemplarTabToMainframe(e);
                             }
                         }
                     });
@@ -329,6 +315,26 @@ public class MainController {
             }
         });
         mainFrame.addTab(username,newContributorTab);
+    }
+
+    void addExemplarTabToMainframe(String s){
+        Exemplar e = null;
+        try {
+            e = exemplarClient.get(s);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+        if(e != null){
+            boolean editable = false;
+            if(e.getCreator() == null) editable = false;
+            else editable = e.getCreator().equals(currentUser) ? true : false;
+            if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
+            ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
+            addListenersToExemplarTab(newExemplarTab);
+            mainFrame.addTab(s,newExemplarTab);
+        }
     }
 
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
