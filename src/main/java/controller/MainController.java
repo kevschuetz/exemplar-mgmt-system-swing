@@ -99,7 +99,7 @@ public class MainController {
             if(ok){
                 newExemplarPopupFrame.setVisible(false);
                 newExemplarPopupFrame.clean();
-                createNewExemplarTab(s);
+                createNewExemplarAndInitializeTab(s);
                 homeTab.refresh();
                 addListenersToHomeTab();
             }else{
@@ -194,6 +194,7 @@ public class MainController {
                 for(String s : list){
                     Exemplar e = exemplarClient.get(s);
                     if(e != null){
+                        System.out.println(e.getCreator());
                         boolean editable = false;
                         if(e.getCreator() == null) editable = false;
                         else editable = e.getCreator().equals(currentUser) ? true : false;
@@ -256,7 +257,7 @@ public class MainController {
                         @Override
                         public void tabRequested(List<String> selectedEntities) {
                             for(String e : selectedEntities){
-                                    createNewExemplarTab(e);
+                                    createNewExemplarAndInitializeTab(e);
                             }
                         }
                     });
@@ -293,8 +294,10 @@ public class MainController {
         });
 
     }
-
-    void createNewExemplarTab(String s){
+    /**
+     *Gets called if a new Exemplar is meant to be created
+     */
+    void createNewExemplarAndInitializeTab(String s){
         Exemplar e = new Exemplar();
         e.setName(s);
         e.setProblem("You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \n" +
