@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainController {
     public static void main(String[] args) {
@@ -133,11 +134,13 @@ public class MainController {
          */
         newLabelPopupFrame.setListener((s)->{
             model.entities.Label label = new model.entities.Label();
-            label.setValue(s);
+            label.setValue(s.toLowerCase(Locale.ROOT));
             model.entities.Label added = labelClient.add(label);
-            newLabelPopupFrame.getTab().getExemplar().getLabels().add(added);
-            exemplarClient.update(newLabelPopupFrame.getTab().getExemplar().getName(),newLabelPopupFrame.getTab().getExemplar());
-            newLabelPopupFrame.getTab().refreshInfoPanel();
+            if(!newLabelPopupFrame.getTab().getExemplar().getLabels().contains(added)){
+                newLabelPopupFrame.getTab().getExemplar().getLabels().add(added);
+                exemplarClient.update(newLabelPopupFrame.getTab().getExemplar().getName(),newLabelPopupFrame.getTab().getExemplar());
+                newLabelPopupFrame.getTab().refreshInfoPanel();
+            }
             newLabelPopupFrame.setVisible(false);
             newLabelPopupFrame.clean();
         });
@@ -198,10 +201,12 @@ public class MainController {
             ExemplarTab tab = addContributorFrame.getTab();
             if(u.getIsContributor()==1){
                 Exemplar e = tab.getExemplar();
-                e.getContributors().add(u);
-                Exemplar updated = exemplarClient.update(e.getName(), e);
-                tab.refreshInfoPanel();
-                if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+                if(!e.getContributors().contains(u)){
+                    e.getContributors().add(u);
+                    Exemplar updated = exemplarClient.update(e.getName(), e);
+                    tab.refreshInfoPanel();
+                    if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+                }else JOptionPane.showMessageDialog(tab, "User already a contributor");
             }else{
                 JOptionPane.showMessageDialog(tab, u.getUsername() + " does not have Contributor status");
             }
