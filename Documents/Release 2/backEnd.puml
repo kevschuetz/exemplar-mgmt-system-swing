@@ -1,87 +1,8 @@
 @startuml
-class model.httpclients.UserClient {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ User add(User)
-+ void delete(String)
-+ List<User> getAll()
-+ User get(String)
-+ User update(String,User)
-+ List<User> searchUsers(String)
-}
-class model.entities.Label {
-- String value
-+ String getValue()
-+ void setValue(String)
-+ boolean equals(Object)
-+ int hashCode()
-}
-class model.httpclients.HttpConstants {
-# {static} String URL
-}
-class model.httpclients.App {
+class resource.TestClient {
 + {static} void main(String[])
 }
-class model.httpclients.ExemplarClient {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ Exemplar add(Exemplar)
-+ void delete(String)
-+ List<Exemplar> getAll()
-+ Exemplar get(String)
-+ Exemplar update(String,Exemplar)
-+ List<Exemplar> getExemplarForCreator(String)
-+ List<Exemplar> getExemplarsForUser(String)
-+ List<Exemplar> searchExemplars(String)
-+ List<Exemplar> searchExemplarsByLabel(String)
-}
-class model.entities.Community {
-- String name
-- List<Exemplar> exemplars
-- List<User> members
-- User creator
-+ String getName()
-+ void setName(String)
-+ List<Exemplar> getExemplars()
-+ void setExemplars(List<Exemplar>)
-+ List<User> getMembers()
-+ void setMembers(List<User>)
-+ User getCreator()
-+ void setCreator(User)
-+ boolean equals(Object)
-+ int hashCode()
-}
-class model.httpclients.LabelClient {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ Label add(Label)
-+ void delete(String)
-+ List<Label> getAll()
-+ Label get(String)
-+ Label update(String,Label)
-}
-abstract class model.httpclients.Client {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ {abstract}T add(T)
-+ {abstract}void delete(String)
-+ {abstract}List<T> getAll()
-+ {abstract}T get(String)
-+ {abstract}T update(String,T)
-}
-class model.entities.Rating {
+class resource.Rating {
 ~ RatingPK key
 - double rating
 + RatingPK getKey()
@@ -91,69 +12,103 @@ class model.entities.Rating {
 + boolean equals(Object)
 + int hashCode()
 }
-class model.httpclients.CommunityClient {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ Community add(Community)
-+ void delete(String)
-+ List<Community> getAll()
-+ Community get(String)
-+ Community update(String,Community)
-+ List<Community> getCommunitiesForUser(String)
-+ List<Community> searchCommunities(String)
+interface resource.UserRepository {
+~ List<User> searchUsers(String)
 }
-class model.entities.User {
+class resource.User {
 - String username
 - int isContributor
 - String fullName
 - String password
-+ String getUsername()
-+ void setUsername(String)
-+ int getIsContributor()
-+ void setIsContributor(int)
 + String getFullName()
 + void setFullName(String)
 + String getPassword()
 + void setPassword(String)
++ void setUsername(String)
++ String getUsername()
++ int getIsContributor()
++ void setIsContributor(int)
 + int hashCode()
 + boolean equals(Object)
 + String toString()
 }
-class model.entities.RatingPK {
-- User user
-- Exemplar exemplar
-+ User getUser()
-+ void setUser(User)
-+ Exemplar getExemplar()
-+ void setExemplar(Exemplar)
-+ int hashCode()
-+ boolean equals(Object)
-+ String toString()
-}
-class model.httpclients.RatingClient {
-- HttpClient client
-- String URL
-- ObjectMapper mapper
-- HttpRequest request
-- HttpResponse<String> response
-+ Rating add(Rating)
-+ void delete(String)
-+ List<Rating> getAll()
-+ Rating get(String)
-+ Rating update(String,Rating)
+class resource.RatingController {
+- RatingRepository repository
++ List<Rating> getRatings()
++ Rating addRating(Rating)
++ Rating updateRating(Rating,String,String)
++ Rating getRating(String,String)
++ void deleteRating(String,String)
 + List<Rating> getRatingsForExemplar(String)
 + double getAvgRatingForExemplar(String)
 }
-class model.entities.Exemplar {
+interface resource.RatingRepository {
+~ List<Rating> findRatingsForExemplar(String)
+~ double getAvgRatingForExemlar(String)
+}
+class resource.CommunityController {
+- CommunityRepository repository
++ List<Community> getCommunities()
++ Community addCommunity(Community)
++ Community updateCommunity(Community,String)
++ Community getCommunity(String)
++ void deleteCommunity(String)
++ List<Community> getCommunitiesForMember(String)
++ List<Community> searchCommunities(String)
+}
+class resource.Label {
+- String value
++ String getValue()
++ void setValue(String)
++ boolean equals(Object)
++ int hashCode()
+}
+class resource.UserController {
+- {static} UserRepository userRepository
++ {static} UserRepository getUserRepository()
++ {static} void setUserRepository(UserRepository)
++ User addUser(User)
++ User updateUser(User,String)
++ List<User> getUsers()
++ User getUser(String)
++ void deleteUser(String)
++ List<User> searchUsers(String)
+}
+interface resource.LabelRepository {
+}
+class resource.ExemplarController {
++ {static} ExemplarRepository repository
++ {static} ExemplarRepository getRepository()
++ void setRepository(ExemplarRepository)
++ List<Exemplar> getExemplars()
++ Exemplar addExemplar(Exemplar)
++ Exemplar updateExemplar(Exemplar,String)
++ Exemplar getExemplar(String)
++ void deleteExemplar(String)
++ List<Exemplar> findExemplarsForCreator(String)
++ List<Exemplar> findExemplarsForContributor(String)
++ List<Exemplar> findExemplarsForUser(String)
++ List<Exemplar> findExemplarsNameLikeXY(String)
++ List<Exemplar> findExemplarsByLabel(String)
+}
+class com.example.Database.Container.Datenbankverbindung {
++ {static} void main(String[])
+}
+interface resource.CommunityRepository {
+~ List<Community> getCommunitiesForUser(String)
+~ List<Community> searchCommunity_NameLikeXY(String)
+}
+class resource.Exemplar {
 - String name
 - String problem
 - String solution
 - User creator
 - List<User> contributors
 - List<Label> labels
++ List<Label> getLabels()
++ void setLabels(List<Label>)
++ List<User> getContributors()
++ void setContributors(List<User>)
 + String getName()
 + void setName(String)
 + String getProblem()
@@ -162,19 +117,60 @@ class model.entities.Exemplar {
 + void setSolution(String)
 + User getCreator()
 + void setCreator(User)
-+ List<User> getContributors()
-+ void setContributors(List<User>)
-+ List<Label> getLabels()
-+ void setLabels(List<Label>)
 + boolean equals(Object)
 + int hashCode()
 + String toString()
 }
+class resource.LabelController {
+- LabelRepository repository
++ List<Label> getLabels()
++ Label addLabel(Label)
++ Label getLabel(String)
++ void deleteLabel(String)
+}
+class resource.DatabaseContainerApplication {
++ {static} void main(String[])
+}
+interface resource.ExemplarRepository {
+~ List<Exemplar> findExemplarsForCreator(String)
+~ List<Exemplar> findExemplarsForContributor(String)
+~ List<Exemplar> findExemplarsForUser(String)
+~ List<Exemplar> findExemplarsNameLikeXY(String)
+~ List<Exemplar> findExemplarsByLabels(String)
+}
+class resource.Community {
+- String name
+- List<Exemplar> exemplars
+- List<User> members
+- User creator
++ String getName()
++ void setName(String)
++ List<Exemplar> getExemplars()
++ void setExemplars(List<Exemplar>)
++ List<User> getMembers()
++ void setUsers(List<User>)
++ User getCreator()
++ void setCreator(User)
++ String toString()
++ boolean equals(Object)
++ int hashCode()
+}
+class resource.RatingPK {
+- User user
+- Exemplar exemplar
++ User getUser()
++ void setUser(User)
++ Exemplar getExemplar()
++ void setExemplar(Exemplar)
++ int hashCode()
++ boolean equals(Object)
+}
 
 
-model.httpclients.Client <|-- model.httpclients.UserClient
-model.httpclients.Client <|-- model.httpclients.ExemplarClient
-model.httpclients.Client <|-- model.httpclients.LabelClient
-model.httpclients.Client <|-- model.httpclients.CommunityClient
-model.httpclients.Client <|-- model.httpclients.RatingClient
+org.springframework.data.jpa.repository.JpaRepository <|-- resource.UserRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- resource.RatingRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- resource.LabelRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- resource.CommunityRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- resource.ExemplarRepository
+java.io.Serializable <|.. resource.RatingPK
 @enduml
