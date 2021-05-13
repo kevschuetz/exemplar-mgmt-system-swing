@@ -30,5 +30,11 @@ Other documents and documentation files can be found unde /Documents
 
 *The Deliverables for Release 2 can be found under the following links:*
 
-* Use Cases (https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/Use%20Cases.docx)
+* [Use Cases](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/Use%20Cases.docx)
+* [UML Backend PUML Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/backEnd.puml)
+* [UML Frontend PUML Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/frontEnd.puml)
+* [UML Backend Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/backend.png)
+* [UML Frontend Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/frontEnd.png)
+* [Status Presentation 2 with requirements status and unit test overview](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/ReleasePr%C3%A4sentation2__Team04.pptx)
+* [Executable JAR](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/out/artifacts/application_jar/application.jar)
 
