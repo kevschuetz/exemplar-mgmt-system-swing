@@ -1,0 +1,180 @@
+@startuml
+class model.httpclients.UserClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ User add(User)
++ void delete(String)
++ List<User> getAll()
++ User get(String)
++ User update(String,User)
++ List<User> searchUsers(String)
+}
+class model.entities.Label {
+- String value
++ String getValue()
++ void setValue(String)
++ boolean equals(Object)
++ int hashCode()
+}
+class model.httpclients.HttpConstants {
+# {static} String URL
+}
+class model.httpclients.App {
++ {static} void main(String[])
+}
+class model.httpclients.ExemplarClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Exemplar add(Exemplar)
++ void delete(String)
++ List<Exemplar> getAll()
++ Exemplar get(String)
++ Exemplar update(String,Exemplar)
++ List<Exemplar> getExemplarForCreator(String)
++ List<Exemplar> getExemplarsForUser(String)
++ List<Exemplar> searchExemplars(String)
++ List<Exemplar> searchExemplarsByLabel(String)
+}
+class model.entities.Community {
+- String name
+- List<Exemplar> exemplars
+- List<User> members
+- User creator
++ String getName()
++ void setName(String)
++ List<Exemplar> getExemplars()
++ void setExemplars(List<Exemplar>)
++ List<User> getMembers()
++ void setMembers(List<User>)
++ User getCreator()
++ void setCreator(User)
++ boolean equals(Object)
++ int hashCode()
+}
+class model.httpclients.LabelClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Label add(Label)
++ void delete(String)
++ List<Label> getAll()
++ Label get(String)
++ Label update(String,Label)
+}
+abstract class model.httpclients.Client {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ {abstract}T add(T)
++ {abstract}void delete(String)
++ {abstract}List<T> getAll()
++ {abstract}T get(String)
++ {abstract}T update(String,T)
+}
+class model.entities.Rating {
+~ RatingPK key
+- double rating
++ RatingPK getKey()
++ void setKey(RatingPK)
++ double getRating()
++ void setRating(double)
++ boolean equals(Object)
++ int hashCode()
+}
+class model.httpclients.CommunityClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Community add(Community)
++ void delete(String)
++ List<Community> getAll()
++ Community get(String)
++ Community update(String,Community)
++ List<Community> getCommunitiesForUser(String)
++ List<Community> searchCommunities(String)
+}
+class model.entities.User {
+- String username
+- int isContributor
+- String fullName
+- String password
++ String getUsername()
++ void setUsername(String)
++ int getIsContributor()
++ void setIsContributor(int)
++ String getFullName()
++ void setFullName(String)
++ String getPassword()
++ void setPassword(String)
++ int hashCode()
++ boolean equals(Object)
++ String toString()
+}
+class model.entities.RatingPK {
+- User user
+- Exemplar exemplar
++ User getUser()
++ void setUser(User)
++ Exemplar getExemplar()
++ void setExemplar(Exemplar)
++ int hashCode()
++ boolean equals(Object)
++ String toString()
+}
+class model.httpclients.RatingClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Rating add(Rating)
++ void delete(String)
++ List<Rating> getAll()
++ Rating get(String)
++ Rating update(String,Rating)
++ List<Rating> getRatingsForExemplar(String)
++ double getAvgRatingForExemplar(String)
+}
+class model.entities.Exemplar {
+- String name
+- String problem
+- String solution
+- User creator
+- List<User> contributors
+- List<Label> labels
++ String getName()
++ void setName(String)
++ String getProblem()
++ void setProblem(String)
++ String getSolution()
++ void setSolution(String)
++ User getCreator()
++ void setCreator(User)
++ List<User> getContributors()
++ void setContributors(List<User>)
++ List<Label> getLabels()
++ void setLabels(List<Label>)
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+model.httpclients.Client <|-- model.httpclients.UserClient
+model.httpclients.Client <|-- model.httpclients.ExemplarClient
+model.httpclients.Client <|-- model.httpclients.LabelClient
+model.httpclients.Client <|-- model.httpclients.CommunityClient
+model.httpclients.Client <|-- model.httpclients.RatingClient
+@enduml
