@@ -383,7 +383,6 @@ class view.panels.mainFrame.contributorTab.ContributorTab {
 + void refreshInfoPanel()
 - JPanel initializeLabelPanel()
 ~ void addComponents()
-~ List<Exemplar> getExemplars()
 ~ double getAvgRating()
 ~ List<Label> getLabels()
 ~ void addActionListener()

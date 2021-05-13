@@ -1,4 +1,239 @@
 @startuml
+class model.httpclients.ExemplarClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Exemplar add(Exemplar)
++ void delete(String)
++ List<Exemplar> getAll()
++ Exemplar get(String)
++ Exemplar update(String,Exemplar)
++ List<Exemplar> getExemplarForCreator(String)
++ List<Exemplar> getExemplarsForUser(String)
++ List<Exemplar> searchExemplars(String)
++ List<Exemplar> searchExemplarsByLabel(String)
+}
+class model.entities.Community {
+- String name
+- List<Exemplar> exemplars
+- List<User> members
+- User creator
++ String getName()
++ void setName(String)
++ List<Exemplar> getExemplars()
++ void setExemplars(List<Exemplar>)
++ List<User> getMembers()
++ void setMembers(List<User>)
++ User getCreator()
++ void setCreator(User)
++ boolean equals(Object)
++ int hashCode()
+}
+class view.frames.mainFrame.MainFrame {
+- JTabbedPane tabPanel
+~ void addComponents()
++ void addTab(String,Component)
++ void removeTab(Component)
+}
+interface view.listeners.mainframe.AddContributorListener {
+~ void addingRequested(User)
+}
+interface view.listeners.login.RegisterFormListener {
++ void registrationSubmitted(UserEvent)
+}
+class view.panels.mainFrame.CommunityTab {
+- Community community
+- JButton closeButton
+- CloseTabListener closeListener
+~ void addComponents()
+~ void addActionListener()
++ void setCloseListener(CloseTabListener)
+}
+class view.frames.mainFrame.NewLabelPopupFrame {
+- JPanel infoPanel
+- JLabel infoLabel
+- JPanel namePanel
+- JLabel nameLabel
+- JTextField nameField
+- JButton button
+- ExemplarTab tab
+- NewLabelListener listener
++ void setListener(NewLabelListener)
++ ExemplarTab getTab()
++ void setTab(ExemplarTab)
++ void clean()
+}
+class model.entities.Label {
+- String value
++ String getValue()
++ void setValue(String)
++ boolean equals(Object)
++ int hashCode()
+}
+class view.frames.mainFrame.NewExemplarPopupFrame {
+- JPanel infoPanel
+- JLabel infoLabel
+- JPanel namePanel
+- JLabel nameLabel
+- JTextField nameField
+- JButton button
+- NewExemplarListener listener
++ void setListener(NewExemplarListener)
++ void clean()
+}
+class model.httpclients.HttpConstants {
+# {static} String URL
+}
+class view.frames.mainFrame.NewCommunityPopupFrame {
+- JPanel infoPanel
+- JLabel infoLabel
+- JPanel namePanel
+- JLabel nameLabel
+- JTextField nameField
+- JButton button
+- NewCommunityListener listener
++ void setListener(NewCommunityListener)
++ void clean()
+}
+interface view.listeners.mainframe.exemplarTab.DeleteExemplarListener {
+~ void deleteRequested(String,ExemplarTab)
+}
+interface view.listeners.mainframe.CloseTabListener {
+~ void shutdownRequested(Component)
+}
+class view.events.UserEvent {
+- String username
+- String fullname
+- String password
+- int isContributor
++ String getUsername()
++ void setUsername(String)
++ String getFullname()
++ void setFullname(String)
++ String getPassword()
++ void setPassword(String)
++ int getIsContributor()
++ void setIsContributor(int)
+}
+class view.frames.mainFrame.AddUserrFrame {
+- ExemplarTab tab
+- JPanel parentPanel
+- JTextField searchField
+- JButton searchButton
+- JPanel searchPanel
+- JList<User> searchList
+- List<User> foundUsers
+- JButton addButton
+- JScrollPane listScroller
+- UserClient client
+- AddContributorListener listener
+~ void initializeComponents()
+~ void addComponents()
+~ User[] fetchUsers(String)
+~ void addActionListeners()
++ ExemplarTab getTab()
++ void setTab(ExemplarTab)
++ void setListener(AddContributorListener)
+}
+class view.frames.mainFrame.NewRatingPopupFrame {
+- Exemplar exemplar
+- ExemplarTab tab
+- JLabel label
+- JPanel parentPanel
+- int RATING_MIN
+- int RATING_MAX
+- int RATING_INI
+- JSlider slider
+- JButton button
+- NewRatingListener listener
++ Exemplar getExemplar()
++ void setExemplar(Exemplar)
++ void setListener(NewRatingListener)
++ ExemplarTab getTab()
++ void setTab(ExemplarTab)
+}
+class model.entities.Rating {
+~ RatingPK key
+- double rating
++ RatingPK getKey()
++ void setKey(RatingPK)
++ double getRating()
++ void setRating(double)
++ boolean equals(Object)
++ int hashCode()
+}
+interface view.listeners.mainframe.exemplarTab.RatingListener {
++ void ratingRequested(ExemplarTab)
+}
+class view.panels.mainFrame.homeTab.MyExemplarsPanel {
+- User user
+~ JPanel exemplarPanelParent
+- List<Exemplar> myExemplars
+- JScrollPane scrollPane
+~ Border border
+- NewTabListener exemplarListener
+- Map<String,JCheckBox> selectedExemplarMap
+~ JPanel buttonPanel
+~ ActionListener exemplarLibraryListener
+~ ActionListener contributorLibraryListener
+- ActionListener createExemplarListener
++ void fetchExemplars()
++ void addExemplarsToScrollPane()
+~ void initializeButtonPanel()
+~ void addComponents()
+~ void openExemplars()
++ void setExemplarListener(NewTabListener)
++ void setCreateExemplarListener(ActionListener)
++ void setCreateExemplarLibraryListener(ActionListener)
++ void setCreateContributorLibraryListener(ActionListener)
+}
+class model.httpclients.RatingClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Rating add(Rating)
++ void delete(String)
++ List<Rating> getAll()
++ Rating get(String)
++ Rating update(String,Rating)
++ List<Rating> getRatingsForExemplar(String)
++ double getAvgRatingForExemplar(String)
+}
+class view.panels.mainFrame.ExemplarLibraryTab {
+~ JPanel exemplarPanelParent
+- List<Exemplar> allExemplars
+- JScrollPane scrollPane
+~ Border border
+- NewTabListener exemplarListener
+- Map<String,JCheckBox> selectedExemplarMap
+~ JPanel buttonPanel
+- CloseTabListener closeListener
++ void fetchExemplars()
++ void addExemplarsToScrollPane()
+~ void addComponents()
+~ void initializeButtonPanel()
+~ void openExemplars()
++ void setCloseListener(CloseTabListener)
++ void setExemplarListener(NewTabListener)
++ void updateTab()
+}
+class model.httpclients.UserClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ User add(User)
++ void delete(String)
++ List<User> getAll()
++ User get(String)
++ User update(String,User)
++ List<User> searchUsers(String)
+}
 interface view.listeners.mainframe.exemplarTab.ContributorListener {
 ~ void frameRequested(ExemplarTab)
 }
@@ -37,20 +272,38 @@ class view.panels.mainFrame.homeTab.MyCommunitiesPanel {
 + void setCommuniyListener(NewTabListener)
 + void setCreateExemplarListener(ActionListener)
 }
+class model.httpclients.App {
++ {static} void main(String[])
+}
 interface view.listeners.mainframe.NewExemplarListener {
 ~ void NewExemplarRequested(String)
 }
-class view.frames.mainFrame.MainFrame {
-- JTabbedPane tabPanel
-~ void addComponents()
-+ void addTab(String,Component)
-+ void removeTab(Component)
-}
-interface view.listeners.mainframe.AddContributorListener {
-~ void addingRequested(User)
+class model.httpclients.LabelClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Label add(Label)
++ void delete(String)
++ List<Label> getAll()
++ Label get(String)
++ Label update(String,Label)
 }
 interface view.listeners.mainframe.NewRatingListener {
 + void RatingSubmitted(int)
+}
+abstract class model.httpclients.Client {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ {abstract}T add(T)
++ {abstract}void delete(String)
++ {abstract}List<T> getAll()
++ {abstract}T get(String)
++ {abstract}T update(String,T)
 }
 class view.panels.mainFrame.exemplarTab.ExemplarTab {
 - Exemplar exemplar
@@ -106,16 +359,19 @@ class view.panels.mainFrame.exemplarTab.ExemplarTab {
 + JButton getUpdateButton()
 + void setUpdateButton(JButton)
 }
-interface view.listeners.login.RegisterFormListener {
-+ void registrationSubmitted(UserEvent)
-}
-class view.panels.mainFrame.CommunityTab {
-- Community community
-- JButton closeButton
-- CloseTabListener closeListener
-~ void addComponents()
-~ void addActionListener()
-+ void setCloseListener(CloseTabListener)
+class model.httpclients.CommunityClient {
+- HttpClient client
+- String URL
+- ObjectMapper mapper
+- HttpRequest request
+- HttpResponse<String> response
++ Community add(Community)
++ void delete(String)
++ List<Community> getAll()
++ Community get(String)
++ Community update(String,Community)
++ List<Community> getCommunitiesForUser(String)
++ List<Community> searchCommunities(String)
 }
 class view.frames.login.RegisterForm {
 ~ Container container
@@ -145,19 +401,50 @@ class view.frames.login.RegisterForm {
 + JCheckBox getContributorCheckBox()
 + Container getContainer()
 }
-class view.frames.mainFrame.NewLabelPopupFrame {
-- JPanel infoPanel
-- JLabel infoLabel
-- JPanel namePanel
-- JLabel nameLabel
-- JTextField nameField
-- JButton button
-- ExemplarTab tab
-- NewLabelListener listener
-+ void setListener(NewLabelListener)
-+ ExemplarTab getTab()
-+ void setTab(ExemplarTab)
-+ void clean()
+class model.entities.User {
+- String username
+- int isContributor
+- String fullName
+- String password
++ String getUsername()
++ void setUsername(String)
++ int getIsContributor()
++ void setIsContributor(int)
++ String getFullName()
++ void setFullName(String)
++ String getPassword()
++ void setPassword(String)
++ int hashCode()
++ boolean equals(Object)
++ String toString()
+}
+class controller.MainController {
+- LoginController loginController
+- User currentUser
+- UserClient userClient
+- ExemplarClient exemplarClient
+- LabelClient labelClient
+- RatingClient ratingClient
+- MainFrame mainFrame
+- HomeTab homeTab
+- NewExemplarPopupFrame newExemplarPopupFrame
+- NewLabelPopupFrame newLabelPopupFrame
+- NewCommunityPopupFrame newCommunityPopupFrame
+- NewRatingPopupFrame newRatingPopupFrame
+- AddUserrFrame addContributorFrame
++ {static} void main(String[])
+~ void loginSuccesfull()
+~ void initializeMainFrame()
+~ void initializeNewExemplarFrame()
+~ void initializeNewLabelPopupFrame()
+~ void initializeNewRatingPopupFrame()
+~ void initializeAddContributorFrame()
+~ void addListenersToHomeTab()
+~ void createNewExemplarAndInitializeTab(String)
+~ void createNewContributorTab(String)
+~ void addExemplarTabToMainframe(String)
+~ void addListenersToExemplarTab(ExemplarTab)
+~ boolean verifyExemplarName(String)
 }
 class view.frames.mainFrame.ConfirmExemplarDeletionFrame {
 - JPanel parentPanel
@@ -172,19 +459,25 @@ class view.frames.mainFrame.ConfirmExemplarDeletionFrame {
 interface view.listeners.mainframe.exemplarTab.AddLabelListener {
 + void buttonClicked(ExemplarTab)
 }
+class controller.LoginController {
+- UserClient userClient
+- LoginFrame loginFrame
+- RegisterForm registerForm
+- User currentUser
+- ActionListener loginListener
+~ Color backGroundColor
+~ void processLoginRequest(String,String)
+~ void processRegistrationRequest(UserEvent)
+~ void initializeLoginFrame()
+~ void initializeRegisterForm()
++ void startLoginProcess()
++ void setLoginListener(ActionListener)
++ LoginFrame getLoginFrame()
++ User getCurrentUser()
++ void setCurrentUser(User)
+}
 interface view.listeners.mainframe.NewCommunityListener {
 ~ void NewCommunityRequested(String)
-}
-class view.frames.mainFrame.NewExemplarPopupFrame {
-- JPanel infoPanel
-- JLabel infoLabel
-- JPanel namePanel
-- JLabel nameLabel
-- JTextField nameField
-- JButton button
-- NewExemplarListener listener
-+ void setListener(NewExemplarListener)
-+ void clean()
 }
 class view.panels.mainFrame.homeTab.HomeTab {
 ~ User user
@@ -206,39 +499,8 @@ class view.panels.mainFrame.homeTab.HomeTab {
 + void setCreateExemplarLibraryListener(ActionListener)
 + void setCreateContributorLibraryListener(ActionListener)
 }
-class view.frames.mainFrame.NewCommunityPopupFrame {
-- JPanel infoPanel
-- JLabel infoLabel
-- JPanel namePanel
-- JLabel nameLabel
-- JTextField nameField
-- JButton button
-- NewCommunityListener listener
-+ void setListener(NewCommunityListener)
-+ void clean()
-}
-interface view.listeners.mainframe.exemplarTab.DeleteExemplarListener {
-~ void deleteRequested(String,ExemplarTab)
-}
 interface view.listeners.mainframe.NewLabelListener {
 ~ void labelRequested(String)
-}
-interface view.listeners.mainframe.CloseTabListener {
-~ void shutdownRequested(Component)
-}
-class view.events.UserEvent {
-- String username
-- String fullname
-- String password
-- int isContributor
-+ String getUsername()
-+ void setUsername(String)
-+ String getFullname()
-+ void setFullname(String)
-+ String getPassword()
-+ void setPassword(String)
-+ int getIsContributor()
-+ void setIsContributor(int)
 }
 interface view.listeners.mainframe.homeTab.ProfilePanelListener {
 + void updateRequested(User)
@@ -317,43 +579,6 @@ class view.panels.mainFrame.AllExemplarsPanel {
 - ExemplarClient exemplarClient
 - JButton closeButton
 }
-class view.frames.mainFrame.AddUserrFrame {
-- ExemplarTab tab
-- JPanel parentPanel
-- JTextField searchField
-- JButton searchButton
-- JPanel searchPanel
-- JList<User> searchList
-- List<User> foundUsers
-- JButton addButton
-- JScrollPane listScroller
-- UserClient client
-- AddContributorListener listener
-~ void initializeComponents()
-~ void addComponents()
-~ User[] fetchUsers(String)
-~ void addActionListeners()
-+ ExemplarTab getTab()
-+ void setTab(ExemplarTab)
-+ void setListener(AddContributorListener)
-}
-class view.frames.mainFrame.NewRatingPopupFrame {
-- Exemplar exemplar
-- ExemplarTab tab
-- JLabel label
-- JPanel parentPanel
-- int RATING_MIN
-- int RATING_MAX
-- int RATING_INI
-- JSlider slider
-- JButton button
-- NewRatingListener listener
-+ Exemplar getExemplar()
-+ void setExemplar(Exemplar)
-+ void setListener(NewRatingListener)
-+ ExemplarTab getTab()
-+ void setTab(ExemplarTab)
-}
 interface view.listeners.mainframe.homeTab.NewTabListener {
 + void tabRequested(List<String>)
 }
@@ -383,37 +608,22 @@ class view.panels.mainFrame.contributorTab.ContributorTab {
 + void refreshInfoPanel()
 - JPanel initializeLabelPanel()
 ~ void addComponents()
-~ List<Exemplar> getExemplars()
 ~ double getAvgRating()
 ~ List<Label> getLabels()
 ~ void addActionListener()
 + void setCloseListener(CloseTabListener)
 + User getContributor()
 }
-interface view.listeners.mainframe.exemplarTab.RatingListener {
-+ void ratingRequested(ExemplarTab)
-}
-class view.panels.mainFrame.homeTab.MyExemplarsPanel {
+class model.entities.RatingPK {
 - User user
-~ JPanel exemplarPanelParent
-- List<Exemplar> myExemplars
-- JScrollPane scrollPane
-~ Border border
-- NewTabListener exemplarListener
-- Map<String,JCheckBox> selectedExemplarMap
-~ JPanel buttonPanel
-~ ActionListener exemplarLibraryListener
-~ ActionListener contributorLibraryListener
-- ActionListener createExemplarListener
-+ void fetchExemplars()
-+ void addExemplarsToScrollPane()
-~ void initializeButtonPanel()
-~ void addComponents()
-~ void openExemplars()
-+ void setExemplarListener(NewTabListener)
-+ void setCreateExemplarListener(ActionListener)
-+ void setCreateExemplarLibraryListener(ActionListener)
-+ void setCreateContributorLibraryListener(ActionListener)
+- Exemplar exemplar
++ User getUser()
++ void setUser(User)
++ Exemplar getExemplar()
++ void setExemplar(Exemplar)
++ int hashCode()
++ boolean equals(Object)
++ String toString()
 }
 interface view.listeners.login.LoginListener {
 + void loginRequested(String,String)
@@ -421,46 +631,56 @@ interface view.listeners.login.LoginListener {
 interface view.listeners.login.RegisterButtonListener {
 ~ void registerFormRequested()
 }
-class view.panels.mainFrame.ExemplarLibraryTab {
-~ JPanel exemplarPanelParent
-- List<Exemplar> allExemplars
-- JScrollPane scrollPane
-~ Border border
-- NewTabListener exemplarListener
-- Map<String,JCheckBox> selectedExemplarMap
-~ JPanel buttonPanel
-- CloseTabListener closeListener
-+ void fetchExemplars()
-+ void addExemplarsToScrollPane()
-~ void addComponents()
-~ void initializeButtonPanel()
-~ void openExemplars()
-+ void setCloseListener(CloseTabListener)
-+ void setExemplarListener(NewTabListener)
-+ void updateTab()
+class model.entities.Exemplar {
+- String name
+- String problem
+- String solution
+- User creator
+- List<User> contributors
+- List<Label> labels
++ String getName()
++ void setName(String)
++ String getProblem()
++ void setProblem(String)
++ String getSolution()
++ void setSolution(String)
++ User getCreator()
++ void setCreator(User)
++ List<User> getContributors()
++ void setContributors(List<User>)
++ List<Label> getLabels()
++ void setLabels(List<Label>)
++ boolean equals(Object)
++ int hashCode()
++ String toString()
 }
 
 
+model.httpclients.Client <|-- model.httpclients.ExemplarClient
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.MainFrame
+view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.CommunityTab
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewLabelPopupFrame
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewExemplarPopupFrame
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewCommunityPopupFrame
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.AddUserrFrame
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewRatingPopupFrame
+view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.MyExemplarsPanel
+model.httpclients.Client <|-- model.httpclients.RatingClient
+view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.ExemplarLibraryTab
+model.httpclients.Client <|-- model.httpclients.UserClient
 view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.ContributorLibraryTab
 view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.MyCommunitiesPanel
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.MainFrame
+model.httpclients.Client <|-- model.httpclients.LabelClient
 view.panels.mainFrame.exemplarTab.JPanel <|-- view.panels.mainFrame.exemplarTab.ExemplarTab
-view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.CommunityTab
+model.httpclients.Client <|-- model.httpclients.CommunityClient
 view.frames.login.JFrame <|-- view.frames.login.RegisterForm
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewLabelPopupFrame
 view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.ConfirmExemplarDeletionFrame
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewExemplarPopupFrame
 view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.HomeTab
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewCommunityPopupFrame
 java.awt.event.ActionListener <|.. view.frames.login.LoginFrame
 view.frames.login.JFrame <|-- view.frames.login.LoginFrame
 view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.ProfilePanel
 view.panels.mainFrame.homeTab.ProfilePanel +.. view.panels.mainFrame.homeTab.ProfilePanel.ConfirmDeletalFrame
 view.panels.mainFrame.homeTab.JFrame <|-- view.panels.mainFrame.homeTab.ProfilePanel.ConfirmDeletalFrame
 view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.AllExemplarsPanel
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.AddUserrFrame
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewRatingPopupFrame
 view.panels.mainFrame.contributorTab.JPanel <|-- view.panels.mainFrame.contributorTab.ContributorTab
-view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.MyExemplarsPanel
-view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.ExemplarLibraryTab
 @enduml
