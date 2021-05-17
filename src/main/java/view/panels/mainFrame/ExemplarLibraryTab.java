@@ -1,7 +1,6 @@
 package view.panels.mainFrame;
 
 import model.entities.Exemplar;
-import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.CloseTabListener;
@@ -37,7 +36,7 @@ public class ExemplarLibraryTab extends JPanel{
         fetchExemplars();
 
         exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
-        addExemplarsToScrollPane();
+        addExemplars();
 
         initializeButtonPanel();
         addComponents();
@@ -53,7 +52,7 @@ public class ExemplarLibraryTab extends JPanel{
         }
     }
 
-    public void addExemplarsToScrollPane(){
+    public void addExemplars(){
         int i = 0;
         RatingClient client = new RatingClient();
         for(Exemplar e : allExemplars){
@@ -93,6 +92,7 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     void addComponents(){
+        setVisible(false);
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -109,6 +109,7 @@ public class ExemplarLibraryTab extends JPanel{
         c.gridx=0;
         c.gridy=1;
         add(buttonPanel, c);
+        setVisible(true);
 
     }
 
@@ -127,10 +128,10 @@ public class ExemplarLibraryTab extends JPanel{
             public void itemStateChanged(ItemEvent event) {
                 RatingClient ratingClient = new RatingClient();
                 if(sortingComboBox.getSelectedIndex() == 1) {
-                    if(sortingComboBox2.getSelectedIndex() == 0)
+                    if(sortingComboBox2.getSelectedIndex() == 0) {
                         allExemplars = allExemplars.stream().
-                            sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
-                    else
+                                sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
+                    }else
                         allExemplars = allExemplars.stream().
                                 sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
                 }
@@ -171,9 +172,12 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     public void updateTab (){
-        scrollPane.removeAll();
-        addExemplarsToScrollPane();
-        scrollPane.revalidate();
-        scrollPane.repaint();
+        removeAll();
+        exemplarPanelParent.removeAll();
+        addExemplars();
+        scrollPane = new JScrollPane((exemplarPanelParent));
+        scrollPane.setLayout(new ScrollPaneLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        addComponents();
     }
 }
