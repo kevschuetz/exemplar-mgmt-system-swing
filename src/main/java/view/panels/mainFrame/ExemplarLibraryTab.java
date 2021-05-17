@@ -21,26 +21,51 @@ public class ExemplarLibraryTab extends JPanel{
     JPanel exemplarPanelParent = new JPanel();
     private List<Exemplar> allExemplars;
     private Map<Exemplar, Double> ratingMap = new HashMap<>();
+    private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
+    private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
+
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
     private NewTabListener exemplarListener;
-    private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
     private CloseTabListener closeListener;
 
-
+    private ItemListener sortingListener;
+    JComboBox sortingComboBox;
+    JComboBox sortingComboBox2;
 
     public ExemplarLibraryTab(){
+        fetchExemplars();
+        initializeSortingListener();
+
+        exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
+        createExemplarPanels();
+        addExemplarPanelsToParentPanel();
+
         scrollPane = new JScrollPane(exemplarPanelParent);
         scrollPane.setLayout(new ScrollPaneLayout());
 
-        fetchExemplars();
-
-        exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
-        addExemplars();
-
         initializeButtonPanel();
         addComponents();
+    }
+
+    private void initializeSortingListener() {
+        sortingListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                RatingClient ratingClient = new RatingClient();
+                if(sortingComboBox.getSelectedIndex() == 1) {
+                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e))).collect(Collectors.toList());
+                        Collections.reverse(allExemplars);
+                    }else
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e))).collect(Collectors.toList());
+                }
+                updateTab();
+            }
+        };
     }
 
     public void fetchExemplars(){
@@ -58,8 +83,7 @@ public class ExemplarLibraryTab extends JPanel{
         }
     }
 
-    public void addExemplars(){
-        int i = 0;
+    public void createExemplarPanels(){
         RatingClient client = new RatingClient();
         for(Exemplar e : allExemplars){
             JPanel panel = new JPanel();
@@ -78,7 +102,6 @@ public class ExemplarLibraryTab extends JPanel{
             JLabel exemplarName = new JLabel(e.getName());
             JLabel ratingLabel = new JLabel("Rating:");
             JCheckBox checkBox = new JCheckBox();
-            if(i%2==0)checkBox.setBackground(Color.LIGHT_GRAY);
             panel.add(name);
             panel.add(exemplarName);
             panel.add(new JLabel(""));
@@ -89,10 +112,14 @@ public class ExemplarLibraryTab extends JPanel{
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
-            if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             selectedExemplarMap.put(e.getName(), checkBox);
-            exemplarPanelParent.add(panel);
-            i++;
+            exemplarJPanelMap.put(e, panel);
+        }
+    }
+
+    void addExemplarPanelsToParentPanel(){
+        for(Exemplar e : allExemplars){
+            exemplarPanelParent.add(exemplarJPanelMap.get(e));
         }
     }
 
@@ -122,29 +149,13 @@ public class ExemplarLibraryTab extends JPanel{
         buttonPanel.setLayout(new GridLayout(1,3));
         String [] sortingComboBoxList = {"Sort by creation date", "Sort by Rating", "Sort by Number of Users"};
         String [] sortingComboBoxList2 = {"descending", "ascending"};
-        JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
-        JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
+        sortingComboBox = new JComboBox(sortingComboBoxList);
+        sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         JButton filterButton = new JButton("Filter by Label");
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
-        sortingComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                RatingClient ratingClient = new RatingClient();
-                if(sortingComboBox.getSelectedIndex() == 1) {
-                    if(sortingComboBox2.getSelectedIndex() == 0) {
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
-                        Collections.reverse(allExemplars);
-                    }else
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
-                }
-                updateTab();
-
-            }
-
-        });
+        sortingComboBox.addItemListener(sortingListener);
+        sortingComboBox2.addItemListener(sortingListener);
 
         closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
         openExemplarsButton.addActionListener((x)->openExemplars());
@@ -179,10 +190,9 @@ public class ExemplarLibraryTab extends JPanel{
     public void updateTab (){
         removeAll();
         exemplarPanelParent.removeAll();
-        addExemplars();
+        addExemplarPanelsToParentPanel();
         scrollPane = new JScrollPane((exemplarPanelParent));
         scrollPane.setLayout(new ScrollPaneLayout());
-        GridBagConstraints c = new GridBagConstraints();
         addComponents();
     }
 }
