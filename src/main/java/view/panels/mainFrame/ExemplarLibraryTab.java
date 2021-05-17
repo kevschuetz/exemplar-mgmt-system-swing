@@ -20,6 +20,7 @@ public class ExemplarLibraryTab extends JPanel{
 
     JPanel exemplarPanelParent = new JPanel();
     private List<Exemplar> allExemplars;
+    private Map<Exemplar, Double> ratingMap = new HashMap<>();
     private JScrollPane scrollPane;
     Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
     private NewTabListener exemplarListener;
@@ -44,7 +45,12 @@ public class ExemplarLibraryTab extends JPanel{
 
     public void fetchExemplars(){
         try {
-            allExemplars = new ExemplarClient().getAll();
+            ExemplarClient exemplarClient = new ExemplarClient();
+            RatingClient ratingClient = new RatingClient();
+            allExemplars = exemplarClient.getAll();
+            for (Exemplar e : allExemplars){
+                ratingMap.put(e, ratingClient.getAvgRatingForExemplar(e.getName()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -78,7 +84,7 @@ public class ExemplarLibraryTab extends JPanel{
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
             String rating = "";
-            rating += client.getAvgRatingForExemplar(e.getName());
+            rating += ratingMap.get(e);
             panel.add(new JLabel(rating));
             panel.add(checkBox);
             panel.setBorder(border);
@@ -88,7 +94,6 @@ public class ExemplarLibraryTab extends JPanel{
             exemplarPanelParent.add(panel);
             i++;
         }
-
     }
 
     void addComponents(){
@@ -110,7 +115,6 @@ public class ExemplarLibraryTab extends JPanel{
         c.gridy=1;
         add(buttonPanel, c);
         setVisible(true);
-
     }
 
     void initializeButtonPanel(){
@@ -131,6 +135,7 @@ public class ExemplarLibraryTab extends JPanel{
                     if(sortingComboBox2.getSelectedIndex() == 0) {
                         allExemplars = allExemplars.stream().
                                 sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
+                        Collections.reverse(allExemplars);
                     }else
                         allExemplars = allExemplars.stream().
                                 sorted(Comparator.comparingDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName()))).collect(Collectors.toList());
