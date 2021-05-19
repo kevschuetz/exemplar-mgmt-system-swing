@@ -89,6 +89,8 @@ public class MainController {
         mainFrame.setVisible(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(new Dimension(1300, 1000));
+        mainFrame.setExemplarButtonListener(getOpenExemplarLibraryListener());
+        mainFrame.setContributorButtonListener(getOpenContributorLibraryListener());
     }
 
     /**
@@ -215,6 +217,69 @@ public class MainController {
     }
 
     /**
+     * Creates an ActionListener that opens a new ExemplarLibrary in a new tab and selects that tab
+     * @return the listener created
+     */
+    ActionListener getOpenExemplarLibraryListener(){
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ExemplarLibraryTab exemplarLibrary = new ExemplarLibraryTab();
+                exemplarLibrary.setCloseListener(new CloseTabListener (){
+                    @Override
+                    public void shutdownRequested(Component c){
+                        mainFrame.removeTab(c);
+                    }
+                });
+                exemplarLibrary.setExemplarListener(new NewTabListener() {
+                    @Override
+                    public void tabRequested(List<String> selectedEntities) {
+                        for(String e : selectedEntities){
+                            addExemplarTabToMainframe(e);
+                        }
+                    }
+                });
+                mainFrame.addTab("Exemplar Library",exemplarLibrary);
+                mainFrame.setLastTabSelected();
+            }
+        };
+    }
+
+    /**
+     * Creates an ActionListener that opens a new contributorLibrary in a seperate tab and selects that tab
+     * @return the listener created
+     */
+    ActionListener getOpenContributorLibraryListener(){
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ContributorLibraryTab contributorLibrary = new ContributorLibraryTab();
+                contributorLibrary.setCloseListener(new CloseTabListener (){
+                    @Override
+                    public void shutdownRequested(Component c){
+                        mainFrame.removeTab(c);
+                    }
+                });
+                contributorLibrary.setContributorListener(new NewTabListener(){
+                    @Override
+                    public void tabRequested(List<String> selectedEntities){
+                        for(String e : selectedEntities){
+                            try {
+                                createNewContributorTab(e);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            } catch (InterruptedException interruptedException) {
+                                interruptedException.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                mainFrame.addTab("Contributor Library", contributorLibrary);
+                mainFrame.setLastTabSelected();
+            }
+        };
+    }
+    /**
      * Adds all the listeners required for the home tab
      */
     void addListenersToHomeTab(){
@@ -288,55 +353,9 @@ public class MainController {
             }
         });
 
-        homeTab.setCreateExemplarLibraryListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ExemplarLibraryTab exemplarLibrary = new ExemplarLibraryTab();
-                    exemplarLibrary.setCloseListener(new CloseTabListener (){
-                        @Override
-                        public void shutdownRequested(Component c){
-                            mainFrame.removeTab(c);
-                        }
-                    });
-                    exemplarLibrary.setExemplarListener(new NewTabListener() {
-                        @Override
-                        public void tabRequested(List<String> selectedEntities) {
-                            for(String e : selectedEntities){
-                                   addExemplarTabToMainframe(e);
-                            }
-                        }
-                    });
-                    mainFrame.addTab("Exemplar Library",exemplarLibrary);
-            }
-        });
+        homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener());
 
-        homeTab.setCreateContributorLibraryListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ContributorLibraryTab contributorLibrary = new ContributorLibraryTab();
-                contributorLibrary.setCloseListener(new CloseTabListener (){
-                    @Override
-                    public void shutdownRequested(Component c){
-                        mainFrame.removeTab(c);
-                    }
-                });
-                contributorLibrary.setContributorListener(new NewTabListener(){
-                    @Override
-                    public void tabRequested(List<String> selectedEntities){
-                        for(String e : selectedEntities){
-                            try {
-                                createNewContributorTab(e);
-                            } catch (IOException ioException) {
-                                ioException.printStackTrace();
-                            } catch (InterruptedException interruptedException) {
-                                interruptedException.printStackTrace();
-                            }
-                        }
-                    }
-                });
-                mainFrame.addTab("Contributor Library", contributorLibrary);
-            }
-        });
+        homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener());
 
     }
     /**

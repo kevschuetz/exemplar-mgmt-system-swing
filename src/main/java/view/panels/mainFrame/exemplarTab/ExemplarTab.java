@@ -161,7 +161,7 @@ public class ExemplarTab extends JPanel {
         JLabel contributors = new JLabel("Contributors:");
         contributorPanel.add(contributors);
         for(User u : exemplar.getContributors()){
-            JLabel newLabel = new JLabel(u.getUsername());
+            JLabel newLabel = new JLabel(u.getUsername(), JLabel.LEFT);
             contributorPanel.add(newLabel);
         }
         return contributorPanel;
@@ -173,7 +173,7 @@ public class ExemplarTab extends JPanel {
         JLabel labels = new JLabel("Labels:");
         labelPanel.add(labels);
         for(Label l : exemplar.getLabels()){
-            JLabel newLabel = new JLabel(l.getValue());
+            JLabel newLabel = new JLabel(l.getValue(), JLabel.LEFT);
             newLabel.setHorizontalAlignment(SwingConstants.LEFT);
             labelPanel.add(newLabel);
         }

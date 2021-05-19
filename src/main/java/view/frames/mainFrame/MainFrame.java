@@ -3,6 +3,7 @@ package view.frames.mainFrame;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 
 public class MainFrame extends JFrame{
@@ -45,10 +46,24 @@ public class MainFrame extends JFrame{
         tabPanel.remove(component);
     }
 
+    public void setLastTabSelected(){
+        tabPanel.setSelectedIndex(tabPanel.getTabCount()-1);
+    }
+
+    public void setExemplarButtonListener(ActionListener l){
+        menuPanel.exemplarButton.addActionListener(l);
+
+    }
+
+    public void setContributorButtonListener(ActionListener l){
+        menuPanel.contributorButton.addActionListener(l);
+    }
     private class MenuPanel extends JPanel{
         private JButton exemplarButton;
         private JButton communityButton;
         private JButton contributorButton;
+
+        ActionListener exemplarButtonListener;
 
         MenuPanel(){
             setBorder(BorderFactory.createCompoundBorder(
@@ -65,6 +80,7 @@ public class MainFrame extends JFrame{
             exemplarButton.setBorder(emptyBorder);
             communityButton.setBorder(emptyBorder);
             contributorButton.setBorder(emptyBorder);
+
 
 
             setLayout(new GridLayout(3,9));
