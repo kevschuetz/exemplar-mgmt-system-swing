@@ -143,6 +143,7 @@ public class ExemplarTab extends JPanel {
     }
 
     public void refreshInfoPanel(){
+        setVisible(false);
         parentPanel.remove(metaInfoPanel);
         initializeMetaInfoPanel();
         GridBagConstraints c = new GridBagConstraints();
@@ -152,6 +153,7 @@ public class ExemplarTab extends JPanel {
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
         parentPanel.add(metaInfoPanel, c);
+        setVisible(true);
 
     }
 
