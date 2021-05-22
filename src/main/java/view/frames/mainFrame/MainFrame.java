@@ -139,9 +139,14 @@ public class MainFrame extends JFrame{
         void addSearchButtonListener(){
             searchButton.addActionListener((e)->{
                 switch(searchCombobox.getSelectedIndex()){
-                    case 0 -> searchExemplarListener.actionPerformed(e);
-                    case 1 -> searchContributorListener.actionPerformed(e);
-                    case 2 -> System.out.println("");
+                    case 0:
+                        searchExemplarListener.actionPerformed(e);
+                        break;
+                    case 1:
+                        searchContributorListener.actionPerformed(e);
+                        break;
+                    case 2:
+                        System.out.println("");
                 }
             });
         }
