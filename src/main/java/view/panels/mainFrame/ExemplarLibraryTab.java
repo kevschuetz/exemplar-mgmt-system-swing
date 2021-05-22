@@ -34,8 +34,8 @@ public class ExemplarLibraryTab extends JPanel{
     JComboBox sortingComboBox;
     JComboBox sortingComboBox2;
 
-    public ExemplarLibraryTab(){
-        fetchExemplars();
+    public ExemplarLibraryTab(String searchTerm){
+        fetchExemplars(searchTerm);
         initializeSortingListener();
 
         exemplarPanelParent.setLayout(new GridLayout(allExemplars.size()+1, 1));
@@ -68,18 +68,12 @@ public class ExemplarLibraryTab extends JPanel{
         };
     }
 
-    public void fetchExemplars(){
-        try {
-            ExemplarClient exemplarClient = new ExemplarClient();
-            RatingClient ratingClient = new RatingClient();
-            allExemplars = exemplarClient.getAll();
-            for (Exemplar e : allExemplars){
-                ratingMap.put(e, ratingClient.getAvgRatingForExemplar(e.getName()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void fetchExemplars(String searchTerm){
+        ExemplarClient exemplarClient = new ExemplarClient();
+        RatingClient ratingClient = new RatingClient();
+        allExemplars = exemplarClient.searchExemplars(searchTerm);
+        for (Exemplar e : allExemplars){
+            ratingMap.put(e, ratingClient.getAvgRatingForExemplar(e.getName()));
         }
     }
 

@@ -4,12 +4,14 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 public class MainFrame extends JFrame{
     private JTabbedPane tabPanel = new JTabbedPane();
     private MenuPanel menuPanel = new MenuPanel();
     private CMenuBar menuBar = new CMenuBar();
+    private java.util.List<JComponent> openSearchTabs = new ArrayList<>();
 
 
     public MainFrame() {
@@ -38,6 +40,16 @@ public class MainFrame extends JFrame{
         add(tabPanel,c);
     }
 
+    public String getSearchTerm(){
+        return menuPanel.searchField.getText();
+    }
+
+    public void referenceOpenTab(JComponent c){openSearchTabs.add(c);}
+
+    public java.util.List<JComponent> getOpenSearchTabs(){return openSearchTabs;}
+
+    public void setOpenSearchTabs(java.util.List l){openSearchTabs = l;}
+
     public void addTab(String title, Component component){
         tabPanel.addTab(title, component);
     }
@@ -58,12 +70,24 @@ public class MainFrame extends JFrame{
     public void setContributorButtonListener(ActionListener l){
         menuPanel.contributorButton.addActionListener(l);
     }
+
+    public void setSearchExemplarListener(ActionListener l){menuPanel.searchExemplarListener = l;}
+
+    public void setSearchContributorListener(ActionListener l) {menuPanel.searchContributorListener = l;}
+
     private class MenuPanel extends JPanel{
         private JButton exemplarButton;
         private JButton communityButton;
         private JButton contributorButton;
+        private JButton searchButton;
+        private JComboBox searchCombobox;
+        private JTextField searchField;
+
 
         ActionListener exemplarButtonListener;
+        ActionListener searchExemplarListener;
+        ActionListener searchContributorListener;
+
 
         MenuPanel(){
             setBorder(BorderFactory.createCompoundBorder(
@@ -72,16 +96,23 @@ public class MainFrame extends JFrame{
             exemplarButton = new JButton("Exemplars");
             communityButton = new JButton("Communities");
             contributorButton = new JButton("Contributors");
+            searchButton = new JButton("Search");
             exemplarButton.setBackground(Color.lightGray);
             communityButton.setBackground(Color.lightGray);
-            contributorButton.setBackground(Color.lightGray
-            );
+            contributorButton.setBackground(Color.lightGray);
+            //searchButton.setBackground(Color.lightGray);
+
             Border emptyBorder = BorderFactory.createEmptyBorder();
             exemplarButton.setBorder(emptyBorder);
             communityButton.setBorder(emptyBorder);
             contributorButton.setBorder(emptyBorder);
+            searchButton.setBorder(emptyBorder);
 
 
+            String[] searchOptions = {"Exemplars", "Contributors", "Communities"};
+            searchCombobox = new JComboBox(searchOptions);
+            searchField = new JTextField();
+            addSearchButtonListener();
 
             setLayout(new GridLayout(3,9));
             addDummyPanels(9);
@@ -89,6 +120,9 @@ public class MainFrame extends JFrame{
             add(exemplarButton);
             add(communityButton);
             add(contributorButton);
+            add(searchField);
+            add(searchCombobox);
+            add(searchButton);
             addDummyPanels(3);
             addDummyPanels(9);
 
@@ -100,6 +134,16 @@ public class MainFrame extends JFrame{
                 newPanel.setBackground(Color.LIGHT_GRAY);
                 add(newPanel);
             }
+        }
+
+        void addSearchButtonListener(){
+            searchButton.addActionListener((e)->{
+                switch(searchCombobox.getSelectedIndex()){
+                    case 0 -> searchExemplarListener.actionPerformed(e);
+                    case 1 -> searchContributorListener.actionPerformed(e);
+                    case 2 -> System.out.println("");
+                }
+            });
         }
     }
 

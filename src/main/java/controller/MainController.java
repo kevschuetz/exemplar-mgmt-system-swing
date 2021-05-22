@@ -89,8 +89,10 @@ public class MainController {
         mainFrame.setVisible(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(new Dimension(1300, 1000));
-        mainFrame.setExemplarButtonListener(getOpenExemplarLibraryListener());
-        mainFrame.setContributorButtonListener(getOpenContributorLibraryListener());
+        mainFrame.setExemplarButtonListener(getOpenExemplarLibraryListener(false));
+        mainFrame.setContributorButtonListener(getOpenContributorLibraryListener(false));
+        mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
+        mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
     }
 
     /**
@@ -220,11 +222,17 @@ public class MainController {
      * Creates an ActionListener that opens a new ExemplarLibrary in a new tab and selects that tab
      * @return the listener created
      */
-    ActionListener getOpenExemplarLibraryListener(){
+    ActionListener getOpenExemplarLibraryListener(boolean searchableByMainframe){
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ExemplarLibraryTab exemplarLibrary = new ExemplarLibraryTab();
+                ExemplarLibraryTab exemplarLibrary;
+                if(searchableByMainframe) {
+                    exemplarLibrary = new ExemplarLibraryTab(mainFrame.getSearchTerm());
+                    mainFrame.referenceOpenTab(exemplarLibrary);
+                }
+                else exemplarLibrary = new ExemplarLibraryTab("");
+
                 exemplarLibrary.setCloseListener(new CloseTabListener (){
                     @Override
                     public void shutdownRequested(Component c){
@@ -239,7 +247,18 @@ public class MainController {
                         }
                     }
                 });
-                mainFrame.addTab("Exemplar Library",exemplarLibrary);
+
+                if (searchableByMainframe){
+                    for(JComponent c : mainFrame.getOpenSearchTabs()){
+                        mainFrame.removeTab(c);
+                    }
+                    java.util.List<JComponent> list = new ArrayList<>();
+                    list.add(exemplarLibrary);
+                    mainFrame.setOpenSearchTabs(list);
+                    mainFrame.addTab("Search Exemplars", exemplarLibrary);
+                }else mainFrame.addTab("Exemplar Library",exemplarLibrary);
+
+
                 mainFrame.setLastTabSelected();
             }
         };
@@ -249,11 +268,16 @@ public class MainController {
      * Creates an ActionListener that opens a new contributorLibrary in a seperate tab and selects that tab
      * @return the listener created
      */
-    ActionListener getOpenContributorLibraryListener(){
+    ActionListener getOpenContributorLibraryListener(boolean searchableByMainFrame){
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ContributorLibraryTab contributorLibrary = new ContributorLibraryTab();
+                ContributorLibraryTab contributorLibrary;
+
+                if(searchableByMainFrame) {
+                    contributorLibrary = new ContributorLibraryTab(mainFrame.getSearchTerm());
+                }
+                else contributorLibrary = new ContributorLibraryTab("");
                 contributorLibrary.setCloseListener(new CloseTabListener (){
                     @Override
                     public void shutdownRequested(Component c){
@@ -274,7 +298,17 @@ public class MainController {
                         }
                     }
                 });
-                mainFrame.addTab("Contributor Library", contributorLibrary);
+                if(searchableByMainFrame){
+                    for(JComponent c : mainFrame.getOpenSearchTabs()){
+                        mainFrame.removeTab(c);
+                    }
+                    java.util.List<JComponent> list = new ArrayList<>();
+                    list.add(contributorLibrary);
+                    mainFrame.setOpenSearchTabs(list);
+                    mainFrame.addTab("Search Contributors", contributorLibrary);
+                } else mainFrame.addTab("Contributor Library", contributorLibrary);
+
+
                 mainFrame.setLastTabSelected();
             }
         };
@@ -353,9 +387,9 @@ public class MainController {
             }
         });
 
-        homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener());
+        homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener(false));
 
-        homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener());
+        homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener(false));
 
     }
     /**

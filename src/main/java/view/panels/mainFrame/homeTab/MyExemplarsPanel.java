@@ -105,11 +105,11 @@ public class MyExemplarsPanel extends JPanel {
             buttonPanel.add(createExemplarButton);
             createExemplarButton.addActionListener(x-> createExemplarListener.actionPerformed(x));
         }
-        buttonPanel.add(searchAllButton);
+        //buttonPanel.add(searchAllButton);
         exemplarLibraryButton.addActionListener(x -> exemplarLibraryListener.actionPerformed(x));
-        buttonPanel.add(exemplarLibraryButton);
+        //buttonPanel.add(exemplarLibraryButton);
         contributorLibraryButton.addActionListener(x -> contributorLibraryListener.actionPerformed(x));
-        buttonPanel.add(contributorLibraryButton);
+        //buttonPanel.add(contributorLibraryButton);
         buttonPanel.setBorder(border);
     }
     void addComponents(){

@@ -32,11 +32,11 @@ public class ContributorLibraryTab extends JPanel {
 
 
 
-    public ContributorLibraryTab(){
+    public ContributorLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(contributorPanelParent);
         scrollPane.setLayout(new ScrollPaneLayout());
 
-        fetchContributors();
+        fetchContributors(searchTerm);
 
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
         addContributorsToScrollPane();
@@ -45,14 +45,12 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
-    public void fetchContributors(){
-        try {
-            allContributors = new UserClient().getAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void fetchContributors(String searchTerm){
+        allContributors = new UserClient().searchUsers(searchTerm);
+        allContributors = allContributors
+                .stream()
+                .filter(u->u.getIsContributor()==1)
+                .collect(Collectors.toList());
     }
 
     public void addContributorsToScrollPane(){
