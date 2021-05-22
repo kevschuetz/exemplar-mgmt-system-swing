@@ -21,6 +21,7 @@ C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\vie
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\frames\login\LoginFrame.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\listeners\mainframe\NewExemplarListener.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\listeners\mainframe\NewLabelListener.java
+C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\panels\mainFrame\ContributorLibraryTab.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\model\httpclients\CommunityClient.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\listeners\login\RegisterFormListener.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\panels\mainFrame\ExemplarLibraryTab.java
@@ -48,3 +49,4 @@ C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\vie
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\listeners\mainframe\homeTab\NewTabListener.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\frames\mainFrame\NewCommunityPopupFrame.java
 C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\listeners\mainframe\exemplarTab\UpdateExemplarListener.java
+C:\Users\pc\Documents\GitHub\teaching-2021.prse-exemplar-team4\src\main\java\view\panels\mainFrame\contributorTab\ContributorTab.java
