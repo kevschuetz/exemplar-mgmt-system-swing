@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class CommunityTab extends JPanel {
     private Community community;
-    private JButton closeButton = new JButton("Close Tab");
+    private JButton closeButton = new JButton("Close");
     private CloseTabListener closeListener;
 
     public CommunityTab(Community community){
