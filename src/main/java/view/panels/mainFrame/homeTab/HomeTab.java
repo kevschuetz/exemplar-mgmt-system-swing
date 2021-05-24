@@ -17,7 +17,7 @@ public class HomeTab extends JPanel {
     MyExemplarsPanel myExemplarsPanel;
     MyCommunitiesPanel myCommunitiesPanel;
 
-    Border border = BorderFactory.createCompoundBorder();
+  //  Border border = BorderFactory.createCompoundBorder();
 
     public HomeTab(User user){
         this.user = user;
@@ -73,7 +73,6 @@ public class HomeTab extends JPanel {
     public ProfilePanel getProfilePanel() {
         return profilePanel;
     }
-
 
     public void setCreateExemplarLibraryListener(ActionListener exemplarLibraryListener) { myExemplarsPanel.setCreateExemplarLibraryListener(exemplarLibraryListener);}
 

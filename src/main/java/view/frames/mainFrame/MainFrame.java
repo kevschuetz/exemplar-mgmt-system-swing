@@ -90,9 +90,7 @@ public class MainFrame extends JFrame{
 
 
         MenuPanel(){
-            setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createTitledBorder(""),
-                    BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+            setBorder(BorderFactory.createBevelBorder(0));
             exemplarButton = new JButton("Exemplars");
             communityButton = new JButton("Communities");
             contributorButton = new JButton("Contributors");

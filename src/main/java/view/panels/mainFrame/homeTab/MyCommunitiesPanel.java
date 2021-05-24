@@ -20,7 +20,7 @@ public class MyCommunitiesPanel extends JPanel {
     private java.util.List<Community> myCommunities;
     private List<JPanel> myCommunityPanels = new ArrayList<>();
     private JScrollPane scrollPane;
-    Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
+    Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener newTabListener;
     JPanel buttonPanel;
 
@@ -74,7 +74,7 @@ public class MyCommunitiesPanel extends JPanel {
             panel.add(randomlabel);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
-            if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
+            //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             communityPanelParent.add(panel);
             myCommunityPanels.add(panel);
             i++;
