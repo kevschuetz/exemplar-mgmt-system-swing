@@ -1,9 +1,14 @@
 package view.frames.mainFrame;
 
+import view.listeners.ActionWithStringListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -74,6 +79,10 @@ public class MainFrame extends JFrame{
     public void setSearchExemplarListener(ActionListener l){menuPanel.searchExemplarListener = l;}
 
     public void setSearchContributorListener(ActionListener l) {menuPanel.searchContributorListener = l;}
+
+    public void setImportListener(ActionWithStringListener importListener) {
+        menuBar.importListener = importListener;
+    }
 
     private class MenuPanel extends JPanel{
         private JButton exemplarButton;
@@ -152,11 +161,26 @@ public class MainFrame extends JFrame{
 
     private class CMenuBar extends JMenuBar{
         private JMenu menu = new JMenu("Menu");
-        private JMenuItem importItem = new JMenuItem("Import");
+        private JMenuItem importItem = new JMenuItem("Import Exemplar");
+        private ActionWithStringListener importListener;
+
         CMenuBar(){
             menu.add(importItem);
             add(menu);
+            importItem.addActionListener((e)->{
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                jfc.setDialogTitle("Select a text file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+                jfc.addChoosableFileFilter(filter);
 
+                int returnValue = jfc.showOpenDialog(null);
+
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    importListener.stringSubmitted(selectedFile.getAbsolutePath());
+                }
+            });
         }
     }
 }
