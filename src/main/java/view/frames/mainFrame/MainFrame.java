@@ -161,13 +161,22 @@ public class MainFrame extends JFrame{
 
     private class CMenuBar extends JMenuBar{
         private JMenu menu = new JMenu("Menu");
-        private JMenuItem importItem = new JMenuItem("Import Exemplar");
+        private JMenu exemplarMenu = new JMenu("Exemplars");
+
+        private JMenuItem importExemplarItem = new JMenuItem("Import");
+        private JMenuItem createExemplarItem = new JMenuItem("Create");
+
+
+
+
         private ActionWithStringListener importListener;
 
         CMenuBar(){
-            menu.add(importItem);
+            exemplarMenu.add(importExemplarItem);
+            exemplarMenu.add(createExemplarItem);
+            menu.add(exemplarMenu);
             add(menu);
-            importItem.addActionListener((e)->{
+            importExemplarItem.addActionListener((e)->{
                 JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
                 jfc.setDialogTitle("Select a text file");
                 jfc.setAcceptAllFileFilterUsed(false);

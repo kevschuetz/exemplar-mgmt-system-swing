@@ -24,7 +24,7 @@ public class ContributorLibraryTab extends JPanel {
     JPanel contributorPanelParent = new JPanel();
     private List<User> allContributors;
     private JScrollPane scrollPane;
-    Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
+    Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener contributorListener;
     private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     JPanel buttonPanel;
@@ -72,14 +72,14 @@ public class ContributorLibraryTab extends JPanel {
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
                 JCheckBox checkBox = new JCheckBox();
-                if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
+               // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
                 panel.add(new JLabel(""));
                 panel.add(checkBox);
                 panel.setBorder(border);
                 panel.setPreferredSize(new Dimension(200, 50));
-                if (i % 2 == 0) panel.setBackground(Color.LIGHT_GRAY);
+                //if (i % 2 == 0) panel.setBackground(Color.LIGHT_GRAY);
                 selectedContributorMap.put(u.getUsername(), checkBox);
                 contributorPanelParent.add(panel);
                 i++;

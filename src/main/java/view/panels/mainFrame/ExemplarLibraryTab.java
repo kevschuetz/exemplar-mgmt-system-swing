@@ -25,7 +25,7 @@ public class ExemplarLibraryTab extends JPanel{
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
 
     private JScrollPane scrollPane;
-    Border border = BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
+    Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener exemplarListener;
     JPanel buttonPanel;
     private CloseTabListener closeListener;

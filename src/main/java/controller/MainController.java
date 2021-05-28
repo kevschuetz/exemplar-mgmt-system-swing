@@ -1,8 +1,10 @@
 package controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Community;
 import model.entities.Exemplar;
+import model.entities.Label;
 import model.entities.User;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
@@ -26,6 +28,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -93,6 +97,28 @@ public class MainController {
         mainFrame.setContributorButtonListener(getOpenContributorLibraryListener(false));
         mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
         mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
+        mainFrame.setImportListener((path)->{
+            Path pathTo = Path.of(path);
+            try {
+                String exemplarJson = Files.readString(pathTo);
+                ObjectMapper mapper = new ObjectMapper();
+                Exemplar importedExemplar = mapper.readValue(exemplarJson, Exemplar.class);
+                importedExemplar.setCreator(currentUser);
+                importedExemplar.setContributors(new ArrayList<User>());
+                for (Label l : importedExemplar.getLabels()){
+                    labelClient.add(l);
+                }
+                Exemplar response = exemplarClient.add(importedExemplar);
+                if(response != null){
+                    addExemplarTabToMainframe(response.getName());
+                    refreshHomeTab();
+                }else{
+                    JOptionPane.showMessageDialog(mainFrame, "An Exemplar with the name " + importedExemplar.getName() + " already exists. Choose another one and try again.");
+                }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -114,8 +140,7 @@ public class MainController {
                 newExemplarPopupFrame.setVisible(false);
                 newExemplarPopupFrame.clean();
                 createNewExemplarAndInitializeTab(s);
-                homeTab.refresh();
-                addListenersToHomeTab();
+                refreshHomeTab();
             }else{
                 JOptionPane.showMessageDialog(newExemplarPopupFrame, "Name already taken");
             }
@@ -178,8 +203,7 @@ public class MainController {
                     JOptionPane.showMessageDialog(newRatingPopupFrame, "Thank you for Rating " + newRatingPopupFrame.getTab().getExemplar().getName());
                 }
                 newRatingPopupFrame.getTab().refreshInfoPanel();
-                homeTab.refresh();
-                addListenersToHomeTab();
+                refreshHomeTab();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -392,8 +416,13 @@ public class MainController {
         homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener(false));
 
     }
+
+    void refreshHomeTab(){
+        homeTab.refresh();
+        addListenersToHomeTab();
+    }
     /**
-     *Gets called if a new Exemplar is meant to be created, adds the exemplar to the database and opens a new tab
+     *Creates a new exemplar with the given name (if available) and opens a tab with it
      */
     void createNewExemplarAndInitializeTab(String s){
         Exemplar e = new Exemplar();
@@ -471,8 +500,7 @@ public class MainController {
             try {
                 exemplarClient.delete(id);
                 mainFrame.removeTab(tab);
-                homeTab.refresh();
-                addListenersToHomeTab();
+                refreshHomeTab();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
