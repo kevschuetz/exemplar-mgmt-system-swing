@@ -7,14 +7,12 @@ import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.exemplarTab.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +32,7 @@ public class ContributorTab extends JPanel {
 
     private JButton closeButton = new JButton("Close Tab");
 
-    private CloseTabListener closeListener;
+    private ActionWithComponentListener closeListener;
     private ContributorListener contributorListener;
 
     private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
@@ -154,11 +152,11 @@ public class ContributorTab extends JPanel {
 
 
     void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
 
     }
 
-    public void setCloseListener(CloseTabListener closeListener) {
+    public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
 

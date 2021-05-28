@@ -3,19 +3,16 @@ package view.panels.mainFrame.exemplarTab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Exemplar;
 import model.entities.Label;
-import model.entities.Rating;
 import model.entities.User;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.exemplarTab.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.awt.event.ActionListener;
 
 
 public class ExemplarTab extends JPanel {
@@ -45,13 +42,15 @@ public class ExemplarTab extends JPanel {
     JButton updateButton = new JButton ("Update");
     JButton deleteButton = new JButton("Delete");
     JButton addLabelButton = new JButton("Add Label");
+    JButton exportButton = new JButton("Export");
 
-    private CloseTabListener closeListener;
+    private ActionWithComponentListener closeListener;
     private UpdateExemplarListener updateExemplarListener;
     private DeleteExemplarListener deleteExemplarListener;
     private AddLabelListener addLabelListener;
     private RatingListener ratingListener;
     private ContributorListener contributorListener;
+    private ActionWithComponentListener exportListener;
 
     private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
 
@@ -103,11 +102,12 @@ public class ExemplarTab extends JPanel {
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
 
-        configurationPanel.setLayout(new GridLayout(1, 7));
+        configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
             configurationPanel.add(updateButton);
             configurationPanel.add(addContributorButton);
             configurationPanel.add(deleteButton);
+            configurationPanel.add(exportButton);
         }
         configurationPanel.add(addLabelButton);
         configurationPanel.add(ratingButton);
@@ -221,7 +221,7 @@ public class ExemplarTab extends JPanel {
     }
 
     void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
         updateButton.addActionListener((x)->{
             exemplar.setSolution(solutionTextArea.getText());
             exemplar.setProblem(problemTextArea.getText());
@@ -235,6 +235,7 @@ public class ExemplarTab extends JPanel {
         });
         ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
         addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
+        exportButton.addActionListener((e)-> exportListener.componentSubmitted(this));
     }
 
     void initializeDeletalFrame(){
@@ -248,7 +249,7 @@ public class ExemplarTab extends JPanel {
             deleteExemplarListener.deleteRequested(exemplar.getName(), this);
         });
     }
-    public void setCloseListener(CloseTabListener closeListener) {
+    public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
 
@@ -282,5 +283,9 @@ public class ExemplarTab extends JPanel {
 
     public void setUpdateButton(JButton updateButton) {
         this.updateButton = updateButton;
+    }
+
+    public void setExportListener(ActionWithComponentListener exportListener) {
+        this.exportListener = exportListener;
     }
 }

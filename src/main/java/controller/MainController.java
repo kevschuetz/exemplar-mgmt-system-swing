@@ -1,6 +1,7 @@
 package controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Community;
 import model.entities.Exemplar;
@@ -14,7 +15,7 @@ import model.httpclients.UserClient;
 import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ContributorLibraryTab;
@@ -24,9 +25,14 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import view.panels.mainFrame.homeTab.HomeTab;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,6 +125,8 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+
+        mainFrame.setCreateExemplarListener((e)->newExemplarPopupFrame.setVisible(true));
     }
 
     /**
@@ -257,9 +265,9 @@ public class MainController {
                 }
                 else exemplarLibrary = new ExemplarLibraryTab("");
 
-                exemplarLibrary.setCloseListener(new CloseTabListener (){
+                exemplarLibrary.setCloseListener(new ActionWithComponentListener(){
                     @Override
-                    public void shutdownRequested(Component c){
+                    public void componentSubmitted(Component c){
                         mainFrame.removeTab(c);
                     }
                 });
@@ -302,9 +310,9 @@ public class MainController {
                     contributorLibrary = new ContributorLibraryTab(mainFrame.getSearchTerm());
                 }
                 else contributorLibrary = new ContributorLibraryTab("");
-                contributorLibrary.setCloseListener(new CloseTabListener (){
+                contributorLibrary.setCloseListener(new ActionWithComponentListener(){
                     @Override
-                    public void shutdownRequested(Component c){
+                    public void componentSubmitted(Component c){
                         mainFrame.removeTab(c);
                     }
                 });
@@ -446,12 +454,18 @@ public class MainController {
         }
     }
 
+    /**
+     * Fetches the user identified by the username and opens a new contributor tab for the user
+     * @param username the id of the user
+     * @throws IOException
+     * @throws InterruptedException
+     */
     void createNewContributorTab(String username) throws IOException, InterruptedException {
         User contributor = userClient.get(username);
         ContributorTab newContributorTab = new ContributorTab(contributor);
-        newContributorTab.setCloseListener(new CloseTabListener (){
+        newContributorTab.setCloseListener(new ActionWithComponentListener(){
             @Override
-            public void shutdownRequested(Component c){
+            public void componentSubmitted(Component c){
                 mainFrame.removeTab(c);
             }
         });
@@ -523,7 +537,40 @@ public class MainController {
             addContributorFrame.setTitle(t.getExemplar().getName());
             addContributorFrame.setVisible(true);
         });
+
+        newExemplarTab.setExportListener((c)->{
+            ExemplarTab tab = (ExemplarTab)c;
+            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            jfc.setDialogTitle("Choose a destination");
+            jfc.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+            jfc.addChoosableFileFilter(filter);
+
+            int returnValue = jfc.showSaveDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = jfc.getSelectedFile();
+                String path = selectedFile.getAbsolutePath();
+                if(!path.contains(".txt")) path += ".txt";
+                exportExemplar(path, tab.getExemplar());
+            }
+        });
     }
+
+    private void exportExemplar(String path, Exemplar exemplar) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(exemplar);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            writer.write(json);
+            writer.close();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Verifies if an Exemplar with the given String as ID already exists and returns false if so.

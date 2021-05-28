@@ -1,11 +1,8 @@
 package view.panels.mainFrame;
 
-import model.entities.Exemplar;
 import model.entities.User;
-import model.httpclients.ExemplarClient;
-import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
@@ -15,7 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +24,7 @@ public class ContributorLibraryTab extends JPanel {
     private NewTabListener contributorListener;
     private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     JPanel buttonPanel;
-    private CloseTabListener closeListener;
+    private ActionWithComponentListener closeListener;
 
 
 
@@ -127,7 +123,7 @@ public class ContributorLibraryTab extends JPanel {
         });
 
         openContributorsButton.addActionListener((x)->openContributors());
-        closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
@@ -148,7 +144,7 @@ public class ContributorLibraryTab extends JPanel {
         contributorListener.tabRequested(selectedContributors);
     }
 
-    public void setCloseListener(CloseTabListener closeListener) {
+    public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
 

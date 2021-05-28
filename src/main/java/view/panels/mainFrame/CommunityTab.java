@@ -1,14 +1,14 @@
 package view.panels.mainFrame;
 
 import model.entities.Community;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 
 import javax.swing.*;
 
 public class CommunityTab extends JPanel {
     private Community community;
     private JButton closeButton = new JButton("Close");
-    private CloseTabListener closeListener;
+    private ActionWithComponentListener closeListener;
 
     public CommunityTab(Community community){
         this.community=community;
@@ -22,13 +22,13 @@ public class CommunityTab extends JPanel {
         add(closeButton);
     }
     void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
     }
 
 
 
 
-    public void setCloseListener(CloseTabListener closeListener) {
+    public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
 }

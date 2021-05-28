@@ -3,14 +3,13 @@ package view.panels.mainFrame;
 import model.entities.Exemplar;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
-import view.listeners.mainframe.CloseTabListener;
+import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class ExemplarLibraryTab extends JPanel{
     Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener exemplarListener;
     JPanel buttonPanel;
-    private CloseTabListener closeListener;
+    private ActionWithComponentListener closeListener;
 
     private ItemListener sortingListener;
     JComboBox sortingComboBox;
@@ -151,7 +150,7 @@ public class ExemplarLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        closeLibraryButton.addActionListener((x)->closeListener.shutdownRequested(this));
+        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
         openExemplarsButton.addActionListener((x)->openExemplars());
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
@@ -173,7 +172,7 @@ public class ExemplarLibraryTab extends JPanel{
         exemplarListener.tabRequested(selectedExemplars);
     }
 
-    public void setCloseListener(CloseTabListener closeListener) {
+    public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
 

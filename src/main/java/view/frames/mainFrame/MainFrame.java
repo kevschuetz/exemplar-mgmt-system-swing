@@ -84,6 +84,8 @@ public class MainFrame extends JFrame{
         menuBar.importListener = importListener;
     }
 
+    public void setCreateExemplarListener(ActionListener l){menuBar.createExemplarListener = l;}
+
     private class MenuPanel extends JPanel{
         private JButton exemplarButton;
         private JButton communityButton;
@@ -170,12 +172,18 @@ public class MainFrame extends JFrame{
 
 
         private ActionWithStringListener importListener;
+        private ActionListener createExemplarListener;
 
         CMenuBar(){
             exemplarMenu.add(importExemplarItem);
             exemplarMenu.add(createExemplarItem);
             menu.add(exemplarMenu);
             add(menu);
+            addListener();
+
+        }
+
+        private void addListener() {
             importExemplarItem.addActionListener((e)->{
                 JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
                 jfc.setDialogTitle("Select a text file");
@@ -190,6 +198,8 @@ public class MainFrame extends JFrame{
                     importListener.stringSubmitted(selectedFile.getAbsolutePath());
                 }
             });
+
+            createExemplarItem.addActionListener((e)-> createExemplarListener.actionPerformed(e));
         }
     }
 }
