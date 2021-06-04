@@ -288,4 +288,8 @@ public class ExemplarTab extends JPanel {
     public void setExportListener(ActionWithComponentListener exportListener) {
         this.exportListener = exportListener;
     }
+
+    public boolean isEditable(){
+        return this.editable;
+    }
 }

@@ -504,7 +504,7 @@ public class MainController {
         newExemplarTab.setCloseListener((c)->{
             ExemplarTab tab = (ExemplarTab)c;
             JButton updateButton = tab.getUpdateButton();
-            updateButton.doClick();
+            if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
         newExemplarTab.setUpdateExemplarListener((exemplar)->{
