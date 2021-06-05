@@ -1,17 +1,17 @@
 package view.panels.mainFrame;
 
 import model.entities.User;
+import model.httpclients.ExemplarClient;
+import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
+import view.frames.mainFrame.NewLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,8 +25,17 @@ public class ContributorLibraryTab extends JPanel {
     private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     JPanel buttonPanel;
     private ActionWithComponentListener closeListener;
+    private Map <User, double []> exemplarMap = new HashMap(); // [0] = average Rating [1] = number of Exemplars
+    private Map <User, List<model.entities.Label>> labelsPerContributor = new HashMap();
+    private ExemplarClient exemplarClient = new ExemplarClient();
+    private RatingClient ratingClient = new RatingClient();
 
+    private JComboBox sortingComboBox;
+    private JComboBox sortingComboBox2;
+    private ItemListener sortingListener;
 
+    FilterLabelPopupFrame filterLabelPopupFrame;
+    ActionListener filterListener;
 
     public ContributorLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(contributorPanelParent);
@@ -36,7 +45,7 @@ public class ContributorLibraryTab extends JPanel {
 
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
         addContributorsToScrollPane();
-
+        initializeSortingListener();
         initializeButtonPanel();
         addComponents();
     }
@@ -47,6 +56,14 @@ public class ContributorLibraryTab extends JPanel {
                 .stream()
                 .filter(u->u.getIsContributor()==1)
                 .collect(Collectors.toList());
+        for(User u : allContributors){
+            exemplarMap.put(u, new double[]{
+                    exemplarClient.getExemplarsForUser(u.getUsername()).stream().
+                            mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
+                            average().orElse(0),
+                    exemplarClient.getExemplarsForUser(u.getUsername()).size()});
+        }
+
     }
 
     public void addContributorsToScrollPane(){
@@ -54,7 +71,7 @@ public class ContributorLibraryTab extends JPanel {
         for(User u : allContributors){
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
-                panel.setLayout(new GridLayout(2, 3));
+                panel.setLayout(new GridLayout(5, 3));
                 panel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent event) {
@@ -65,13 +82,33 @@ public class ContributorLibraryTab extends JPanel {
                         }
                     }
                 });
+                labelsPerContributor.put(u, exemplarClient.getExemplarsForUser(u.getUsername()).stream().
+                        flatMap(e -> e.getLabels().stream()).collect(Collectors.toList()));
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
+                JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
+                JLabel numberOfExemplars = new JLabel(String.valueOf((int)exemplarMap.get(u)[1]));
+                JLabel labelAverageRatingOfExemplars = new JLabel("Average Rating: ");
+                JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(u)[0] * 100.00) / 100.00));
+                JLabel labelExemplarLabels = new JLabel("Labels of Exemplars: ");
+
                 JCheckBox checkBox = new JCheckBox();
                // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
                 panel.add(new JLabel(""));
+                panel.add(labelNumberOfExemplars);
+                panel.add(numberOfExemplars);
+                panel.add(new JLabel(""));
+                panel.add(labelAverageRatingOfExemplars);
+                panel.add(averageRatingOfExemplars);
+                panel.add(new JLabel(""));
+                panel.add(labelExemplarLabels);
+                StringBuilder labels = new StringBuilder();
+                for(model.entities.Label l: labelsPerContributor.get(u)){
+                    labels.append(l.getValue() + "   ");
+                }
+                panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
                 panel.setPreferredSize(new Dimension(200, 50));
@@ -109,18 +146,13 @@ public class ContributorLibraryTab extends JPanel {
         buttonPanel.setLayout(new GridLayout(1,3));
         String [] sortingComboBoxList = {"Sort by average Rating of Exemplars", "Sort by Number of Exemplars"};
         String [] sortingComboBoxList2 = {"descending", "ascending"};
-        JComboBox sortingComboBox = new JComboBox(sortingComboBoxList);
-        JComboBox sortingComboBox2 = new JComboBox(sortingComboBoxList2);
+        sortingComboBox = new JComboBox(sortingComboBoxList);
+        sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         JButton filterButton = new JButton("Filter by Label");
         JButton openContributorsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
-        sortingComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                // do something
-            }
-
-        });
+        sortingComboBox.addItemListener(sortingListener);
+        sortingComboBox2.addItemListener(sortingListener);
 
         openContributorsButton.addActionListener((x)->openContributors());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
@@ -143,6 +175,50 @@ public class ContributorLibraryTab extends JPanel {
         }
         contributorListener.tabRequested(selectedContributors);
     }
+
+    private void initializeSortingListener() {
+        sortingListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                // do something
+                if(sortingComboBox.getSelectedIndex() == 0) {
+                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                        allContributors = allContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+                        Collections.reverse(allContributors);
+                    }else
+                        allContributors = allContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+                }
+                if(sortingComboBox.getSelectedIndex() == 1) {
+                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                        allContributors= allContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+                        Collections.reverse(allContributors);
+                    }else
+                        allContributors= allContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+                }
+                updateTab();
+            }
+        };
+    }
+
+    public void updateTab (){
+        removeAll();
+        contributorPanelParent.removeAll();
+        addContributorsToScrollPane();
+        addComponents();
+    }
+
+    void initializeNewLabelPopupFrame(){
+        filterLabelPopupFrame = new FilterLabelPopupFrame();
+        filterLabelPopupFrame.setVisible(false);
+        filterLabelPopupFrame.setSize(new Dimension(350, 200));
+        filterLabelPopupFrame.setLocationRelativeTo(this);
+    }
+
+
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;

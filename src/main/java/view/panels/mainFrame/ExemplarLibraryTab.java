@@ -19,7 +19,9 @@ public class ExemplarLibraryTab extends JPanel{
 
     JPanel exemplarPanelParent = new JPanel();
     private List<Exemplar> allExemplars;
-    private Map<Exemplar, Double> ratingMap = new HashMap<>();
+    //private Map<Exemplar, Double> ratingMap = new HashMap<>();
+    private Map<Exemplar, double []> ratingMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
+
     private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
 
@@ -52,15 +54,23 @@ public class ExemplarLibraryTab extends JPanel{
         sortingListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
-                RatingClient ratingClient = new RatingClient();
                 if(sortingComboBox.getSelectedIndex() == 1) {
                     if(sortingComboBox2.getSelectedIndex() == 0) {
                         allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e))).collect(Collectors.toList());
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
                         Collections.reverse(allExemplars);
                     }else
                         allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e))).collect(Collectors.toList());
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                }
+                if(sortingComboBox.getSelectedIndex() == 2) {
+                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+                        Collections.reverse(allExemplars);
+                    }else
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
                 }
                 updateTab();
             }
@@ -72,7 +82,8 @@ public class ExemplarLibraryTab extends JPanel{
         RatingClient ratingClient = new RatingClient();
         allExemplars = exemplarClient.searchExemplars(searchTerm);
         for (Exemplar e : allExemplars){
-            ratingMap.put(e, ratingClient.getAvgRatingForExemplar(e.getName()));
+            ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
+                    ratingClient.getRatingsForExemplar(e.getName()).size()});
         }
     }
 
