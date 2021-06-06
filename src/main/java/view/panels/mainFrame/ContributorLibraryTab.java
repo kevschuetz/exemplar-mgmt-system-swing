@@ -6,6 +6,7 @@ import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
 import view.frames.mainFrame.NewLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
+import view.listeners.mainframe.FilterByLabelListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
@@ -35,7 +36,8 @@ public class ContributorLibraryTab extends JPanel {
     private ItemListener sortingListener;
 
     FilterLabelPopupFrame filterLabelPopupFrame;
-    ActionListener filterListener;
+    FilterByLabelListener filterListener;
+    private List <String> filteredLabels = new ArrayList<>();
 
     public ContributorLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(contributorPanelParent);
@@ -46,6 +48,7 @@ public class ContributorLibraryTab extends JPanel {
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
         addContributorsToScrollPane();
         initializeSortingListener();
+        initializeNewLabelPopupFrame();
         initializeButtonPanel();
         addComponents();
     }
@@ -56,6 +59,10 @@ public class ContributorLibraryTab extends JPanel {
                 .stream()
                 .filter(u->u.getIsContributor()==1)
                 .collect(Collectors.toList());
+        addExemplarInformation();
+    }
+
+    public void addExemplarInformation(){
         for(User u : allContributors){
             exemplarMap.put(u, new double[]{
                     exemplarClient.getExemplarsForUser(u.getUsername()).stream().
@@ -63,7 +70,6 @@ public class ContributorLibraryTab extends JPanel {
                             average().orElse(0),
                     exemplarClient.getExemplarsForUser(u.getUsername()).size()});
         }
-
     }
 
     public void addContributorsToScrollPane(){
@@ -72,6 +78,7 @@ public class ContributorLibraryTab extends JPanel {
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
                 panel.setLayout(new GridLayout(5, 3));
+
                 panel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent event) {
@@ -156,6 +163,13 @@ public class ContributorLibraryTab extends JPanel {
 
         openContributorsButton.addActionListener((x)->openContributors());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
+        filterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterLabelPopupFrame.setVisible(true);
+            }
+        });
+
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
@@ -216,6 +230,29 @@ public class ContributorLibraryTab extends JPanel {
         filterLabelPopupFrame.setVisible(false);
         filterLabelPopupFrame.setSize(new Dimension(350, 200));
         filterLabelPopupFrame.setLocationRelativeTo(this);
+
+        filterLabelPopupFrame.setListener((i) -> {
+            filteredLabels.add(filterLabelPopupFrame.getLabel());
+            filter();
+            filterLabelPopupFrame.setVisible(false);
+
+        });
+    }
+
+    public void filter (){
+        allContributors = allContributors.stream().
+                filter(c -> {
+                    List <String> allLabels = labelsPerContributor.get(c).stream().
+                                    map(l -> l.getValue().toLowerCase()).collect(Collectors.toList());
+                    for(String s: filteredLabels){
+                        if(allLabels.contains(s.toLowerCase())) return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        addExemplarInformation();
+        updateTab();
+
+
     }
 
 

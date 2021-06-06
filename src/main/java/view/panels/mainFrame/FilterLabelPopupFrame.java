@@ -1,6 +1,7 @@
 package view.panels.mainFrame;
 
 
+import view.listeners.mainframe.FilterByLabelListener;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class FilterLabelPopupFrame extends JFrame {
     private JButton button = new JButton("Filter");
     private ExemplarTab tab;
 
-    private ActionListener listener;
+    private FilterByLabelListener listener;
 
     public FilterLabelPopupFrame (){
         JPanel parentPanel = new JPanel();
@@ -31,9 +32,7 @@ public class FilterLabelPopupFrame extends JFrame {
         namePanel.setLayout(new GridLayout(1,2));
         namePanel.add(nameLabel);
         namePanel.add(labelField);
-
-        //button.addActionListener(x->listener.(labelField.getText()));
-
+        button.addActionListener(x -> listener.filter(labelField.getText()));
         parentPanel.add(infoPanel);
         parentPanel.add(namePanel);
         parentPanel.add(button);
@@ -41,7 +40,11 @@ public class FilterLabelPopupFrame extends JFrame {
         getRootPane().setDefaultButton(button);
     }
 
-    public void setListener(ActionListener listener) {
+    public String getLabel(){
+        return labelField.getText();
+    }
+
+    public void setListener(FilterByLabelListener listener) {
         this.listener = listener;
     }
 
