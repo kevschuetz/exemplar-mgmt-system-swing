@@ -23,7 +23,8 @@ public class FilterLabelPopupFrame extends JFrame {
     private java.util.List<String> selectedLabels = new ArrayList<>();
     private FilterByLabelListener listener;
 
-    public FilterLabelPopupFrame (Set<model.entities.Label> labelSet){
+    public FilterLabelPopupFrame (Set<model.entities.Label> labelSet, String title){
+        setTitle(title);
         this.labelSet=labelSet;
 
         initializeLabelPanels();
@@ -33,7 +34,6 @@ public class FilterLabelPopupFrame extends JFrame {
         parentPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Filter by label"),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-
         addComponents();
 
         button.addActionListener(x -> {

@@ -3,6 +3,7 @@ package view.panels.mainFrame;
 import model.entities.Exemplar;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
+import view.frames.mainFrame.FilterLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
@@ -16,24 +17,29 @@ import java.util.stream.Collectors;
 
 
 public class ExemplarLibraryTab extends JPanel{
-
-    JPanel exemplarPanelParent = new JPanel();
     private List<Exemplar> allExemplars;
-    //private Map<Exemplar, Double> ratingMap = new HashMap<>();
+    private List<Exemplar> filteredExemplars=new ArrayList<>();
     private Map<Exemplar, double []> ratingMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
-
     private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
+    private Set<model.entities.Label> allLabels = new HashSet<>();
+    private List<String> filteredLabels = new ArrayList<>();
+    private boolean filtered = false;
 
     private JScrollPane scrollPane;
-    Border border = BorderFactory.createBevelBorder(0);
-    private NewTabListener exemplarListener;
+    JPanel exemplarPanelParent = new JPanel();
     JPanel buttonPanel;
-    private ActionWithComponentListener closeListener;
+    JButton filterButton;
+    Border border = BorderFactory.createBevelBorder(0);
 
-    private ItemListener sortingListener;
     JComboBox sortingComboBox;
     JComboBox sortingComboBox2;
+
+    private ActionWithComponentListener closeListener;
+    private NewTabListener exemplarListener;
+    private ItemListener sortingListener;
+
+    private FilterLabelPopupFrame filterLabelPopupFrame;
 
     public ExemplarLibraryTab(String searchTerm){
         fetchExemplars(searchTerm);
@@ -47,6 +53,7 @@ public class ExemplarLibraryTab extends JPanel{
         scrollPane.setLayout(new ScrollPaneLayout());
 
         initializeButtonPanel();
+        initializeFilterLabelFrame();
         addComponents();
     }
 
@@ -54,23 +61,33 @@ public class ExemplarLibraryTab extends JPanel{
         sortingListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
+                /**
+                 * Sort by avg rating
+                 */
                 if(sortingComboBox.getSelectedIndex() == 1) {
-                    if(sortingComboBox2.getSelectedIndex() == 0) {
                         allExemplars = allExemplars.stream().
                                 sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                        filteredExemplars=filteredExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                    if(sortingComboBox2.getSelectedIndex() == 0){
                         Collections.reverse(allExemplars);
-                    }else
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                        Collections.reverse(filteredExemplars);
+                    }
                 }
+
+                /**
+                 * Sort by number of ratings
+                 */
                 if(sortingComboBox.getSelectedIndex() == 2) {
+                        allExemplars = allExemplars.stream().
+                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+                    filteredExemplars=filteredExemplars.stream().
+                            sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+
                     if(sortingComboBox2.getSelectedIndex() == 0) {
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
                         Collections.reverse(allExemplars);
-                    }else
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+                        Collections.reverse(filteredExemplars);
+                    }
                 }
                 updateTab();
             }
@@ -84,6 +101,9 @@ public class ExemplarLibraryTab extends JPanel{
         for (Exemplar e : allExemplars){
             ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
                     ratingClient.getRatingsForExemplar(e.getName()).size()});
+            for(model.entities.Label l : e.getLabels()){
+                allLabels.add(l);
+            }
         }
     }
 
@@ -110,7 +130,7 @@ public class ExemplarLibraryTab extends JPanel{
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
             String rating = "";
-            rating += ratingMap.get(e);
+            rating += ratingMap.get(e)[0];
             panel.add(new JLabel(rating));
             panel.add(checkBox);
             panel.setBorder(border);
@@ -121,7 +141,9 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     void addExemplarPanelsToParentPanel(){
-        for(Exemplar e : allExemplars){
+        List<Exemplar> exemplars = allExemplars;
+        if(filtered) exemplars = filteredExemplars;
+        for(Exemplar e : exemplars){
             exemplarPanelParent.add(exemplarJPanelMap.get(e));
         }
     }
@@ -150,11 +172,11 @@ public class ExemplarLibraryTab extends JPanel{
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
-        String [] sortingComboBoxList = {"Sort by creation date", "Sort by Rating", "Sort by Number of Users"};
+        String [] sortingComboBoxList = {"Sort by creation date", "Sort by Rating", "Sort by Number of Ratings"};
         String [] sortingComboBoxList2 = {"descending", "ascending"};
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
-        JButton filterButton = new JButton("Filter by Label");
+        filterButton = new JButton("Filter by Label");
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
         sortingComboBox.addItemListener(sortingListener);
@@ -162,12 +184,44 @@ public class ExemplarLibraryTab extends JPanel{
 
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
         openExemplarsButton.addActionListener((x)->openExemplars());
+        filterButton.addActionListener(e->filterLabelPopupFrame.setVisible(true));
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
         buttonPanel.add(openExemplarsButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
+    }
+
+    void initializeFilterLabelFrame(){
+        filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Exemplars");
+        filterLabelPopupFrame.setVisible(false);
+        filterLabelPopupFrame.setSize(new Dimension(350, 400));
+        filterLabelPopupFrame.setLocationRelativeTo(this);
+
+        filterLabelPopupFrame.setListener((labels) -> {
+            filteredLabels = labels;
+            if(filteredLabels.size()==0) filtered = false;
+            else filterExemplars();
+            updateTab();
+            filterLabelPopupFrame.setVisible(false);
+        });
+    }
+
+    private void filterExemplars() {
+        filteredExemplars = allExemplars.stream().
+                filter(e->{
+                    List <String> allLabels = e.getLabels().stream().
+                            map(l -> l.getValue().toLowerCase()).collect(Collectors.toList());
+                    int i = filteredLabels.size();
+                    int j = 0;
+                    for(String s: filteredLabels){
+                        if(allLabels.contains(s.toLowerCase())) j++;
+                    }
+                    if(i==j)return true;
+                    return false;
+                }).collect(Collectors.toList());
+        filtered=true;
     }
 
     void openExemplars(){

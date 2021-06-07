@@ -58,7 +58,7 @@ public class ContributorLibraryTab extends JPanel {
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
         addContributorsToScrollPane();
         initializeSortingListener();
-        initializeNewLabelPopupFrame();
+        initializeFilterLabelFrame();
         initializeButtonPanel();
         addComponents();
     }
@@ -259,21 +259,23 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
-    void initializeNewLabelPopupFrame(){
-        filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels);
+    void initializeFilterLabelFrame(){
+        filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Contributors");
         filterLabelPopupFrame.setVisible(false);
-        filterLabelPopupFrame.setSize(new Dimension(350, 200));
+        filterLabelPopupFrame.setSize(new Dimension(350, 400));
         filterLabelPopupFrame.setLocationRelativeTo(this);
 
         filterLabelPopupFrame.setListener((labels) -> {
             filteredLabels = labels;
-            filter();
+            if(filteredLabels.size()==0) filtered = false;
+            else filterContributors();
+            updateTab();
             filterLabelPopupFrame.setVisible(false);
 
         });
     }
 
-    public void filter (){
+    public void filterContributors(){
         filteredContributors = allContributors.stream().
                 filter(c -> {
                     List <String> allLabels = labelsPerContributor.get(c).stream().
@@ -287,7 +289,6 @@ public class ContributorLibraryTab extends JPanel {
                     return false;
                 }).collect(Collectors.toList());
         filtered = true;
-        updateTab();
     }
 
 
