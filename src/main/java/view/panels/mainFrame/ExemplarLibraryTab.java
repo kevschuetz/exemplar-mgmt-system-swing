@@ -88,7 +88,6 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     public void createExemplarPanels(){
-        RatingClient client = new RatingClient();
         for(Exemplar e : allExemplars){
             JPanel panel = new JPanel();
             panel.addMouseListener(new MouseAdapter() {

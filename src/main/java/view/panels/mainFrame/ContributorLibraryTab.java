@@ -1,10 +1,10 @@
 package view.panels.mainFrame;
 
+import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
-import view.frames.mainFrame.NewLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.FilterByLabelListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
@@ -19,34 +19,40 @@ import java.util.stream.Collectors;
 
 public class ContributorLibraryTab extends JPanel {
     JPanel contributorPanelParent = new JPanel();
-    private List<User> allContributors;
     private JScrollPane scrollPane;
     Border border = BorderFactory.createBevelBorder(0);
-    private NewTabListener contributorListener;
-    private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     JPanel buttonPanel;
-    private ActionWithComponentListener closeListener;
-    private Map <User, double []> exemplarMap = new HashMap(); // [0] = average Rating [1] = number of Exemplars
-    private Map <User, List<model.entities.Label>> labelsPerContributor = new HashMap();
+
     private ExemplarClient exemplarClient = new ExemplarClient();
     private RatingClient ratingClient = new RatingClient();
 
     private JComboBox sortingComboBox;
     private JComboBox sortingComboBox2;
+
     private ItemListener sortingListener;
+    private ActionWithComponentListener closeListener;
+    FilterByLabelListener filterListener;
+    private NewTabListener contributorListener;
 
     FilterLabelPopupFrame filterLabelPopupFrame;
-    FilterByLabelListener filterListener;
+
     private List <String> filteredLabels = new ArrayList<>();
+    private List<User> allContributors;
+    private List<User> filteredContributors;
+    private Map <User, double []> exemplarMap = new HashMap(); // [0] = average Rating [1] = number of Exemplars
+    private Map <User, List<model.entities.Label>> labelsPerContributor = new HashMap();
+    private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
+    private Map<User, List<Exemplar>> contributorExemplarMap = new HashMap<>();
 
     public ContributorLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(contributorPanelParent);
         scrollPane.setLayout(new ScrollPaneLayout());
 
         fetchContributors(searchTerm);
+        addExemplarInformation();
 
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
-        addContributorsToScrollPane();
+        addContributorsToScrollPane(allContributors);
         initializeSortingListener();
         initializeNewLabelPopupFrame();
         initializeButtonPanel();
@@ -59,22 +65,30 @@ public class ContributorLibraryTab extends JPanel {
                 .stream()
                 .filter(u->u.getIsContributor()==1)
                 .collect(Collectors.toList());
-        addExemplarInformation();
+
     }
 
     public void addExemplarInformation(){
         for(User u : allContributors){
-            exemplarMap.put(u, new double[]{
-                    exemplarClient.getExemplarsForUser(u.getUsername()).stream().
-                            mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
-                            average().orElse(0),
-                    exemplarClient.getExemplarsForUser(u.getUsername()).size()});
+            List<Exemplar> forUser = exemplarClient.getExemplarsForUser(u.getUsername());
+            contributorExemplarMap.put(u, forUser);
+            exemplarMap.put(u,
+                    new double[]{
+                        forUser.stream().
+                                mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
+                                average().orElse(0),
+                        forUser.size()});
+            labelsPerContributor.put(u,
+                    forUser.stream().
+                        flatMap(e -> e.getLabels().stream()).collect(Collectors.toList()));
+
         }
+
     }
 
-    public void addContributorsToScrollPane(){
+    public void addContributorsToScrollPane(List<User> contributors){
         int i = 0;
-        for(User u : allContributors){
+        for(User u : contributors){
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
                 panel.setLayout(new GridLayout(5, 3));
@@ -89,8 +103,7 @@ public class ContributorLibraryTab extends JPanel {
                         }
                     }
                 });
-                labelsPerContributor.put(u, exemplarClient.getExemplarsForUser(u.getUsername()).stream().
-                        flatMap(e -> e.getLabels().stream()).collect(Collectors.toList()));
+
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
@@ -129,6 +142,7 @@ public class ContributorLibraryTab extends JPanel {
     }
 
     void addComponents(){
+        setVisible(false);
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -145,6 +159,7 @@ public class ContributorLibraryTab extends JPanel {
         c.gridx=0;
         c.gridy=1;
         add(buttonPanel, c);
+        setVisible(true);
 
     }
 
@@ -213,15 +228,15 @@ public class ContributorLibraryTab extends JPanel {
                         allContributors= allContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
                 }
-                updateTab();
+                updateTab(allContributors);
             }
         };
     }
 
-    public void updateTab (){
+    public void updateTab (List<User> selectedContributors){
         removeAll();
         contributorPanelParent.removeAll();
-        addContributorsToScrollPane();
+        addContributorsToScrollPane(selectedContributors);
         addComponents();
     }
 
@@ -240,19 +255,19 @@ public class ContributorLibraryTab extends JPanel {
     }
 
     public void filter (){
-        allContributors = allContributors.stream().
+        filteredContributors = allContributors.stream().
                 filter(c -> {
                     List <String> allLabels = labelsPerContributor.get(c).stream().
                                     map(l -> l.getValue().toLowerCase()).collect(Collectors.toList());
+                    int i = filteredLabels.size();
+                    int j = 0;
                     for(String s: filteredLabels){
-                        if(allLabels.contains(s.toLowerCase())) return true;
+                        if(allLabels.contains(s.toLowerCase())) j++;
                     }
+                    if(i==j)return true;
                     return false;
                 }).collect(Collectors.toList());
-        addExemplarInformation();
-        updateTab();
-
-
+        updateTab(filteredContributors);
     }
 
 
