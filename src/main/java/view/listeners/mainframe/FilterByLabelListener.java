@@ -1,5 +1,9 @@
 package view.listeners.mainframe;
 
+import model.entities.Label;
+
+import java.util.List;
+
 public interface FilterByLabelListener {
-    void filter(String labelValue);
+    void filter(List<String> labels);
 }

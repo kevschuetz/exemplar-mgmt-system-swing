@@ -251,7 +251,7 @@ public class ContributorLibraryTab extends JPanel {
             }
         };
     }
-    
+
     public void updateTab (){
         removeAll();
         contributorPanelParent.removeAll();
@@ -265,10 +265,8 @@ public class ContributorLibraryTab extends JPanel {
         filterLabelPopupFrame.setSize(new Dimension(350, 200));
         filterLabelPopupFrame.setLocationRelativeTo(this);
 
-
-
-        filterLabelPopupFrame.setListener((i) -> {
-            filteredLabels.add(filterLabelPopupFrame.getLabel());
+        filterLabelPopupFrame.setListener((labels) -> {
+            filteredLabels = labels;
             filter();
             filterLabelPopupFrame.setVisible(false);
 
