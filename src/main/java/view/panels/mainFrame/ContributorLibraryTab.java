@@ -5,6 +5,7 @@ import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import model.httpclients.UserClient;
+import view.frames.mainFrame.FilterLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.FilterByLabelListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
@@ -37,12 +38,15 @@ public class ContributorLibraryTab extends JPanel {
     FilterLabelPopupFrame filterLabelPopupFrame;
 
     private List <String> filteredLabels = new ArrayList<>();
+    private Set<model.entities.Label> allLabels = new HashSet<>();
     private List<User> allContributors;
-    private List<User> filteredContributors;
+    private List<User> filteredContributors = new ArrayList<>();
     private Map <User, double []> exemplarMap = new HashMap(); // [0] = average Rating [1] = number of Exemplars
     private Map <User, List<model.entities.Label>> labelsPerContributor = new HashMap();
     private Map<String, JCheckBox> selectedContributorMap = new HashMap<>();
     private Map<User, List<Exemplar>> contributorExemplarMap = new HashMap<>();
+
+    boolean filtered = false;
 
     public ContributorLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(contributorPanelParent);
@@ -52,7 +56,7 @@ public class ContributorLibraryTab extends JPanel {
         addExemplarInformation();
 
         contributorPanelParent.setLayout(new GridLayout(allContributors.size()+1, 1));
-        addContributorsToScrollPane(allContributors);
+        addContributorsToScrollPane();
         initializeSortingListener();
         initializeNewLabelPopupFrame();
         initializeButtonPanel();
@@ -78,16 +82,21 @@ public class ContributorLibraryTab extends JPanel {
                                 mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
                                 average().orElse(0),
                         forUser.size()});
-            labelsPerContributor.put(u,
-                    forUser.stream().
-                        flatMap(e -> e.getLabels().stream()).collect(Collectors.toList()));
 
+            List<model.entities.Label> labelsForContributor = forUser.stream().
+                    flatMap(e -> e.getLabels().stream()).collect(Collectors.toList());
+            for(model.entities.Label l : labelsForContributor){
+                allLabels.add(l);
+            }
+            labelsPerContributor.put(u, labelsForContributor);
         }
 
     }
 
-    public void addContributorsToScrollPane(List<User> contributors){
+    public void addContributorsToScrollPane(){
         int i = 0;
+        List<User> contributors = allContributors;
+        if(filtered) contributors = filteredContributors;
         for(User u : contributors){
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
@@ -209,42 +218,54 @@ public class ContributorLibraryTab extends JPanel {
         sortingListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent event) {
-                // do something
+                /**
+                 * Sort by avg rating of exemplar
+                 */
                 if(sortingComboBox.getSelectedIndex() == 0) {
+                    allContributors = allContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+
+                    filteredContributors = filteredContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+
                     if(sortingComboBox2.getSelectedIndex() == 0) {
-                        allContributors = allContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
                         Collections.reverse(allContributors);
-                    }else
-                        allContributors = allContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+                        Collections.reverse(filteredContributors);
+                    }
                 }
+                /**
+                 * Sort by number of users
+                 */
                 if(sortingComboBox.getSelectedIndex() == 1) {
-                    if(sortingComboBox2.getSelectedIndex() == 0) {
                         allContributors= allContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+                        filteredContributors= filteredContributors.stream().
+                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+
+                    if(sortingComboBox2.getSelectedIndex() == 0){
                         Collections.reverse(allContributors);
-                    }else
-                        allContributors= allContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+                        Collections.reverse(filteredContributors);
+                    }
                 }
-                updateTab(allContributors);
+                updateTab();
             }
         };
     }
-
-    public void updateTab (List<User> selectedContributors){
+    
+    public void updateTab (){
         removeAll();
         contributorPanelParent.removeAll();
-        addContributorsToScrollPane(selectedContributors);
+        addContributorsToScrollPane();
         addComponents();
     }
 
     void initializeNewLabelPopupFrame(){
-        filterLabelPopupFrame = new FilterLabelPopupFrame();
+        filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels);
         filterLabelPopupFrame.setVisible(false);
         filterLabelPopupFrame.setSize(new Dimension(350, 200));
         filterLabelPopupFrame.setLocationRelativeTo(this);
+
+
 
         filterLabelPopupFrame.setListener((i) -> {
             filteredLabels.add(filterLabelPopupFrame.getLabel());
@@ -267,7 +288,8 @@ public class ContributorLibraryTab extends JPanel {
                     if(i==j)return true;
                     return false;
                 }).collect(Collectors.toList());
-        updateTab(filteredContributors);
+        filtered = true;
+        updateTab();
     }
 
 

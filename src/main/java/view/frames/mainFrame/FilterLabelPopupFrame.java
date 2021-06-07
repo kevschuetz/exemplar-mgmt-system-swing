@@ -1,4 +1,4 @@
-package view.panels.mainFrame;
+package view.frames.mainFrame;
 
 
 import view.listeners.mainframe.FilterByLabelListener;
@@ -7,6 +7,7 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 
 public class FilterLabelPopupFrame extends JFrame {
@@ -20,7 +21,7 @@ public class FilterLabelPopupFrame extends JFrame {
 
     private FilterByLabelListener listener;
 
-    public FilterLabelPopupFrame (){
+    public FilterLabelPopupFrame (Set<model.entities.Label> labelSet){
         JPanel parentPanel = new JPanel();
         parentPanel.setLayout(new GridLayout(3,1));
         parentPanel.setBorder(BorderFactory.createCompoundBorder(
