@@ -120,21 +120,35 @@ public class ExemplarLibraryTab extends JPanel{
                     }
                 }
             });
-            panel.setLayout(new GridLayout(2,3));
+            panel.setLayout(new GridLayout(4,3));
+
             JLabel name = new JLabel("Name: ");
             JLabel exemplarName = new JLabel(e.getName());
+            exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
             JLabel ratingLabel = new JLabel("Rating:");
             JCheckBox checkBox = new JCheckBox();
-            panel.add(name);
             panel.add(exemplarName);
+            panel.add(new JLabel(""));
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
             String rating = "";
             rating += ratingMap.get(e)[0];
             panel.add(new JLabel(rating));
             panel.add(checkBox);
+            panel.add(new JLabel("Number of Ratings: "));
+            String numberOfRatings =  "";
+            numberOfRatings += ratingMap.get(e)[1];
+            panel.add(new JLabel(numberOfRatings));
+            panel.add(new JPanel());
+            panel.add(new JLabel("Labels: "));
+            String labels = "";
+            for(model.entities.Label l : e.getLabels()){
+                labels +=l.getValue()+", ";
+            }
+            panel.add(new JLabel(labels));
+
             panel.setBorder(border);
-            panel.setPreferredSize(new Dimension(200, 50));
+            panel.setPreferredSize(new Dimension(200, 75));
             selectedExemplarMap.put(e.getName(), checkBox);
             exemplarJPanelMap.put(e, panel);
         }

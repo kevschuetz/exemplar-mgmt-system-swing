@@ -48,14 +48,7 @@ public class MainController {
             public void actionPerformed(ActionEvent e) {
                 controller[0].mainFrame.dispose();
                 controller[0] = new MainController();
-                controller[0].setLogoutListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        controller[0].mainFrame.dispose();
-                        controller[0] = new MainController();
-
-                    }
-                });
+                controller[0].setLogoutListener(this);
             }
         });
 
@@ -75,6 +68,8 @@ public class MainController {
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
     private AddUserrFrame addContributorFrame;
+
+    private ActionListener logoutListener;
     /**
      * Initializes the LoginController and starts the login process
      */
@@ -422,14 +417,13 @@ public class MainController {
         });
 
         /**
-         * Deletes the user from the database and makes mainFrame invisible.
-         * Starts the login process.
+         * Deletes the user from the database and calls logout().
+         *
          */
         homeTab.setDeleteUserListener((user)->{
             try{
                 userClient.delete(user.getUsername());
-                mainFrame.setVisible(false);
-                loginController.startLoginProcess();
+                logout();
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -445,6 +439,7 @@ public class MainController {
         homeTab.refresh();
         addListenersToHomeTab();
     }
+
     /**
      *Creates a new exemplar with the given name (if available) and opens a tab with it
      */
@@ -608,7 +603,19 @@ public class MainController {
      * Sets the logoutlistener in the mainframe
      */
     void setLogoutListener(ActionListener listener){
-        mainFrame.setLogoutListener(listener);
+        logoutListener = listener;
+        mainFrame.setLogoutListener(e->{
+            logout();
+        });
+    }
+
+    private void logout() {
+        addContributorFrame.dispose();
+        newLabelPopupFrame.dispose();
+        newRatingPopupFrame.dispose();
+        newExemplarPopupFrame.dispose();
+        // newCommunityPopupFrame.dispose();
+        logoutListener.actionPerformed(null);
     }
 
 }
