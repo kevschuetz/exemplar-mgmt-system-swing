@@ -42,7 +42,23 @@ import java.util.Locale;
 
 public class MainController {
     public static void main(String[] args) {
-        new MainController();
+        final MainController[] controller = {new MainController()};
+        controller[0].setLogoutListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller[0].mainFrame.dispose();
+                controller[0] = new MainController();
+                controller[0].setLogoutListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller[0].mainFrame.dispose();
+                        controller[0] = new MainController();
+
+                    }
+                });
+            }
+        });
+
     }
     private LoginController loginController;
 
@@ -543,7 +559,8 @@ public class MainController {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setDialogTitle("Choose a destination");
             jfc.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+            String[] acceptedExtensions = {"txt","json"};
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text and JSON Files", acceptedExtensions);
             jfc.addChoosableFileFilter(filter);
 
             int returnValue = jfc.showSaveDialog(null);
@@ -551,7 +568,7 @@ public class MainController {
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = jfc.getSelectedFile();
                 String path = selectedFile.getAbsolutePath();
-                if(!path.contains(".txt")) path += ".txt";
+                if(!path.contains(".txt") && !path.contains(".json")) path += ".json";
                 exportExemplar(path, tab.getExemplar());
             }
         });
@@ -587,6 +604,11 @@ public class MainController {
         return false;
     }
 
-
+    /**
+     * Sets the logoutlistener in the mainframe
+     */
+    void setLogoutListener(ActionListener listener){
+        mainFrame.setLogoutListener(listener);
+    }
 
 }

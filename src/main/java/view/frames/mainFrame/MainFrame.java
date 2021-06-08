@@ -72,6 +72,8 @@ public class MainFrame extends JFrame{
 
     }
 
+    public void setLogoutListener(ActionListener l){menuBar.logoutListener = l;}
+
     public void setContributorButtonListener(ActionListener l){
         menuPanel.contributorButton.addActionListener(l);
     }
@@ -159,6 +161,8 @@ public class MainFrame extends JFrame{
                 }
             });
         }
+
+
     }
 
     private class CMenuBar extends JMenuBar{
@@ -167,28 +171,32 @@ public class MainFrame extends JFrame{
 
         private JMenuItem importExemplarItem = new JMenuItem("Import");
         private JMenuItem createExemplarItem = new JMenuItem("Create");
-
+        private JMenuItem logOutItem = new JMenuItem("Log Out");
 
 
 
         private ActionWithStringListener importListener;
         private ActionListener createExemplarListener;
+        private ActionListener logoutListener;
 
         CMenuBar(){
             exemplarMenu.add(importExemplarItem);
             exemplarMenu.add(createExemplarItem);
             menu.add(exemplarMenu);
+            menu.add(logOutItem);
             add(menu);
-            addListener();
+
+            addListeners();
 
         }
 
-        private void addListener() {
+        private void addListeners() {
             importExemplarItem.addActionListener((e)->{
                 JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                jfc.setDialogTitle("Select a text file");
+                jfc.setDialogTitle("Select a text or json file");
                 jfc.setAcceptAllFileFilterUsed(false);
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+                String[] acceptedExtensions = {"txt","json"};
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Text and JSON Files", acceptedExtensions);
                 jfc.addChoosableFileFilter(filter);
 
                 int returnValue = jfc.showOpenDialog(null);
@@ -200,6 +208,7 @@ public class MainFrame extends JFrame{
             });
 
             createExemplarItem.addActionListener((e)-> createExemplarListener.actionPerformed(e));
+            logOutItem.addActionListener((e)->logoutListener.actionPerformed(e));
         }
     }
 }
