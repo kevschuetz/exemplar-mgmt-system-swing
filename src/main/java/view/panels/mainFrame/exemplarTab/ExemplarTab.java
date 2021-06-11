@@ -14,6 +14,7 @@ import view.listeners.mainframe.exemplarTab.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -110,6 +111,10 @@ public class ExemplarTab extends JPanel {
         solutionTextArea.setSize(new Dimension(100,100));
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
+
+        commentPanel.setLayout(new GridLayout(5, 1));
+        commentPanel.setBorder(getBorder("Comments"));
+        addCommentsToPanel();
 
         configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
@@ -214,6 +219,10 @@ public class ExemplarTab extends JPanel {
         c.weighty = 0.4;
         parentPanel.add(solutionPanel, c);
 
+        c.gridy= 3;
+        c.weighty = 0.4;
+        parentPanel.add(commentPanel, c);
+
         scrollPane = new JScrollPane(parentPanel);
         c.weighty=0.97;
         c.gridy = 0;
@@ -267,15 +276,30 @@ public class ExemplarTab extends JPanel {
         commentPopup.setLocationRelativeTo(this);
 
         commentPopup.setListener((labels) -> {
-            addComment(commentPopup.getComment());
-            //updateTab();
+            addNewComment(commentPopup.getComment());
+            addCommentsToPanel();
+            updateExemplarListener.updateRequested(exemplar);
+            commentPopup.clean();
             commentPopup.setVisible(false);
         });
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
-    void addComment(String comment){
-        if(comment.length() > 0) comments.add(comment);
+    void addNewComment(String comment){
+         comments.add(comment);
+    }
+
+    //muss noch überarbeitet werden!!!!!!(Datenbank)
+    void addCommentsToPanel(){
+        commentPanel.removeAll();
+        for(String s : comments){
+            JLabel comment = new JLabel(s);
+            LineBorder line = new LineBorder(Color.blue, 2, true);
+            comment.setBorder(line);
+            comment.setBorder(getBorder("username")); //Username muss ergänzt werden
+            commentPanel.add(comment);
+        }
+
     }
 
 

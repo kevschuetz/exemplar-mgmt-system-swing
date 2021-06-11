@@ -10,23 +10,22 @@ public class AddCommentPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Enter a comment:");
     private JTextField commentField = new JTextField();
-    private JButton button = new JButton("Publish");
+    private JButton button;
     private ExemplarTab tab;
 
     private NewCommentListener listener;
 
     public AddCommentPopupFrame(){
         JPanel parentPanel = new JPanel();
-        parentPanel.setLayout(new GridLayout(2,1));
+        parentPanel.setLayout(new GridLayout(3,1));
         parentPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Your Comment"),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         setSize(new Dimension(100,100));
         setLayout(new GridLayout(1,1));
         infoPanel.add(infoLabel);
-
+        button = new JButton("Publish");
         button.addActionListener(x->listener.addNewComment(commentField.getText()));
-
         parentPanel.add(infoPanel);
         parentPanel.add(commentField);
         parentPanel.add(button);
