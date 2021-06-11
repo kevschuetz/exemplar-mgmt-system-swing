@@ -175,8 +175,8 @@ public class ContributorLibraryTab extends JPanel {
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
-        String [] sortingComboBoxList = {"Sort by average Rating of Exemplars", "Sort by Number of Exemplars"};
-        String [] sortingComboBoxList2 = {"descending", "ascending"};
+        String [] sortingComboBoxList = {"Sort Alphabetically", "Sort by average Rating of Exemplars", "Sort by Number of Exemplars"};
+        String [] sortingComboBoxList2 = {"ascending", "descending" };
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         JButton filterButton = new JButton("Filter by Label");
@@ -219,16 +219,31 @@ public class ContributorLibraryTab extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent event) {
                 /**
-                 * Sort by avg rating of exemplar
+                 * Sort alphabetically
                  */
                 if(sortingComboBox.getSelectedIndex() == 0) {
+                    allContributors = allContributors.stream().
+                            sorted(Comparator.comparing(c -> c.getUsername())).collect(Collectors.toList());
+
+                    filteredContributors = filteredContributors.stream().
+                            sorted(Comparator.comparing(c -> c.getUsername())).collect(Collectors.toList());
+
+                    if(sortingComboBox2.getSelectedIndex() == 1) {
+                        Collections.reverse(allContributors);
+                        Collections.reverse(filteredContributors);
+                    }
+                }
+                /**
+                 * Sort by avg rating of exemplar
+                 */
+                if(sortingComboBox.getSelectedIndex() == 1) {
                     allContributors = allContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
 
                     filteredContributors = filteredContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                    if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allContributors);
                         Collections.reverse(filteredContributors);
                     }
@@ -236,13 +251,13 @@ public class ContributorLibraryTab extends JPanel {
                 /**
                  * Sort by number of users
                  */
-                if(sortingComboBox.getSelectedIndex() == 1) {
+                if(sortingComboBox.getSelectedIndex() == 2) {
                         allContributors= allContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
                         filteredContributors= filteredContributors.stream().
                                 sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 0){
+                    if(sortingComboBox2.getSelectedIndex() == 1){
                         Collections.reverse(allContributors);
                         Collections.reverse(filteredContributors);
                     }

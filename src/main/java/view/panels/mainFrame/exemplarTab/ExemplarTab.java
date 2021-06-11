@@ -18,7 +18,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class ExemplarTab extends JPanel {
@@ -61,14 +64,17 @@ public class ExemplarTab extends JPanel {
     private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
 
     boolean editable = false;
+    private User currentUser;
 
     private AddCommentPopupFrame commentPopup;
-    private List <String> comments = new ArrayList<>();
+    private List<String[]> comments = new ArrayList<>(); //[0] = username [1] = comment
 
 
-    public ExemplarTab(Exemplar exemplar, boolean editable){
+    //public ExemplarTab(Exemplar exemplar, boolean editable){
+    public ExemplarTab(Exemplar exemplar, boolean editable, User currentUser){
         this.exemplar = exemplar;
         this.editable = editable;
+        this.currentUser = currentUser;
 
         setLayout();
         setBorder(getBorder(exemplar.getName()));
@@ -114,6 +120,7 @@ public class ExemplarTab extends JPanel {
 
         commentPanel.setLayout(new GridLayout(5, 1));
         commentPanel.setBorder(getBorder("Comments"));
+        addNewComment("Hello World");
         addCommentsToPanel();
 
         configurationPanel.setLayout(new GridLayout(1, 8));
@@ -286,17 +293,17 @@ public class ExemplarTab extends JPanel {
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addNewComment(String comment){
-         comments.add(comment);
+        comments.add(new String [] {currentUser.getUsername(), comment});
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addCommentsToPanel(){
         commentPanel.removeAll();
-        for(String s : comments){
-            JLabel comment = new JLabel(s);
-            LineBorder line = new LineBorder(Color.blue, 2, true);
+        for(String[] s : comments){
+            JLabel comment = new JLabel(s[1]);
+            LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
-            comment.setBorder(getBorder("username")); //Username muss ergänzt werden
+            comment.setBorder(getBorder(s[0]));
             commentPanel.add(comment);
         }
 

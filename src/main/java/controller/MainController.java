@@ -455,7 +455,7 @@ public class MainController {
         e.setContributors(new ArrayList<>());
         try {
             exemplarClient.add(e);
-            ExemplarTab newExemplarTab = new ExemplarTab(e, true);
+            ExemplarTab newExemplarTab = new ExemplarTab(e, true, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
         } catch (IOException ioException) {
@@ -509,7 +509,7 @@ public class MainController {
             if(e.getCreator() == null) editable = false;
             else editable = e.getCreator().equals(currentUser) ? true : false;
             if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
-            ExemplarTab newExemplarTab = new ExemplarTab(e, editable);
+            ExemplarTab newExemplarTab = new ExemplarTab(e, editable, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
         }

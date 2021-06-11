@@ -26,6 +26,7 @@ public class AddCommentPopupFrame extends JFrame {
         infoPanel.add(infoLabel);
         button = new JButton("Publish");
         button.addActionListener(x->listener.addNewComment(commentField.getText()));
+
         parentPanel.add(infoPanel);
         parentPanel.add(commentField);
         parentPanel.add(button);
@@ -39,10 +40,6 @@ public class AddCommentPopupFrame extends JFrame {
 
     public ExemplarTab getTab() {
         return tab;
-    }
-
-    public void setTab(ExemplarTab tab) {
-        this.tab = tab;
     }
 
     public String getComment(){

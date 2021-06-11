@@ -62,6 +62,21 @@ public class ExemplarLibraryTab extends JPanel{
             @Override
             public void itemStateChanged(ItemEvent event) {
                 /**
+                 * Sort alphabetically
+                 */
+                if(sortingComboBox.getSelectedIndex() == 0) {
+                    allExemplars = allExemplars.stream().
+                            sorted(Comparator.comparing(e -> e.getName())).collect(Collectors.toList());
+                    filteredExemplars=filteredExemplars.stream().
+                            sorted(Comparator.comparing(e -> e.getName())).collect(Collectors.toList());
+                    if(sortingComboBox2.getSelectedIndex() == 1){
+                        Collections.reverse(allExemplars);
+                        Collections.reverse(filteredExemplars);
+                    }
+                }
+
+
+                /**
                  * Sort by avg rating
                  */
                 if(sortingComboBox.getSelectedIndex() == 1) {
@@ -69,7 +84,7 @@ public class ExemplarLibraryTab extends JPanel{
                                 sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
                         filteredExemplars=filteredExemplars.stream().
                                 sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
-                    if(sortingComboBox2.getSelectedIndex() == 0){
+                    if(sortingComboBox2.getSelectedIndex() == 1){
                         Collections.reverse(allExemplars);
                         Collections.reverse(filteredExemplars);
                     }
@@ -84,7 +99,7 @@ public class ExemplarLibraryTab extends JPanel{
                     filteredExemplars=filteredExemplars.stream().
                             sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 0) {
+                    if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allExemplars);
                         Collections.reverse(filteredExemplars);
                     }
@@ -186,8 +201,8 @@ public class ExemplarLibraryTab extends JPanel{
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
-        String [] sortingComboBoxList = {"Sort by creation date", "Sort by Rating", "Sort by Number of Ratings"};
-        String [] sortingComboBoxList2 = {"descending", "ascending"};
+        String [] sortingComboBoxList = {"Sort alphabetically", "Sort by Rating", "Sort by Number of Ratings"};
+        String [] sortingComboBoxList2 = {"ascending", "descending"};
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
         filterButton = new JButton("Filter by Label");
