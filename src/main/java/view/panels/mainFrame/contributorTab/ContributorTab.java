@@ -9,10 +9,14 @@ import model.httpclients.RatingClient;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.exemplarTab.*;
+import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,23 +34,41 @@ public class ContributorTab extends JPanel {
     private JPanel labelPanel;
     private JPanel contributorPanel;
 
-    private JButton closeButton = new JButton("Close Tab");
+    private JPanel buttonPanel;
+    private JButton closeButton;
+    private JButton openExemplarsButton;
+
 
     private ActionWithComponentListener closeListener;
     private ContributorListener contributorListener;
 
     private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
 
-
+    private ExemplarClient exemplarClient;
+    private RatingClient ratingClient;
+    private Map<Exemplar, double []> ratingMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
+    private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
+    private JPanel exemplarPanelParent = new JPanel();
+    Border border = BorderFactory.createBevelBorder(0);
+    private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
+    private NewTabListener exemplarListener;
 
     public ContributorTab(User contributor){
         this.contributor = contributor;
-        ExemplarClient exemplarClient = new ExemplarClient();
+        this.exemplarClient = new ExemplarClient();
+        this.ratingClient = new RatingClient();
+
+        //Exemplars
         this.exemplars = exemplarClient.getExemplarsForUser(contributor.getUsername());
+        exemplarPanelParent.setLayout(new GridLayout(exemplars.size()+1, 1));
+        createExemplarPanels();
+        addExemplarPanelsToParentPanel();
+
         this.avgRating = getAvgRating();
         this.labels = getLabels();
         setLayout();
         setBorder(getBorder(contributor.getUsername()));
+        initializeButtons();
         initializeComponents();
         addComponents();
         addActionListener();
@@ -63,13 +85,20 @@ public class ContributorTab extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
+    void initializeButtons(){
+        buttonPanel= new JPanel();
+        buttonPanel.setLayout(new GridLayout(1,2));
+        openExemplarsButton = new JButton("Open Selected");
+        openExemplarsButton.addActionListener((x)->openExemplars());
+        closeButton = new JButton("Close Tab");
+        buttonPanel.add(openExemplarsButton);
+        buttonPanel.add(closeButton);
+    }
+
     void initializeComponents(){
         initializeMetaInfoPanel();
-
-
-
         configurationPanel.setLayout(new GridLayout(1, 7));
-        configurationPanel.add(closeButton);
+        configurationPanel.add(buttonPanel);
     }
 
     private void initializeMetaInfoPanel() {
@@ -111,11 +140,15 @@ public class ContributorTab extends JPanel {
         labelPanel.setLayout(new GridLayout(1, labels.size()+2));
         JLabel exemplarLabels = new JLabel("Labels of contributed Exemplars:");
         labelPanel.add(exemplarLabels);
+        String labelsAsString = "";
         for(Label l : labels){
-            JLabel newLabel = new JLabel(l.getValue());
-            newLabel.setHorizontalAlignment(SwingConstants.LEFT);
-            labelPanel.add(newLabel);
+            //JLabel newLabel = new JLabel(l.getValue());
+           // newLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            //labelPanel.add(newLabel);
+            labelsAsString += "  " + l.getValue();
         }
+        labelPanel.add(new JLabel(labelsAsString));
+
         return labelPanel;
     }
 
@@ -138,6 +171,10 @@ public class ContributorTab extends JPanel {
         c.weighty=0.03;
         c.gridy=1;
         add(configurationPanel,c);
+
+        exemplarPanelParent.setBorder(getBorder( contributor.getUsername() + "'s Exemplars"));
+        c.gridx = 0;
+        parentPanel.add(exemplarPanelParent, c);
 
     }
 
@@ -163,6 +200,81 @@ public class ContributorTab extends JPanel {
     public User getContributor() {
         return contributor;
     }
+
+    // Exemplars
+
+    public void createExemplarPanels(){
+
+        for(Exemplar e : exemplars){
+            ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
+                    ratingClient.getRatingsForExemplar(e.getName()).size()});
+            JPanel panel = new JPanel();
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent event) {
+                    if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
+                        List<String> exemplar = new ArrayList<>();
+                        exemplar.add(e.getName());
+                        exemplarListener.tabRequested(exemplar);
+                    }
+                }
+            });
+            panel.setLayout(new GridLayout(4,3));
+
+            JLabel name = new JLabel("Name: ");
+            JLabel exemplarName = new JLabel(e.getName());
+            exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
+            JLabel ratingLabel = new JLabel("Rating:");
+            JCheckBox checkBox = new JCheckBox();
+            panel.add(exemplarName);
+            panel.add(new JLabel(""));
+            panel.add(new JLabel(""));
+            panel.add(ratingLabel);
+            String rating = "";
+            rating += ratingMap.get(e)[0];
+            panel.add(new JLabel(rating));
+            panel.add(checkBox);
+            panel.add(new JLabel("Number of Ratings: "));
+            String numberOfRatings =  "";
+            numberOfRatings += ratingMap.get(e)[1];
+            panel.add(new JLabel(numberOfRatings));
+            panel.add(new JPanel());
+            panel.add(new JLabel("Labels: "));
+            String labels = "";
+            for(model.entities.Label l : e.getLabels()){
+                labels +=l.getValue()+", ";
+            }
+            panel.add(new JLabel(labels));
+
+            panel.setBorder(border);
+            panel.setPreferredSize(new Dimension(200, 75));
+            selectedExemplarMap.put(e.getName(), checkBox);
+            exemplarJPanelMap.put(e, panel);
+        }
+    }
+
+    void addExemplarPanelsToParentPanel(){
+        for(Exemplar e : exemplars){
+            exemplarPanelParent.add(exemplarJPanelMap.get(e));
+        }
+    }
+
+    void openExemplars(){
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
+        List<String> selectedExemplars = new ArrayList<>();
+        for(Map.Entry<String, JCheckBox> e: entrySet){
+            if(e.getValue().isSelected()) {
+                selectedExemplars.add(e.getKey());
+                e.getValue().doClick();
+            }
+        }
+        exemplarListener.tabRequested(selectedExemplars);
+    }
+
+    public void setExemplarListener(NewTabListener exemplarListener) {
+        this.exemplarListener = exemplarListener;
+    }
+
 
 }
 

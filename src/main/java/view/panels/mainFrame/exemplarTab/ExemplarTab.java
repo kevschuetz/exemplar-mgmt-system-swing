@@ -5,7 +5,10 @@ import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
 import model.httpclients.RatingClient;
+import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
+import view.frames.mainFrame.FilterLabelPopupFrame;
+import view.frames.mainFrame.NewExemplarPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.exemplarTab.*;
 
@@ -13,6 +16,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ExemplarTab extends JPanel {
@@ -56,6 +61,9 @@ public class ExemplarTab extends JPanel {
 
     boolean editable = false;
 
+    private AddCommentPopupFrame commentPopup;
+    private List <String> comments = new ArrayList<>();
+
 
     public ExemplarTab(Exemplar exemplar, boolean editable){
         this.exemplar = exemplar;
@@ -83,6 +91,7 @@ public class ExemplarTab extends JPanel {
 
     void initializeComponents(){
         initializeMetaInfoPanel();
+        initializeAddCommentLabelFrame();
 
         problemPanel.setLayout(new GridLayout(1,1));
         problemPanel.setBorder(getBorder("Description"));
@@ -236,6 +245,7 @@ public class ExemplarTab extends JPanel {
         ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
         addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
         exportButton.addActionListener((e)-> exportListener.componentSubmitted(this));
+        commentButton.addActionListener((x) -> commentPopup.setVisible(true));
     }
 
     void initializeDeletalFrame(){
@@ -249,6 +259,27 @@ public class ExemplarTab extends JPanel {
             deleteExemplarListener.deleteRequested(exemplar.getName(), this);
         });
     }
+
+    void initializeAddCommentLabelFrame(){
+        commentPopup = new AddCommentPopupFrame();
+        commentPopup.setVisible(false);
+        commentPopup.setSize(new Dimension(350, 400));
+        commentPopup.setLocationRelativeTo(this);
+
+        commentPopup.setListener((labels) -> {
+            addComment(commentPopup.getComment());
+            //updateTab();
+            commentPopup.setVisible(false);
+        });
+    }
+
+    //muss noch überarbeitet werden!!!!!!(Datenbank)
+    void addComment(String comment){
+        if(comment.length() > 0) comments.add(comment);
+    }
+
+
+
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }

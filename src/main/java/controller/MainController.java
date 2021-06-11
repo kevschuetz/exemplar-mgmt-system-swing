@@ -480,6 +480,14 @@ public class MainController {
                 mainFrame.removeTab(c);
             }
         });
+        newContributorTab.setExemplarListener(new NewTabListener() {
+            @Override
+            public void tabRequested(List<String> selectedEntities) {
+                for(String e : selectedEntities){
+                    addExemplarTabToMainframe(e);
+                }
+            }
+        });
         mainFrame.addTab(username,newContributorTab);
     }
 
