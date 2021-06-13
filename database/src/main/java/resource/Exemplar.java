@@ -23,6 +23,9 @@ public class Exemplar {
     @ManyToMany
     private List<Label> labels;
 
+    @OneToMany
+    private List<Comment> comments;
+
 
     public List<Label> getLabels() {
         return labels;
