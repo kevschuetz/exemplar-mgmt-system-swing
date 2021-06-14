@@ -1,0 +1,366 @@
+[
+  {
+    "key": {
+      "user": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "exemplar": {
+        "name": "ddd",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "contributors": [
+          {
+            "username": "valentina",
+            "isContributor": 1,
+            "fullName": "Valentina Hu",
+            "password": "valentina"
+          },
+          {
+            "username": "Julia",
+            "isContributor": 1,
+            "fullName": "Julia",
+            "password": "juliaspasswort"
+          }
+        ],
+        "labels": [
+          {
+            "value": "java"
+          },
+          {
+            "value": "swing"
+          },
+          {
+            "value": "asdf"
+          },
+          {
+            "value": "best label"
+          }
+        ]
+      }
+    },
+    "rating": 5.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "ddddd",
+        "isContributor": 0,
+        "fullName": "ddd",
+        "password": "dddddddddd"
+      },
+      "exemplar": {
+        "name": "exemplar1",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        "contributors": [],
+        "labels": []
+      }
+    },
+    "rating": 4.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "julia",
+        "isContributor": 1,
+        "fullName": "Julia",
+        "password": "juliaspasswort"
+      },
+      "exemplar": {
+        "name": "myProblem",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        },
+        "contributors": [],
+        "labels": [
+          {
+            "value": "yo"
+          }
+        ]
+      }
+    },
+    "rating": 2.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "exemplar": {
+        "name": "newerest",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "asdf",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "contributors": [
+          {
+            "username": "Julia",
+            "isContributor": 1,
+            "fullName": "Julia",
+            "password": "juliaspasswort"
+          }
+        ],
+        "labels": [
+          {
+            "value": "java"
+          }
+        ]
+      }
+    },
+    "rating": 4.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "exemplar": {
+        "name": "newest",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \nHave fun!asdf",
+        "solution": "",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "contributors": [
+          {
+            "username": "valentina",
+            "isContributor": 1,
+            "fullName": "Valentina Hu",
+            "password": "valentina"
+          }
+        ],
+        "labels": [
+          {
+            "value": "java"
+          }
+        ]
+      }
+    },
+    "rating": 3.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "juliahello",
+        "isContributor": 1,
+        "fullName": "juliahello",
+        "password": "julia123"
+      },
+      "exemplar": {
+        "name": "problem13",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "juliahello",
+          "isContributor": 1,
+          "fullName": "juliahello",
+          "password": "julia123"
+        },
+        "contributors": [],
+        "labels": [
+          {
+            "value": "java"
+          }
+        ]
+      }
+    },
+    "rating": 3.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "juliahello",
+        "isContributor": 1,
+        "fullName": "juliahello",
+        "password": "julia123"
+      },
+      "exemplar": {
+        "name": "problem14",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "juliahello",
+          "isContributor": 1,
+          "fullName": "juliahello",
+          "password": "julia123"
+        },
+        "contributors": [],
+        "labels": [
+          {
+            "value": "github"
+          }
+        ]
+      }
+    },
+    "rating": 2.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "exemplar": {
+        "name": "Swing_Application",
+        "problem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eleifend quam adipiscing vitae proin sagittis nisl. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Ut sem viverra aliquet eget sit amet tellus cras adipiscing. Tortor at risus viverra adipiscing at in tellus. Sed velit dignissim sodales ut eu sem. Senectus et netus et malesuada fames. Sed faucibus turpis in eu mi bibendum neque egestas. Pellentesque dignissim enim sit amet venenatis urna cursus. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae.\n\nPhasellus faucibus scelerisque eleifend donec pretium. Porttitor massa id neque aliquam. Nunc faucibus a pellentesque sit amet porttitor eget dolor. Maecenas volutpat blandit aliquam etiam erat velit. Id diam maecenas ultricies mi eget mauris pharetra et ultrices. Ac orci phasellus egestas tellus rutrum tellus. Purus non enim praesent elementum facilisis leo vel fringilla. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Id velit ut tortor pretium viverra suspendisse potenti. Amet est placerat in egestas erat imperdiet sed euismod nisi.\n\nMi bibendum neque egestas congue quisque. Morbi tempus iaculis urna id volutpat lacus. Nulla aliquet porttitor lacus luctus accumsan tortor posuere ac. Sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum. Ac tortor vitae purus faucibus. Suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Nibh praesent tristique magna sit amet purus gravida quis. Sed risus pretium quam vulputate. Ut lectus arcu bibendum at varius vel pharetra vel. Convallis posuere morbi leo urna molestie at elementum. Eu facilisis sed odio morbi. Nec feugiat nisl pretium fusce id velit ut tortor.",
+        "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eleifend quam adipiscing vitae proin sagittis nisl. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Ut sem viverra aliquet eget sit amet tellus cras adipiscing. Tortor at risus viverra adipiscing at in tellus. Sed velit dignissim sodales ut eu sem. Senectus et netus et malesuada fames. Sed faucibus turpis in eu mi bibendum neque egestas. Pellentesque dignissim enim sit amet venenatis urna cursus. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae.\n\nPhasellus faucibus scelerisque eleifend donec pretium. Porttitor massa id neque aliquam. Nunc faucibus a pellentesque sit amet porttitor eget dolor. Maecenas volutpat blandit aliquam etiam erat velit. Id diam maecenas ultricies mi eget mauris pharetra et ultrices. Ac orci phasellus egestas tellus rutrum tellus. Purus non enim praesent elementum facilisis leo vel fringilla. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Id velit ut tortor pretium viverra suspendisse potenti. Amet est placerat in egestas erat imperdiet sed euismod nisi.\n\nMi bibendum neque egestas congue quisque. Morbi tempus iaculis urna id volutpat lacus. Nulla aliquet porttitor lacus luctus accumsan tortor posuere ac. Sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum. Ac tortor vitae purus faucibus. Suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Nibh praesent tristique magna sit amet purus gravida quis. Sed risus pretium quam vulputate. Ut lectus arcu bibendum at varius vel pharetra vel. Convallis posuere morbi leo urna molestie at elementum. Eu facilisis sed odio morbi. Nec feugiat nisl pretium fusce id velit ut tortor.",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "contributors": [
+          {
+            "username": "Julia",
+            "isContributor": 1,
+            "fullName": "Julia",
+            "password": "juliaspasswort"
+          },
+          {
+            "username": "valentina",
+            "isContributor": 1,
+            "fullName": "Valentina Hu",
+            "password": "valentina"
+          },
+          {
+            "username": "demouser",
+            "isContributor": 1,
+            "fullName": "demo",
+            "password": "password"
+          }
+        ],
+        "labels": [
+          {
+            "value": "label"
+          },
+          {
+            "value": "uppercase"
+          }
+        ]
+      }
+    },
+    "rating": 5.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "testUserForRating",
+        "isContributor": 1,
+        "fullName": "fullName",
+        "password": "password"
+      },
+      "exemplar": {
+        "name": "testExemplarForRating",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "contributors": [],
+        "labels": []
+      }
+    },
+    "rating": 2.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "exemplar": {
+        "name": "understandingScrum",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        "contributors": [],
+        "labels": [
+          {
+            "value": "scrum"
+          },
+          {
+            "value": "java"
+          }
+        ]
+      }
+    },
+    "rating": 5.0
+  },
+  {
+    "key": {
+      "user": {
+        "username": "valentina",
+        "isContributor": 1,
+        "fullName": "Valentina Hu",
+        "password": "valentina"
+      },
+      "exemplar": {
+        "name": "understandingScrum",
+        "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+        "solution": "",
+        "creator": {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        "contributors": [],
+        "labels": [
+          {
+            "value": "scrum"
+          },
+          {
+            "value": "java"
+          }
+        ]
+      }
+    },
+    "rating": 0.0
+  }
+]

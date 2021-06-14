@@ -215,6 +215,8 @@ public class MainController {
             key.setUser(currentUser);
             r.setKey(key);
             r.setRating(i);
+            java.sql.Date sqlDate = java.sql.Date.valueOf("2017-11-15");
+            r.setSqlDate(sqlDate);
             try {
                 Rating newRating = ratingClient.add(r);
                 newRatingPopupFrame.setVisible(false);

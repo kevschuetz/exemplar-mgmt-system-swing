@@ -1,11 +1,12 @@
 package model.entities;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Rating {
     RatingPK key;
     private double rating;
-
+    private java.sql.Date sqlDate;
     public Rating(){
     }
 
@@ -23,6 +24,14 @@ public class Rating {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public Date getSqlDate() {
+        return sqlDate;
+    }
+
+    public void setSqlDate(Date sqlDate) {
+        this.sqlDate = sqlDate;
     }
 
     @Override
