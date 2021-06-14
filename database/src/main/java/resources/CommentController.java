@@ -60,9 +60,9 @@ public class CommentController {
         if (c != null) repository.delete(c);
     }
 
-    @GetMapping("/exemplar")
-    public List<Comment> findCommentsForExemplar(@RequestParam String exemplar){
+    @GetMapping("/forexemplar")
+    public List<Comment> findCommentsForExemplar(@RequestParam String exemplarname){
         System.out.println("arrived");
-        return repository.findCommentsForExemplar(exemplar);
+        return repository.findCommentsForExemplar(exemplarname);
     }
 }

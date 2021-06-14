@@ -97,4 +97,20 @@ public class CommentClient extends Client<Comment>{
         }
     }
 
+    public List<Comment>findCommentsForExemplar(String exemplarname){
+        try{
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL+"/forexemplar?exemplarname="+exemplarname))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            List<Comment>comments = mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
+            return comments;
+        }catch(Exception e){
+            //e.printStackTrace();
+            return new LinkedList<Comment>();
+        }
+    }
+
+
 }
