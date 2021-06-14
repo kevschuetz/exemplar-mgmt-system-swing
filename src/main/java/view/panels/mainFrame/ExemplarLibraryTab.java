@@ -26,7 +26,7 @@ public class ExemplarLibraryTab extends JPanel{
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     private Set<model.entities.Label> allLabels = new HashSet<>();
     private List<String> filteredLabels = new ArrayList<>();
-    private Map<Exemplar, List<Rating>> numberOfRatingsLastWeek = new HashMap<>();
+    private Map<Exemplar, List<Rating>> ratingsForExemplarLastWeek = new HashMap<>();
     private Map<Exemplar, List<Rating>> allRatingsForExemplar = new HashMap<>();;
     private boolean filtered = false;
 
@@ -122,13 +122,13 @@ public class ExemplarLibraryTab extends JPanel{
         for (Exemplar e : allExemplars){
             List<Rating> ratingsForExemplarTmp = ratingClient.getRatingsForExemplar(e.getName());
             java.sql.Date oneWeekAgo = java.sql.Date.valueOf(LocalDate.now().minusDays(7));
-            List<Rating> ratingsForExemplarLastWeek =
+            List<Rating> ratingsLastWeek =
                     ratingsForExemplarTmp
                             .stream()
                             .filter((r)->r.getSqlDate()!=null)
                             .filter((r)-> r.getSqlDate().after(oneWeekAgo))
                             .collect(Collectors.toList());
-            numberOfRatingsLastWeek.put(e, ratingsForExemplarLastWeek);
+            if(ratingsLastWeek.size() != 0) ratingsForExemplarLastWeek.put(e, ratingsLastWeek);
             allRatingsForExemplar.put(e, ratingsForExemplarTmp);
             int numberOfRatingsForExemplar = ratingsForExemplarTmp.size();
             exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
