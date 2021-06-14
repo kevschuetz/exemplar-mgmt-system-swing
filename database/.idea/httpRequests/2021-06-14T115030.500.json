@@ -1,0 +1,7 @@
+{
+  "timestamp": "2021-06-14T09:50:30.684+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "",
+  "path": "/ratings/since"
+}

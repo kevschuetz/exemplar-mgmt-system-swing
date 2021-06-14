@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -82,5 +83,9 @@ public class RatingController {
         if(!avgRating.isPresent()) return 0;
         return avgRating.get();
     }
+
+    @GetMapping(value="/since")
+    public Map<String, Integer> getNumberOfRatingsSinceDateByExemplar(@RequestParam String date){
+return repository.getNumberOfRatingsLastWeekByExemplar(date);}
 
 }

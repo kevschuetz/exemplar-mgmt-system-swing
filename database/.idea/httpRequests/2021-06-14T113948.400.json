@@ -1,0 +1,7 @@
+{
+  "timestamp": "2021-06-14T09:39:48.720+00:00",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "",
+  "path": "/ratings/since"
+}
