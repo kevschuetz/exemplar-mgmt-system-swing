@@ -46,6 +46,8 @@ public class Comment {
         return exemplar;
     }
 
+    public void setExemplar(Exemplar exemplar){this.exemplar = exemplar;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -7,6 +7,7 @@ public class Comment {
     private int id;
     private String value;
     private User creator;
+    private Exemplar exemplar;
 
     public Comment(){}
 
@@ -29,6 +30,12 @@ public class Comment {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
+    public Exemplar getExemplar() {
+        return exemplar;
+    }
+
+    public void setExemplar(Exemplar exemplar){this.exemplar = exemplar;}
 
     @Override
     public boolean equals(Object o) {
