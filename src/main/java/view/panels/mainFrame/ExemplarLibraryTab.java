@@ -1,6 +1,7 @@
 package view.panels.mainFrame;
 
 import model.entities.Exemplar;
+import model.entities.Rating;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.FilterLabelPopupFrame;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,17 +21,21 @@ import java.util.stream.Collectors;
 public class ExemplarLibraryTab extends JPanel{
     private List<Exemplar> allExemplars;
     private List<Exemplar> filteredExemplars=new ArrayList<>();
-    private Map<Exemplar, double []> ratingMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
+    private Map<Exemplar, double []> exemplarAvgRatingNumberOfRatingsMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
     private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     private Set<model.entities.Label> allLabels = new HashSet<>();
     private List<String> filteredLabels = new ArrayList<>();
+    private Map<Exemplar, List<Rating>> numberOfRatingsLastWeek = new HashMap<>();
+    private Map<Exemplar, List<Rating>> allRatingsForExemplar = new HashMap<>();;
     private boolean filtered = false;
+
 
     private JScrollPane scrollPane;
     JPanel exemplarPanelParent = new JPanel();
     JPanel buttonPanel;
     JButton filterButton;
+    JButton mostRated;
     Border border = BorderFactory.createBevelBorder(0);
 
     JComboBox sortingComboBox;
@@ -81,9 +87,9 @@ public class ExemplarLibraryTab extends JPanel{
                  */
                 if(sortingComboBox.getSelectedIndex() == 1) {
                         allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
                         filteredExemplars=filteredExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[0])).collect(Collectors.toList());
+                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
                     if(sortingComboBox2.getSelectedIndex() == 1){
                         Collections.reverse(allExemplars);
                         Collections.reverse(filteredExemplars);
@@ -95,9 +101,9 @@ public class ExemplarLibraryTab extends JPanel{
                  */
                 if(sortingComboBox.getSelectedIndex() == 2) {
                         allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
                     filteredExemplars=filteredExemplars.stream().
-                            sorted(Comparator.comparingDouble(e -> ratingMap.get(e)[1])).collect(Collectors.toList());
+                            sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allExemplars);
@@ -114,12 +120,26 @@ public class ExemplarLibraryTab extends JPanel{
         RatingClient ratingClient = new RatingClient();
         allExemplars = exemplarClient.searchExemplars(searchTerm);
         for (Exemplar e : allExemplars){
-            ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
-                    ratingClient.getRatingsForExemplar(e.getName()).size()});
+            List<Rating> ratingsForExemplarTmp = ratingClient.getRatingsForExemplar(e.getName());
+            java.sql.Date oneWeekAgo = java.sql.Date.valueOf(LocalDate.now().minusDays(7));
+            List<Rating> ratingsForExemplarLastWeek =
+                    ratingsForExemplarTmp
+                            .stream()
+                            .filter((r)->r.getSqlDate()!=null)
+                            .filter((r)-> r.getSqlDate().after(oneWeekAgo))
+                            .collect(Collectors.toList());
+            numberOfRatingsLastWeek.put(e, ratingsForExemplarLastWeek);
+            allRatingsForExemplar.put(e, ratingsForExemplarTmp);
+            int numberOfRatingsForExemplar = ratingsForExemplarTmp.size();
+            exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
+                    numberOfRatingsForExemplar});
             for(model.entities.Label l : e.getLabels()){
                 allLabels.add(l);
             }
         }
+
+
+
     }
 
     public void createExemplarPanels(){
@@ -147,12 +167,12 @@ public class ExemplarLibraryTab extends JPanel{
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
             String rating = "";
-            rating += ratingMap.get(e)[0];
+            rating += exemplarAvgRatingNumberOfRatingsMap.get(e)[0];
             panel.add(new JLabel(rating));
             panel.add(checkBox);
             panel.add(new JLabel("Number of Ratings: "));
             String numberOfRatings =  "";
-            numberOfRatings += ratingMap.get(e)[1];
+            numberOfRatings += exemplarAvgRatingNumberOfRatingsMap.get(e)[1];
             panel.add(new JLabel(numberOfRatings));
             panel.add(new JPanel());
             panel.add(new JLabel("Labels: "));
@@ -208,6 +228,7 @@ public class ExemplarLibraryTab extends JPanel{
         filterButton = new JButton("Filter by Label");
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
+        mostRated = new JButton("Most Rated");
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
@@ -217,6 +238,7 @@ public class ExemplarLibraryTab extends JPanel{
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(filterButton);
+        buttonPanel.add(mostRated);
         buttonPanel.add(openExemplarsButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);

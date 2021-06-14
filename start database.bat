@@ -1,1 +1,1 @@
-java -jar ./database/target/database-0.0.2-SNAPSHOT.jar
+java -jar ./database/target/database-0.0.3-SNAPSHOT.jar

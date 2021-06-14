@@ -36,11 +36,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainController {
+public class MainController implements Runnable{
     public static void main(String[] args) {
         final MainController[] controller = {new MainController()};
         controller[0].setLogoutListener(new ActionListener() {
@@ -68,6 +71,9 @@ public class MainController {
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
     private AddUserrFrame addContributorFrame;
+    private ExemplarLibraryTab initialExemplarLibraryTab;
+    private ContributorLibraryTab initialContributorLibraryTab;
+    boolean librarysLoaded = false;
 
     private ActionListener logoutListener;
     /**
@@ -86,6 +92,8 @@ public class MainController {
            currentUser = loginController.getCurrentUser();
            loginSuccesfull();
        });
+       Thread thread = new Thread(this);
+       thread.start();
        loginController.startLoginProcess();
     }
 
@@ -103,6 +111,26 @@ public class MainController {
 
         }
         else mainFrame.setTitle("Welcome!");
+
+        addInitialLibrarys();
+
+    }
+
+    void addInitialLibrarys(){
+        if(librarysLoaded){
+            mainFrame.addTab("Exemplar Library", initialExemplarLibraryTab);
+            mainFrame.addTab("Contributor Library", initialContributorLibraryTab);
+        }else{
+            Thread waitingThread = new Thread(()-> {
+                try {
+                    Thread.sleep(5000);
+                    addInitialLibrarys();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            waitingThread.start();
+        }
     }
 
     void initializeMainFrame(){
@@ -215,7 +243,7 @@ public class MainController {
             key.setUser(currentUser);
             r.setKey(key);
             r.setRating(i);
-            java.sql.Date sqlDate = java.sql.Date.valueOf("2017-11-15");
+            java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.now());
             r.setSqlDate(sqlDate);
             try {
                 Rating newRating = ratingClient.add(r);
@@ -278,20 +306,7 @@ public class MainController {
                 }
                 else exemplarLibrary = new ExemplarLibraryTab("");
 
-                exemplarLibrary.setCloseListener(new ActionWithComponentListener(){
-                    @Override
-                    public void componentSubmitted(Component c){
-                        mainFrame.removeTab(c);
-                    }
-                });
-                exemplarLibrary.setExemplarListener(new NewTabListener() {
-                    @Override
-                    public void tabRequested(List<String> selectedEntities) {
-                        for(String e : selectedEntities){
-                            addExemplarTabToMainframe(e);
-                        }
-                    }
-                });
+                addListenersToExemplarLibrary(exemplarLibrary);
 
                 if (searchableByMainframe){
                     for(JComponent c : mainFrame.getOpenSearchTabs()){
@@ -309,6 +324,15 @@ public class MainController {
         };
     }
 
+    void addListenersToExemplarLibrary(ExemplarLibraryTab exemplarLibrary){
+        exemplarLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        exemplarLibrary.setExemplarListener(selectedEntities -> {
+            for(String e1 : selectedEntities){
+                addExemplarTabToMainframe(e1);
+            }
+        });
+    }
+
     /**
      * Creates an ActionListener that opens a new contributorLibrary in a seperate tab and selects that tab
      * @return the listener created
@@ -323,26 +347,7 @@ public class MainController {
                     contributorLibrary = new ContributorLibraryTab(mainFrame.getSearchTerm());
                 }
                 else contributorLibrary = new ContributorLibraryTab("");
-                contributorLibrary.setCloseListener(new ActionWithComponentListener(){
-                    @Override
-                    public void componentSubmitted(Component c){
-                        mainFrame.removeTab(c);
-                    }
-                });
-                contributorLibrary.setContributorListener(new NewTabListener(){
-                    @Override
-                    public void tabRequested(List<String> selectedEntities){
-                        for(String e : selectedEntities){
-                            try {
-                                createNewContributorTab(e);
-                            } catch (IOException ioException) {
-                                ioException.printStackTrace();
-                            } catch (InterruptedException interruptedException) {
-                                interruptedException.printStackTrace();
-                            }
-                        }
-                    }
-                });
+
                 if(searchableByMainFrame){
                     for(JComponent c : mainFrame.getOpenSearchTabs()){
                         mainFrame.removeTab(c);
@@ -353,10 +358,24 @@ public class MainController {
                     mainFrame.addTab("Search Contributors", contributorLibrary);
                 } else mainFrame.addTab("Contributor Library", contributorLibrary);
 
-
                 mainFrame.setLastTabSelected();
             }
         };
+    }
+
+    void addListenersToContributorLibrary(ContributorLibraryTab contributorLibrary){
+        contributorLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        contributorLibrary.setContributorListener(selectedEntities -> {
+            for(String e1 : selectedEntities){
+                try {
+                    createNewContributorTab(e1);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+            }
+        });
     }
     /**
      * Adds all the listeners required for the home tab
@@ -628,4 +647,13 @@ public class MainController {
         logoutListener.actionPerformed(null);
     }
 
+    @Override
+    public void run() {
+        initialExemplarLibraryTab = new ExemplarLibraryTab("");
+        initialContributorLibraryTab = new ContributorLibraryTab("");
+        addListenersToContributorLibrary(initialContributorLibraryTab);
+        addListenersToExemplarLibrary(initialExemplarLibraryTab);
+        librarysLoaded = true;
+        return;
+    }
 }

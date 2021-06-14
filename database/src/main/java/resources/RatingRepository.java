@@ -17,7 +17,7 @@ public interface RatingRepository extends JpaRepository<Rating, RatingPK> {
            nativeQuery = true)
    Optional<Double> getAvgRatingForExemlar(String exemplar_name);
 
-   @Query(value="Select r.exemplar_name, COUNT(*)from  rating r where r.sql_date > ?1 group by r.exemplar_name",
+   @Query(value="Select  COUNT(*), r.exemplar_name from  rating r where r.sql_date > ?1 group by r.exemplar_name",
            nativeQuery = true)
    Map<String, Integer> getNumberOfRatingsLastWeekByExemplar(String date);
 }
