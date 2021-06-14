@@ -46,6 +46,7 @@ public class ExemplarLibraryTab extends JPanel{
     private ItemListener sortingListener;
 
     private FilterLabelPopupFrame filterLabelPopupFrame;
+    private boolean ratedLastWeekFilterIsActive=false;
 
     public ExemplarLibraryTab(String searchTerm){
         fetchExemplars(searchTerm);
@@ -234,6 +235,24 @@ public class ExemplarLibraryTab extends JPanel{
 
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
         openExemplarsButton.addActionListener((x)->openExemplars());
+        mostRated.addActionListener((e)->{
+            if(ratedLastWeekFilterIsActive) {
+                filtered=false;
+                ratedLastWeekFilterIsActive = !ratedLastWeekFilterIsActive;
+                mostRated.setText("Most Rated");
+                updateTab();
+                return;
+            }
+            filteredExemplars = ratingsForExemplarLastWeek.entrySet()
+                    .stream()
+                    .sorted((e1,e2)-> e1.getValue().size() > e2.getValue().size() ? 1 :0)
+                    .map(entry-> entry.getKey())
+                    .collect(Collectors.toList());
+            filtered = true;
+            ratedLastWeekFilterIsActive = !ratedLastWeekFilterIsActive;
+            mostRated.setText("Reset");
+            updateTab();
+        });
         filterButton.addActionListener(e->filterLabelPopupFrame.setVisible(true));
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
