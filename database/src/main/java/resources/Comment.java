@@ -17,6 +17,9 @@ public class Comment {
     @ManyToOne
     private User creator;
 
+    @ManyToOne
+    private Exemplar exemplar;
+
     public Comment(){}
 
     public int getId() {
@@ -37,6 +40,10 @@ public class Comment {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public Exemplar getExemplar() {
+        return exemplar;
     }
 
     @Override

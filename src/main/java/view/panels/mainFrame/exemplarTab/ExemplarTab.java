@@ -1,9 +1,11 @@
 package view.panels.mainFrame.exemplarTab;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.entities.Comment;
 import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
+import model.httpclients.CommentClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
@@ -17,6 +19,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,14 +70,16 @@ public class ExemplarTab extends JPanel {
     private User currentUser;
 
     private AddCommentPopupFrame commentPopup;
-    private List<String[]> comments = new ArrayList<>(); //[0] = username [1] = comment
+    //private List<String[]> comments = new ArrayList<>(); //[0] = username [1] = comment
+    private List<Comment> comments;
+    private CommentClient commentClient = new CommentClient();
 
-
-    //public ExemplarTab(Exemplar exemplar, boolean editable){
     public ExemplarTab(Exemplar exemplar, boolean editable, User currentUser){
         this.exemplar = exemplar;
         this.editable = editable;
         this.currentUser = currentUser;
+
+        fetchComments();
 
         setLayout();
         setBorder(getBorder(exemplar.getName()));
@@ -291,22 +296,34 @@ public class ExemplarTab extends JPanel {
         });
     }
 
+    void fetchComments (){
+        comments = commentClient.findCommentsForExemplar(exemplar.getName());
+    }
+
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addNewComment(String comment){
-        comments.add(new String [] {currentUser.getUsername(), comment});
+        Comment c = new Comment();
+        c.setCreator(currentUser);
+        c.setValue(comment);
+        try {
+            commentClient.add(c);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addCommentsToPanel(){
         commentPanel.removeAll();
-        for(String[] s : comments){
-            JLabel comment = new JLabel(s[1]);
+        for(Comment c : comments){
+            JLabel comment = new JLabel(c.getValue());
             LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
-            comment.setBorder(getBorder(s[0]));
+            comment.setBorder(getBorder(c.getCreator().getUsername()));
             commentPanel.add(comment);
         }
-
     }
 
 
