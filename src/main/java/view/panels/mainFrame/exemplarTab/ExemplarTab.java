@@ -6,6 +6,7 @@ import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
 import model.httpclients.CommentClient;
+import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
@@ -70,7 +71,6 @@ public class ExemplarTab extends JPanel {
     private User currentUser;
 
     private AddCommentPopupFrame commentPopup;
-    //private List<String[]> comments = new ArrayList<>(); //[0] = username [1] = comment
     private List<Comment> comments;
     private CommentClient commentClient = new CommentClient();
 
@@ -297,7 +297,8 @@ public class ExemplarTab extends JPanel {
     }
 
     void fetchComments (){
-        comments = commentClient.findCommentsForExemplar(exemplar.getName());
+        //comments = commentClient.findCommentsForExemplar(exemplar.getName());
+        comments = exemplar.getComments();
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
@@ -305,13 +306,17 @@ public class ExemplarTab extends JPanel {
         Comment c = new Comment();
         c.setCreator(currentUser);
         c.setValue(comment);
-        try {
-            commentClient.add(c);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        c.setExemplar(exemplar);
+        //try {
+        //commentClient.add(c);
+        //} catch (IOException e) {
+         //   e.printStackTrace();
+       // } catch (InterruptedException e) {
+         //   e.printStackTrace();
+       // }
+        ExemplarClient exemplarClient = new ExemplarClient();
+        exemplar.getComments().add(c);
+        exemplarClient.update(exemplar.getName(), exemplar);
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)

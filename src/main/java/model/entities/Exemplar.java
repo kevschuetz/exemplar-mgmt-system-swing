@@ -14,6 +14,8 @@ public class Exemplar {
 
     private List<Label> labels;
 
+    private List <Comment> comments;
+
     public String getName() {
         return name;
     }
@@ -58,9 +60,11 @@ public class Exemplar {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
+    public void setLabels(List<Label> labels) { this.labels = labels; }
+
+    public List<Comment> getComments(){ return comments;}
+    
+    public void setComments(List<Comment> comments){this.comments = comments;}
 
     @Override
     public boolean equals(Object o) {

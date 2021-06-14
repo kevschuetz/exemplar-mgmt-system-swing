@@ -43,6 +43,10 @@ public class Exemplar {
         this.contributors = contributors;
     }
 
+    public List<Comment> getComments(){ return comments;}
+
+    public void setComments(List <Comment> comments){this.comments = comments;}
+
     public String getName() {
         return name;
     }
@@ -74,6 +78,8 @@ public class Exemplar {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
