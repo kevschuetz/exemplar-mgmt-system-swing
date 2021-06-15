@@ -63,9 +63,6 @@ public class CommentController {
     @GetMapping("/forexemplar")
     public List<Comment> findCommentsForExemplar(@RequestParam String exemplarname){
         List<Comment> result = repository.findCommentsForExemplar(exemplarname);
-        for(Comment c : result){
-            System.out.println(c.getValue());
-        }
         return result;
     }
 }

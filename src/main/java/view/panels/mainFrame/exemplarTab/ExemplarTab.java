@@ -28,6 +28,7 @@ public class ExemplarTab extends JPanel {
     private ObjectMapper mapper;
 
     JScrollPane scrollPane = new JScrollPane();
+    JScrollPane commentScrollPane;
     JPanel parentPanel = new JPanel();
     private JPanel metaInfoPanel = new JPanel();
     private JPanel problemPanel= new JPanel();
@@ -74,9 +75,9 @@ public class ExemplarTab extends JPanel {
 
         setLayout();
         setBorder(getBorder(exemplar.getName()));
+        fetchComments();
         initializeComponents();
         setEditable();
-        fetchComments();
         addCommentsToPanel();
         addComponents();
         addActionListener();
@@ -116,9 +117,9 @@ public class ExemplarTab extends JPanel {
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
 
-        commentPanel.setLayout(new GridLayout(5, 1));
+        commentPanel.setLayout(new GridLayout(comments.size(), 1));
         commentPanel.setBorder(getBorder("Comments"));
-
+        commentScrollPane=new JScrollPane(commentPanel);
 
         configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
@@ -224,8 +225,8 @@ public class ExemplarTab extends JPanel {
         parentPanel.add(solutionPanel, c);
 
         c.gridy= 3;
-        c.weighty = 0.4;
-        parentPanel.add(commentPanel, c);
+        c.weighty = 0.2;
+        parentPanel.add(commentScrollPane, c);
 
         scrollPane = new JScrollPane(parentPanel);
         c.weighty=0.97;
@@ -291,13 +292,13 @@ public class ExemplarTab extends JPanel {
     void fetchComments (){
         comments = commentClient.findCommentsForExemplar(exemplar.getName());
         for (Comment c: comments){
-            System.out.println(c.getValue());
+            System.out.println(c.getId());
         }
-
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addNewComment(String comment){
+
         Comment c = new Comment();
         c.setCreator(currentUser);
         c.setValue(comment);
@@ -309,13 +310,17 @@ public class ExemplarTab extends JPanel {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        comments.add(c);
+        addCommentsToPanel();
     }
 
-    //muss noch überarbeitet werden!!!!!!(Datenbank)
+
     void addCommentsToPanel(){
         commentPanel.removeAll();
         commentPanel.setVisible(false);
+        commentPanel.setLayout(new GridLayout(comments.size(), 1));
         for(Comment c : comments){
+            JPanel panel = new JPanel();
             JLabel comment = new JLabel(c.getValue());
             LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
