@@ -107,6 +107,7 @@ public class ExemplarTab extends JPanel {
         problemTextArea.setSize(new Dimension(100,100));
         JScrollPane problemScrollPane = new JScrollPane(problemTextArea);
         problemPanel.add(problemScrollPane);
+        problemPanel.setPreferredSize(new Dimension(100, 250));
 
         solutionPanel.setLayout(new GridLayout(1,1));
         solutionPanel.setBorder(getBorder("Solution"));
@@ -116,6 +117,7 @@ public class ExemplarTab extends JPanel {
         solutionTextArea.setSize(new Dimension(100,100));
         JScrollPane solutionScrollPane = new JScrollPane(solutionTextArea);
         solutionPanel.add(solutionScrollPane);
+        solutionPanel.setPreferredSize(new Dimension(100,250));
 
         commentPanel.setLayout(new GridLayout(comments.size(), 1));
         commentPanel.setBorder(getBorder("Comments"));
@@ -225,7 +227,7 @@ public class ExemplarTab extends JPanel {
         parentPanel.add(solutionPanel, c);
 
         c.gridy= 3;
-        c.weighty = 0.2;
+        c.weighty = 0.01;
         parentPanel.add(commentScrollPane, c);
 
         scrollPane = new JScrollPane(parentPanel);
