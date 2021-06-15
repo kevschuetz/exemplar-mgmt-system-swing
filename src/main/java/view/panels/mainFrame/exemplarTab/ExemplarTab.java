@@ -296,12 +296,8 @@ public class ExemplarTab extends JPanel {
 
     void fetchComments (){
         comments = commentClient.findCommentsForExemplar(exemplar.getName());
-        for (Comment c: comments){
-            System.out.println(c.getId());
-        }
     }
 
-    //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addNewComment(String comment){
 
         Comment c = new Comment();
@@ -324,21 +320,17 @@ public class ExemplarTab extends JPanel {
         commentPanel.removeAll();
         commentPanel.setVisible(false);
         commentPanel.setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridy = 0;
-        constraints.gridx = 0;
-        constraints.fill= GridBagConstraints.BOTH;
-        constraints.weightx = 1;
-        constraints.weighty=1;
+        GridBagConstraints constraints = getDefaultGridbagConstraints();
         for(Comment c : comments){
             JPanel panel = new JPanel();
             panel.setLayout(new GridBagLayout());
-            GridBagConstraints singleCommentConstraint = getSingleCommentConstraint();
+            GridBagConstraints singleCommentConstraint = getDefaultGridbagConstraints();
 
             JLabel comment = new JLabel(c.getValue());
             LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
             comment.setBorder(getBorder(c.getCreator().getUsername()));
+            //Icon replyIcon = new ImageIcon(getClass().getResource("/images/reply.png"));
             JButton replyButton = new JButton("Reply");
             addReplyListenerToButton(replyButton, c);
 
@@ -356,7 +348,7 @@ public class ExemplarTab extends JPanel {
                 JPanel replyPanel = new JPanel();
 
                 replyPanel.setLayout(new GridBagLayout());
-                GridBagConstraints replyConstraint = getSingleCommentConstraint();
+                GridBagConstraints replyConstraint = getDefaultGridbagConstraints();
                 replyConstraint.weightx = 0.03;
                 replyPanel.add(new JLabel(), replyConstraint);
                 replyConstraint.weightx = 1;
@@ -368,7 +360,6 @@ public class ExemplarTab extends JPanel {
                 replyLabel.setBorder(getBorder(reply.getCreator().getUsername()));
                 replyPanel.add(replyLabel, replyConstraint);
 
-
                 commentPanel.add(replyPanel, constraints);
             }
 
@@ -379,7 +370,7 @@ public class ExemplarTab extends JPanel {
         commentPanel.setVisible(true);
     }
 
-    GridBagConstraints getSingleCommentConstraint(){
+    GridBagConstraints getDefaultGridbagConstraints(){
         GridBagConstraints c = new GridBagConstraints();
         c.fill=GridBagConstraints.BOTH;
         c.gridy =0;
