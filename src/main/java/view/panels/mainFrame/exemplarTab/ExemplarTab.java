@@ -6,12 +6,9 @@ import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
 import model.httpclients.CommentClient;
-import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
-import view.frames.mainFrame.FilterLabelPopupFrame;
-import view.frames.mainFrame.NewExemplarPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.exemplarTab.*;
 
@@ -19,13 +16,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class ExemplarTab extends JPanel {
@@ -103,7 +95,7 @@ public class ExemplarTab extends JPanel {
 
     void initializeComponents(){
         initializeMetaInfoPanel();
-        initializeAddCommentLabelFrame();
+        initializeAddCommentPopupFrame();
 
         problemPanel.setLayout(new GridLayout(1,1));
         problemPanel.setBorder(getBorder("Description"));
@@ -281,24 +273,24 @@ public class ExemplarTab extends JPanel {
         });
     }
 
-    void initializeAddCommentLabelFrame(){
+    void initializeAddCommentPopupFrame(){
         commentPopup = new AddCommentPopupFrame();
         commentPopup.setVisible(false);
         commentPopup.setSize(new Dimension(350, 400));
         commentPopup.setLocationRelativeTo(this);
 
-        commentPopup.setListener((labels) -> {
+        commentPopup.setListener((comment) -> {
             addNewComment(commentPopup.getComment());
             addCommentsToPanel();
-            updateExemplarListener.updateRequested(exemplar);
+            // updateExemplarListener.updateRequested(exemplar);
             commentPopup.clean();
             commentPopup.setVisible(false);
         });
     }
 
     void fetchComments (){
-        //comments = commentClient.findCommentsForExemplar(exemplar.getName());
-        comments = exemplar.getComments();
+        comments = commentClient.findCommentsForExemplar(exemplar.getName());
+
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
@@ -307,21 +299,19 @@ public class ExemplarTab extends JPanel {
         c.setCreator(currentUser);
         c.setValue(comment);
         c.setExemplar(exemplar);
-        //try {
-        //commentClient.add(c);
-        //} catch (IOException e) {
-         //   e.printStackTrace();
-       // } catch (InterruptedException e) {
-         //   e.printStackTrace();
-       // }
-        ExemplarClient exemplarClient = new ExemplarClient();
-        exemplar.getComments().add(c);
-        exemplarClient.update(exemplar.getName(), exemplar);
+        try {
+            commentClient.add(c);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //muss noch überarbeitet werden!!!!!!(Datenbank)
     void addCommentsToPanel(){
         commentPanel.removeAll();
+        commentPanel.setVisible(false);
         for(Comment c : comments){
             JLabel comment = new JLabel(c.getValue());
             LineBorder line = new LineBorder(Color.blue, 4, true);
@@ -329,6 +319,7 @@ public class ExemplarTab extends JPanel {
             comment.setBorder(getBorder(c.getCreator().getUsername()));
             commentPanel.add(comment);
         }
+        commentPanel.setVisible(true);
     }
 
 

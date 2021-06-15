@@ -1,18 +1,43 @@
-package model.entities;
+package resource;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Exemplar {
+    @Id
     private String name;
 
+    @Column(length=2048)
     private String problem;
+    @Column(length=2048)
     private String solution;
+
+    @ManyToOne
     private User creator;
 
+    @ManyToMany
     private List<User> contributors;
 
+    @ManyToMany
     private List<Label> labels;
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
+    }
+
+    public List<User> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<User> contributors) {
+        this.contributors = contributors;
+    }
 
     public String getName() {
         return name;
@@ -46,20 +71,8 @@ public class Exemplar {
         this.creator = creator;
     }
 
-    public List<User> getContributors() {
-        return contributors;
-    }
 
-    public void setContributors(List<User> contributors) {
-        this.contributors = contributors;
-    }
 
-    public List<Label> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<Label> labels) { this.labels = labels; }
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

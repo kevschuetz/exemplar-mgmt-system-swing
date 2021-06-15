@@ -1,14 +1,27 @@
-package model.entities;
+package resource;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Comment {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column (name = "id", updatable = false, nullable = false)
     private String id;
+
+    @Column (length = 2000)
     private String value;
+
+    @ManyToOne
     private User creator;
+
+    @ManyToOne
     private Exemplar exemplar;
+
+    @OneToMany
     private List<Comment> answers;
 
     public Comment(){}
@@ -43,6 +56,14 @@ public class Comment {
 
     public void setExemplar(Exemplar exemplar){this.exemplar = exemplar;}
 
+    public List<Comment> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Comment> answers) {
+        this.answers = answers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,4 +77,3 @@ public class Comment {
         return Objects.hash(id);
     }
 }
-
