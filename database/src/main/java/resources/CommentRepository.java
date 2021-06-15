@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query(value = "Select * from comment c where c.exemplar_name = ?1",
+    @Query(value = "Select * from comment c where c.exemplar_name = ?1 AND c.id NOT IN (SELECT answers_id FROM comment_answers)",
             nativeQuery = true)
     List<Comment> findCommentsForExemplar(String exemplar);
 }

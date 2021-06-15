@@ -20,7 +20,7 @@ public class Exemplar {
     @ManyToMany
     private List<User> contributors;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Label> labels;
 
     public List<Label> getLabels() {

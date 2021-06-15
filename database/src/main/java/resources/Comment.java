@@ -21,7 +21,7 @@ public class Comment {
     @ManyToOne
     private Exemplar exemplar;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> answers;
 
     public Comment(){}

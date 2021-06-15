@@ -1,5 +1,6 @@
 package model.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,9 @@ public class Comment {
     private Exemplar exemplar;
     private List<Comment> answers;
 
-    public Comment(){}
+    public Comment(){
+        answers=new ArrayList<>();
+    }
 
     public long getId() {
         return id;

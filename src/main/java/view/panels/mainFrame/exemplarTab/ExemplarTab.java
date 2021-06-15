@@ -281,11 +281,14 @@ public class ExemplarTab extends JPanel {
         commentPopup.setVisible(false);
         commentPopup.setSize(new Dimension(350, 400));
         commentPopup.setLocationRelativeTo(this);
+        setDefaultListenerForCommentPopupFrame();
 
+    }
+
+    void setDefaultListenerForCommentPopupFrame(){
         commentPopup.setListener((comment) -> {
             addNewComment(commentPopup.getComment());
             addCommentsToPanel();
-            // updateExemplarListener.updateRequested(exemplar);
             commentPopup.clean();
             commentPopup.setVisible(false);
         });
@@ -320,18 +323,89 @@ public class ExemplarTab extends JPanel {
     void addCommentsToPanel(){
         commentPanel.removeAll();
         commentPanel.setVisible(false);
-        commentPanel.setLayout(new GridLayout(comments.size(), 1));
+        commentPanel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.fill= GridBagConstraints.BOTH;
+        constraints.weightx = 1;
+        constraints.weighty=1;
         for(Comment c : comments){
             JPanel panel = new JPanel();
+            panel.setLayout(new GridBagLayout());
+            GridBagConstraints singleCommentConstraint = getSingleCommentConstraint();
+
             JLabel comment = new JLabel(c.getValue());
             LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
             comment.setBorder(getBorder(c.getCreator().getUsername()));
-            commentPanel.add(comment);
+            JButton replyButton = new JButton("Reply");
+            addReplyListenerToButton(replyButton, c);
+
+            panel.add(comment,singleCommentConstraint);
+            singleCommentConstraint.gridx=1;
+            singleCommentConstraint.weightx=0.02;
+            panel.add(replyButton,singleCommentConstraint);
+
+
+            commentPanel.add(panel, constraints);
+
+            for(Comment reply : c.getAnswers()){
+                constraints.gridy++;
+
+                JPanel replyPanel = new JPanel();
+
+                replyPanel.setLayout(new GridBagLayout());
+                GridBagConstraints replyConstraint = getSingleCommentConstraint();
+                replyConstraint.weightx = 0.03;
+                replyPanel.add(new JLabel(), replyConstraint);
+                replyConstraint.weightx = 1;
+                replyConstraint.gridx=1;
+
+                JLabel replyLabel = new JLabel(reply.getValue());
+                LineBorder l = new LineBorder(Color.blue, 4, true);
+                replyLabel.setBorder(l);
+                replyLabel.setBorder(getBorder(reply.getCreator().getUsername()));
+                replyPanel.add(replyLabel, replyConstraint);
+
+
+                commentPanel.add(replyPanel, constraints);
+            }
+
+            constraints.weightx=1;
+            constraints.gridx=0;
+            constraints.gridy++;
         }
         commentPanel.setVisible(true);
     }
 
+    GridBagConstraints getSingleCommentConstraint(){
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill=GridBagConstraints.BOTH;
+        c.gridy =0;
+        c.gridx=0;
+        c.weightx=1;
+        c.weighty=1;
+        return c;
+    }
+
+    private void addReplyListenerToButton(JButton replyButton, Comment c) {
+        replyButton.addActionListener((e)->{
+            commentPopup.setListener((comment)->{
+                Comment reply = new Comment();
+                reply.setExemplar(c.getExemplar());
+                reply.setCreator(currentUser);
+                reply.setValue(comment);
+                c.getAnswers().add(reply);
+                commentClient.update(Long.toString(c.getId()), c);
+                commentPopup.clean();
+                commentPopup.setVisible(false);
+                setDefaultListenerForCommentPopupFrame();
+                addCommentsToPanel();
+            });
+            commentPopup.setVisible(true);
+        });
+    }
 
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
