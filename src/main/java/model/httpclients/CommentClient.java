@@ -107,7 +107,7 @@ public class CommentClient extends Client<Comment>{
             List<Comment>comments = mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
             return comments;
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return new LinkedList<Comment>();
         }
     }

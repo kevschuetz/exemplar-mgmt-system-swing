@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Comment {
 
-    private String id;
+    private long id;
     private String value;
     private User creator;
     private Exemplar exemplar;
@@ -13,11 +13,11 @@ public class Comment {
 
     public Comment(){}
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,6 +42,14 @@ public class Comment {
     }
 
     public void setExemplar(Exemplar exemplar){this.exemplar = exemplar;}
+
+    public List<Comment> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Comment> answers) {
+        this.answers = answers;
+    }
 
     @Override
     public boolean equals(Object o) {

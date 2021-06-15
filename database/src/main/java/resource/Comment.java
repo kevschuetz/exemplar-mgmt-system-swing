@@ -10,7 +10,7 @@ public class Comment {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id", updatable = false, nullable = false)
-    private String id;
+    private long id;
 
     @Column (length = 2000)
     private String value;
@@ -26,11 +26,11 @@ public class Comment {
 
     public Comment(){}
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

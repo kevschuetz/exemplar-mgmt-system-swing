@@ -33,10 +33,10 @@ public class CommentController {
     @PostMapping(value="", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public Comment addComment(@RequestBody Comment c) {
-        Optional<Comment> comment = repository.findById(c.getId());
+       /* Optional<Comment> comment = repository.findById(c.getId());
         if(comment.isPresent()){
             return null;
-        } else return repository.save(c);
+        } else */ return repository.save(c);
     }
 
 
@@ -49,20 +49,23 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public Comment getComment(@PathVariable String id){
+    public Comment getComment(@PathVariable long id){
         Optional<Comment> result = repository.findById(id);
         return result.orElse(null);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable String id){
+    public void deleteComment(@PathVariable long id){
         Comment c = repository.findById(id).orElse(null);
         if (c != null) repository.delete(c);
     }
 
     @GetMapping("/forexemplar")
     public List<Comment> findCommentsForExemplar(@RequestParam String exemplarname){
-        System.out.println("arrived");
-        return repository.findCommentsForExemplar(exemplarname);
+        List<Comment> result = repository.findCommentsForExemplar(exemplarname);
+        for(Comment c : result){
+            System.out.println(c.getValue());
+        }
+        return result;
     }
 }

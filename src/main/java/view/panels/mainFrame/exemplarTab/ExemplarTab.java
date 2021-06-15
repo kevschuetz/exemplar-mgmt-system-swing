@@ -71,12 +71,13 @@ public class ExemplarTab extends JPanel {
         this.editable = editable;
         this.currentUser = currentUser;
 
-        fetchComments();
 
         setLayout();
         setBorder(getBorder(exemplar.getName()));
         initializeComponents();
         setEditable();
+        fetchComments();
+        addCommentsToPanel();
         addComponents();
         addActionListener();
         initializeDeletalFrame();
@@ -117,8 +118,7 @@ public class ExemplarTab extends JPanel {
 
         commentPanel.setLayout(new GridLayout(5, 1));
         commentPanel.setBorder(getBorder("Comments"));
-        addNewComment("Hello World");
-        addCommentsToPanel();
+
 
         configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
@@ -290,6 +290,9 @@ public class ExemplarTab extends JPanel {
 
     void fetchComments (){
         comments = commentClient.findCommentsForExemplar(exemplar.getName());
+        for (Comment c: comments){
+            System.out.println(c.getValue());
+        }
 
     }
 
