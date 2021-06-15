@@ -1,3 +1,9 @@
+GET http://localhost:8080/comments
+
+<> 2021-06-15T171450.200.json
+
+###
+
 GET http://localhost:8080/ratings
 
 <> 2021-06-14T115842.200.json

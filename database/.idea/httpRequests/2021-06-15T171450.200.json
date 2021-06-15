@@ -1,0 +1,1757 @@
+[
+  {
+    "id": 1,
+    "value": "Hello World",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": [
+      {
+        "id": 13,
+        "value": "reply1",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      },
+      {
+        "id": 14,
+        "value": "hello",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      },
+      {
+        "id": 15,
+        "value": "asdf",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "value": "asdf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": [
+      {
+        "id": 25,
+        "value": "hiha",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "value": "Hello World",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 4,
+    "value": "testcomment",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 5,
+    "value": "teset2",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 6,
+    "value": "asdf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 7,
+    "value": "asdfasdf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 8,
+    "value": "this is a great exemplar",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 9,
+    "value": "very nice",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": [
+      {
+        "id": 21,
+        "value": "indeed my friend",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "value": "reply1",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": [
+      {
+        "id": 18,
+        "value": "wtf",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      },
+      {
+        "id": 23,
+        "value": "reply to what?",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "value": "hello",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 12,
+    "value": "asdf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 13,
+    "value": "reply1",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 14,
+    "value": "hello",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 15,
+    "value": "asdf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 17,
+    "value": "wtf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 18,
+    "value": "wtf",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 19,
+    "value": "test1a",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": [
+      {
+        "id": 20,
+        "value": "test2a",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      },
+      {
+        "id": 22,
+        "value": "a great test!",
+        "creator": {
+          "username": "admin",
+          "isContributor": 1,
+          "fullName": "admin",
+          "password": "admin"
+        },
+        "exemplar": {
+          "name": "ddd",
+          "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+          "solution": "asdf",
+          "creator": {
+            "username": "admin",
+            "isContributor": 1,
+            "fullName": "admin",
+            "password": "admin"
+          },
+          "contributors": [
+            {
+              "username": "valentina",
+              "isContributor": 1,
+              "fullName": "Valentina Hu",
+              "password": "valentina"
+            },
+            {
+              "username": "Julia",
+              "isContributor": 1,
+              "fullName": "Julia",
+              "password": "juliaspasswort"
+            }
+          ],
+          "labels": [
+            {
+              "value": "java"
+            },
+            {
+              "value": "swing"
+            },
+            {
+              "value": "asdf"
+            },
+            {
+              "value": "best label"
+            }
+          ]
+        },
+        "answers": []
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "value": "test2a",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 21,
+    "value": "indeed my friend",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 22,
+    "value": "a great test!",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 23,
+    "value": "reply to what?",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 24,
+    "value": "heya",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 25,
+    "value": "hiha",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 26,
+    "value": "root",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  },
+  {
+    "id": 27,
+    "value": "newcomment",
+    "creator": {
+      "username": "admin",
+      "isContributor": 1,
+      "fullName": "admin",
+      "password": "admin"
+    },
+    "exemplar": {
+      "name": "ddd",
+      "problem": "You can modify your exemplar by filling in the description and solution and clicking the update button or closing the tab. \nAlso consider adding labels so that interested users can find your exemplar more easily. \n\nIf you want to add contributors to your exemplar click the 'Add Contributor' button to search the User base. \nUsers must have the Contributor status if you want to add them. \nContributors to this exemplar have all rights. \n Have fun!",
+      "solution": "asdf",
+      "creator": {
+        "username": "admin",
+        "isContributor": 1,
+        "fullName": "admin",
+        "password": "admin"
+      },
+      "contributors": [
+        {
+          "username": "valentina",
+          "isContributor": 1,
+          "fullName": "Valentina Hu",
+          "password": "valentina"
+        },
+        {
+          "username": "Julia",
+          "isContributor": 1,
+          "fullName": "Julia",
+          "password": "juliaspasswort"
+        }
+      ],
+      "labels": [
+        {
+          "value": "java"
+        },
+        {
+          "value": "swing"
+        },
+        {
+          "value": "asdf"
+        },
+        {
+          "value": "best label"
+        }
+      ]
+    },
+    "answers": []
+  }
+]
