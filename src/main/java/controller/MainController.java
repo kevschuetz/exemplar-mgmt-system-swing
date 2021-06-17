@@ -194,6 +194,29 @@ public class MainController implements Runnable{
         });
     }
 
+    void initializeNewCommunityFrame(){
+        newExemplarPopupFrame = new NewExemplarPopupFrame();
+        newExemplarPopupFrame.setVisible(false);
+        newExemplarPopupFrame.setSize(new Dimension(350, 200));
+        newExemplarPopupFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener of the Frame to check if the entered name is available (verifyExemplarName())and if so,
+         * creates the exemplar and opens it in a new Tab (createNewExemplarAndInitializeTab()).
+         * Refreshes hometab afterwards to include newly created exemplar.
+         */
+        newExemplarPopupFrame.setListener((s)->{
+            boolean ok = verifyExemplarName(s);
+            if(ok){
+                newExemplarPopupFrame.setVisible(false);
+                newExemplarPopupFrame.clean();
+                createNewExemplarAndInitializeTab(s);
+                refreshHomeTab();
+            }else{
+                JOptionPane.showMessageDialog(newExemplarPopupFrame, "Name already taken");
+            }
+        });
+    }
+
     /**
      * Initializes the frame that can be used to enter a value for a label meant to be assigned to an exemplar.
      * If the add Label button is clicked, the tab gets referred inside the frame. (see addListenersExemplarTab())
