@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class MyCommunitiesPanel extends JPanel {
@@ -22,6 +22,7 @@ public class MyCommunitiesPanel extends JPanel {
     private JScrollPane scrollPane;
     Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener newTabListener;
+    private Map<String, JCheckBox> selectedCommunityMap = new HashMap<>();
     JPanel buttonPanel;
 
     private ActionListener createCommunityListener;
@@ -105,11 +106,26 @@ public class MyCommunitiesPanel extends JPanel {
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,2));
         JButton createCommunityButton = new JButton("Create New Community");
+        JButton openCommunityButton = new JButton("Open Selected");
         buttonPanel.add(createCommunityButton);
         createCommunityButton.addActionListener(x->createCommunityListener.actionPerformed(x));
-        //buttonPanel.add(searchAllButton);
+        buttonPanel.add(openCommunityButton);
+        openCommunityButton.addActionListener((x)->openCommunity());
         buttonPanel.setBorder(border);
     }
+
+    void openCommunity(){
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
+        List<String> selectedCommunities = new ArrayList<>();
+        for(Map.Entry<String, JCheckBox> c: entrySet){
+            if(c.getValue().isSelected()) {
+                selectedCommunities.add(c.getKey());
+                c.getValue().doClick();
+            }
+        }
+        newTabListener.tabRequested(selectedCommunities);
+    }
+
     public void setNewTabListener(NewTabListener newTabListener) {
         this.newTabListener = newTabListener;
     }

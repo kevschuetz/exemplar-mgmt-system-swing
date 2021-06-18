@@ -10,6 +10,7 @@ import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
 import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CommunityTab extends JPanel {
     private Community community;
@@ -34,6 +35,13 @@ public class CommunityTab extends JPanel {
     }
 
     void addComponents(){
+        GridBagConstraints c = new GridBagConstraints();
+        c.weighty = 0.3;
+        c.weightx=1;
+        c.gridy = 0;
+        c.gridx = 0;
+        c.fill= GridBagConstraints.BOTH;
+
         add(closeButton);
     }
 
