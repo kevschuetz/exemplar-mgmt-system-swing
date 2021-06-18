@@ -45,12 +45,12 @@ public class CommunityTab extends JPanel {
         return updateButton;
     }
 
-    public void setUpdateCommunityListener(UpdateExemplarListener updateExemplarListener) {
-        this.updateExemplarListener = updateExemplarListener;
+    public void setUpdateCommunityListener(UpdateCommunityListener updateCommunityListener) {
+        this.updateCommunityListener = updateExemplarListener;
     }
 
-    public void setDeleteCommunityListener(DeleteExemplarListener deleteExemplarListener) {
-        this.deleteExemplarListener = deleteExemplarListener;
+    public void setDeleteCommunityListener(DeleteCommunityListener deleteCommunityListener) {
+        this.deleteCommunityListener = deleteCommunityListener;
     }
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;

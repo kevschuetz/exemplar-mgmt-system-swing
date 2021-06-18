@@ -61,6 +61,7 @@ public class MainController implements Runnable{
     private User currentUser;
     private UserClient userClient = new UserClient();
     private ExemplarClient exemplarClient = new ExemplarClient();
+    private CommunityClient communityClient = new CommunityClient();
     private LabelClient labelClient = new LabelClient();
     private RatingClient ratingClient = new RatingClient();
 
@@ -519,7 +520,7 @@ public class MainController implements Runnable{
         c.setCreator(currentUser);
         c.setMembers(new ArrayList<>());
         try {
-            CommunityClient.add(c);
+            communityClient.add(c);
             CommunityTab newCommunityTab = new CommunityTab(c);
             addListenersToCommunityTab(newCommunityTab);
             mainFrame.addTab(s,newCommunityTab);
@@ -718,7 +719,7 @@ public class MainController implements Runnable{
      */
     boolean verifyCommunityName(String s){
         try{
-            Community exists = CommunityClient.get(s);
+            Community exists = communityClient.get(s);
             if(exists == null) return true;
         }catch(Exception e){
             e.printStackTrace();
