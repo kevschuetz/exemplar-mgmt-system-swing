@@ -510,6 +510,26 @@ public class MainController implements Runnable{
     }
 
     /**
+     *Creates a new community with the given name (if available) and opens a tab with it
+     */
+    void createNewCommunityAndInitializeTab(String s){
+        Community c = new Community();
+        c.setName(s);
+        c.setCreator(currentUser);
+        c.setMembers(new ArrayList<>());
+        try {
+            CommunityClient.add(c);
+            CommunityTab newCommunityTab = new CommunityTab(c, true, currentUser);
+            addListenersToExemplarTab(newExemplarTab);
+            mainFrame.addTab(s,newExemplarTab);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+    }
+
+    /**
      * Fetches the user identified by the username and opens a new contributor tab for the user
      * @param username the id of the user
      * @throws IOException
