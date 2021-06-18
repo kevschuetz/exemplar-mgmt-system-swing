@@ -27,6 +27,7 @@ public class CommunityTab extends JPanel {
     private Exemplar[] referenceExemplars;
 
     private JPanel metaInfoPanel = new JPanel();
+    private JPanel configurationPanel= new JPanel();
     private JPanel exemplarsPanel= new JPanel();
 
     JButton updateButton = new JButton ("Update");
@@ -52,6 +53,7 @@ public class CommunityTab extends JPanel {
         initializeComponents();
         setEditable();
         addActionListener();
+        initializeDeleteFrame();
     }
 
     void setEditable(){
@@ -88,7 +90,7 @@ public class CommunityTab extends JPanel {
             confirmCommunityDeletionFrame.setVisible(true);
         });
 
-        addUserButton.addActionListener((e)-> addUserListener.componentSubmitted(this));
+        addUserButton.addActionListener((e)-> addUserListener.buttonClicked(this));
     }
 
     void initializeDeleteFrame(){
@@ -108,13 +110,9 @@ public class CommunityTab extends JPanel {
         configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
             configurationPanel.add(updateButton);
-            configurationPanel.add(addContributorButton);
             configurationPanel.add(deleteButton);
-            configurationPanel.add(exportButton);
+            configurationPanel.add(addUserButton);
         }
-        configurationPanel.add(addLabelButton);
-        configurationPanel.add(ratingButton);
-        configurationPanel.add(commentButton);
         configurationPanel.add(closeButton);
     }
 
@@ -136,11 +134,6 @@ public class CommunityTab extends JPanel {
         /*metaInfoPanel.add(avgRatingLabel);
         metaInfoPanel.add(labelPanel);
         metaInfoPanel.add(contributorPanel);*/
-    }
-
-
-    void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
     }
 
     public JButton getUpdateButton() {
