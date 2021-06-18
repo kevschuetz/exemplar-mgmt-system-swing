@@ -4,10 +4,13 @@ import model.entities.*;
 import model.entities.Label;
 import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.AddUserrFrame;
+import view.frames.mainFrame.ConfirmCommunityDeletionFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
+import view.listeners.mainframe.communityTap.AddUserListener;
 import view.listeners.mainframe.communityTap.DeleteCommunityListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
+import view.listeners.mainframe.exemplarTab.AddLabelListener;
 import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
 import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
@@ -29,6 +32,8 @@ public class CommunityTab extends JPanel {
     JButton updateButton = new JButton ("Update");
     JButton deleteButton = new JButton("Delete");
     JButton addUserButton = new JButton("add User");
+
+    private AddUserListener addUserListener;
 
     private AddUserrFrame userPopup;
     private List<Comment> users;
@@ -71,29 +76,30 @@ public class CommunityTab extends JPanel {
     void addActionListener(){
         closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
         updateButton.addActionListener((x)->{
-            updateCommunityListener.updateRequested(community);
+            try {
+                updateCommunityListener.updateRequested(community);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         deleteButton.addActionListener((e)->{
             confirmCommunityDeletionFrame.setVisible(true);
         });
-        addLabelButton.addActionListener((e)->{
-            addLabelListener.buttonClicked(this);
-        });
-        ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
-        addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
-        exportButton.addActionListener((e)-> exportListener.componentSubmitted(this));
-        commentButton.addActionListener((x) -> commentPopup.setVisible(true));
+
+        addUserButton.addActionListener((e)-> addUserListener.componentSubmitted(this));
     }
 
-    void initializeDeletalFrame(){
-        confirmCommunityDeletionFrame = new ConfirmExemplarDeletionFrame(exemplar.getName());
-        confirmExemplarDeletionFrame.setVisible(false);
-        confirmExemplarDeletionFrame.setSize(new Dimension(400
+    void initializeDeleteFrame(){
+        confirmCommunityDeletionFrame = new ConfirmCommunityDeletionFrame(community.getName());
+        confirmCommunityDeletionFrame.setVisible(false);
+        confirmCommunityDeletionFrame.setSize(new Dimension(400
                 ,300));
-        confirmExemplarDeletionFrame.setLocationRelativeTo(this);
-        confirmExemplarDeletionFrame.setConfirmListener((x)->{
-            confirmExemplarDeletionFrame.setVisible(false);
-            deleteExemplarListener.deleteRequested(exemplar.getName(), this);
+        confirmCommunityDeletionFrame.setLocationRelativeTo(this);
+        confirmCommunityDeletionFrame.setConfirmListener((x)->{
+            confirmCommunityDeletionFrame.setVisible(false);
+            deleteCommunityListener.deleteRequested(community.getName(), this);
         });
     }
 
