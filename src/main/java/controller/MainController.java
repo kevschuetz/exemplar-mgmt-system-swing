@@ -457,7 +457,7 @@ public class MainController implements Runnable{
                 for(String s : list){
                     Community c = client.get(s);
                     if(c != null){
-                        CommunityTab tab = new CommunityTab(c);
+                        CommunityTab tab = new CommunityTab(c, currentUser);
                         tab.setCloseListener((x)->mainFrame.removeTab(x));
                         mainFrame.addTab(s,tab);
                     }
@@ -529,7 +529,7 @@ public class MainController implements Runnable{
         c.setMembers(new ArrayList<>());
         try {
             communityClient.add(c);
-            CommunityTab newCommunityTab = new CommunityTab(c);
+            CommunityTab newCommunityTab = new CommunityTab(c, currentUser);
             addListenersToCommunityTab(newCommunityTab);
             mainFrame.addTab(s,newCommunityTab);
         } catch (IOException ioException) {
