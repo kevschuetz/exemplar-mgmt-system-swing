@@ -195,24 +195,24 @@ public class MainController implements Runnable{
     }
 
     void initializeNewCommunityFrame(){
-        newExemplarPopupFrame = new NewExemplarPopupFrame();
-        newExemplarPopupFrame.setVisible(false);
-        newExemplarPopupFrame.setSize(new Dimension(350, 200));
-        newExemplarPopupFrame.setLocationRelativeTo(mainFrame);
+        newCommunityPopupFrame = new NewCommunityPopupFrame();
+        newCommunityPopupFrame.setVisible(false);
+        newCommunityPopupFrame.setSize(new Dimension(350, 200));
+        newCommunityPopupFrame.setLocationRelativeTo(mainFrame);
         /**
-         * Sets the listener of the Frame to check if the entered name is available (verifyExemplarName())and if so,
-         * creates the exemplar and opens it in a new Tab (createNewExemplarAndInitializeTab()).
+         * Sets the listener of the Frame to check if the entered name is available (verifyCommunityName())and if so,
+         * creates the community and opens it in a new Tab (createNewCommunityAndInitializeTab()).
          * Refreshes hometab afterwards to include newly created exemplar.
          */
-        newExemplarPopupFrame.setListener((s)->{
-            boolean ok = verifyExemplarName(s);
+        newCommunityPopupFrame.setListener((s)->{
+            boolean ok = verifyCommunityName(s);
             if(ok){
-                newExemplarPopupFrame.setVisible(false);
-                newExemplarPopupFrame.clean();
-                createNewExemplarAndInitializeTab(s);
+                newCommunityPopupFrame.setVisible(false);
+                newCommunityPopupFrame.clean();
+                createNewCommunityAndInitializeTab(s);
                 refreshHomeTab();
             }else{
-                JOptionPane.showMessageDialog(newExemplarPopupFrame, "Name already taken");
+                JOptionPane.showMessageDialog(newCommunityPopupFrame, "Name already taken");
             }
         });
     }
