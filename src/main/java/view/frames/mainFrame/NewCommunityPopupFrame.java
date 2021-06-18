@@ -1,8 +1,6 @@
 package view.frames.mainFrame;
 
 import view.listeners.mainframe.NewCommunityListener;
-import view.listeners.mainframe.NewExemplarListener;
-
 import javax.swing.*;
 import java.awt.*;
 
