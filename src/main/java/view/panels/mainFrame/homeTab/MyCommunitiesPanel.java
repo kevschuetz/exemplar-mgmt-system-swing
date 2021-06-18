@@ -78,6 +78,7 @@ public class MyCommunitiesPanel extends JPanel {
             panel.setPreferredSize(new Dimension(200, 50));
             //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             communityPanelParent.add(panel);
+            selectedCommunityMap.put(c.getName(), checkBox);
             myCommunityPanels.add(panel);
             i++;
         }
@@ -128,10 +129,6 @@ public class MyCommunitiesPanel extends JPanel {
 
     public void setNewTabListener(NewTabListener newTabListener) {
         this.newTabListener = newTabListener;
-    }
-
-    public void setCommuniyListener(NewTabListener communiyListener) {
-        this.newTabListener = communiyListener;
     }
     public void setCreateExemplarListener(ActionListener listener){this.createCommunityListener = listener;}
 }
