@@ -73,6 +73,7 @@ public class MyCommunitiesPanel extends JPanel {
             panel.add(randomlabel);
             panel.add(randomlabel);
             panel.add(randomlabel);
+            panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
             //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
@@ -99,7 +100,6 @@ public class MyCommunitiesPanel extends JPanel {
         c.gridx=0;
         c.gridy=1;
         add(buttonPanel, c);
-
     }
 
     void initializeButtonPanel(){
