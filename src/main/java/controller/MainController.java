@@ -642,6 +642,49 @@ public class MainController implements Runnable{
         });
     }
 
+    /**
+     * Sets all required listeners for a given CommunityTab
+     * @param newCommuintyTab the given tab to add the listeners
+     */
+    void addListenersToCommunityTab(CommunityTab newCommunityTab){
+        newCommunityTab.setCloseListener((c)->{
+            CommunityTab tab = (CommunityTab)c;
+            JButton updateButton = tab.getUpdateButton();
+            if(tab.isEditable()) updateButton.doClick();
+            mainFrame.removeTab(c);
+        });
+        newExemplarTab.setUpdateExemplarListener((exemplar)->{
+            exemplarClient.update(exemplar.getName(), exemplar);
+        });
+        newExemplarTab.setDeleteExemplarListener((id, tab)->{
+            try {
+                exemplarClient.delete(id);
+                mainFrame.removeTab(tab);
+                refreshHomeTab();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        newExemplarTab.setAddLabelListener((tab)->{
+            newLabelPopupFrame.setVisible(true);
+            newLabelPopupFrame.setTab(tab);
+        });
+
+        newExemplarTab.setRatingListener((t)->{
+            newRatingPopupFrame.setTab(t);
+            newRatingPopupFrame.setTitle(t.getExemplar().getName());
+            newRatingPopupFrame.setVisible(true);
+        });
+
+        newExemplarTab.setContributorListener((t)->{
+            addContributorFrame.setTab(t);
+            addContributorFrame.setTitle(t.getExemplar().getName());
+            addContributorFrame.setVisible(true);
+        });
+    }
+
     private void exportExemplar(String path, Exemplar exemplar) {
         ObjectMapper mapper = new ObjectMapper();
         try {
