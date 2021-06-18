@@ -82,6 +82,7 @@ public class MainController implements Runnable{
     public MainController(){
         initializeMainFrame();
         initializeNewExemplarFrame();
+        initializeNewCommunityFrame();
         initializeNewLabelPopupFrame();
         initializeNewRatingPopupFrame();
         initializeAddContributorFrame();
@@ -519,9 +520,9 @@ public class MainController implements Runnable{
         c.setMembers(new ArrayList<>());
         try {
             CommunityClient.add(c);
-            CommunityTab newCommunityTab = new CommunityTab(c, true, currentUser);
-            addListenersToExemplarTab(newExemplarTab);
-            mainFrame.addTab(s,newExemplarTab);
+            CommunityTab newCommunityTab = new CommunityTab(c);
+            addListenersToCommunityTab(newCommunityTab);
+            mainFrame.addTab(s,newCommunityTab);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (InterruptedException interruptedException) {
@@ -672,16 +673,6 @@ public class MainController implements Runnable{
     }
 
     /**
-     * Sets the logoutlistener in the mainframe
-     */
-    void setLogoutListener(ActionListener listener){
-        logoutListener = listener;
-        mainFrame.setLogoutListener(e->{
-            logout();
-        });
-    }
-
-    /**
      * Verifies if an Community with the given String as ID already exists and returns false if so.
      * @param s the given CommunityName
      * @return true if the name is free, false if not
@@ -694,6 +685,15 @@ public class MainController implements Runnable{
             e.printStackTrace();
         }
         return false;
+    }
+    /**
+     * Sets the logoutlistener in the mainframe
+     */
+    void setLogoutListener(ActionListener listener){
+        logoutListener = listener;
+        mainFrame.setLogoutListener(e->{
+            logout();
+        });
     }
 
     private void logout() {
