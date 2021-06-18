@@ -661,6 +661,21 @@ public class MainController implements Runnable{
         });
     }
 
+    /**
+     * Verifies if an Community with the given String as ID already exists and returns false if so.
+     * @param s the given CommunityName
+     * @return true if the name is free, false if not
+     */
+    boolean verifyCommunityName(String s){
+        try{
+            Community exists = CommunityClient.get(s);
+            if(exists == null) return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private void logout() {
         addContributorFrame.dispose();
         newLabelPopupFrame.dispose();
