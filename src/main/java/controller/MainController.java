@@ -653,12 +653,12 @@ public class MainController implements Runnable{
             if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
-        newExemplarTab.setUpdateExemplarListener((exemplar)->{
-            exemplarClient.update(exemplar.getName(), exemplar);
+        newCommunityTab.setCommunityListener((community)->{
+            exemplarClient.update(community.getName(), community);
         });
-        newExemplarTab.setDeleteExemplarListener((id, tab)->{
+        newExemplarTab.setDeleteCommunityListener((id, tab)->{
             try {
-                exemplarClient.delete(id);
+                communityClient.delete(id);
                 mainFrame.removeTab(tab);
                 refreshHomeTab();
             } catch (IOException e) {
@@ -666,10 +666,6 @@ public class MainController implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
-        newExemplarTab.setAddLabelListener((tab)->{
-            newLabelPopupFrame.setVisible(true);
-            newLabelPopupFrame.setTab(tab);
         });
 
         newExemplarTab.setRatingListener((t)->{
