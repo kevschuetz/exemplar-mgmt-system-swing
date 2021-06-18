@@ -4,6 +4,7 @@ import model.entities.*;
 import model.entities.Label;
 import view.frames.mainFrame.AddCommentPopupFrame;
 import view.frames.mainFrame.AddUserrFrame;
+import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.communityTap.DeleteCommunityListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
@@ -34,8 +35,7 @@ public class CommunityTab extends JPanel {
 
     private UpdateCommunityListener updateCommunityListener;
     private DeleteCommunityListener deleteCommunityListener;
-
-
+    private ConfirmCommunityDeletionFrame confirmCommunityDeletionFrame;
 
     boolean editable = false;
 
@@ -44,9 +44,14 @@ public class CommunityTab extends JPanel {
         JLabel label = new JLabel("community details");
         add(label);
         addComponents();
+        initializeComponents();
+        setEditable();
         addActionListener();
     }
 
+    void setEditable(){
+        editable = true;
+    }
     void addComponents(){
         GridBagConstraints c = new GridBagConstraints();
         c.weighty = 0.3;
@@ -54,8 +59,6 @@ public class CommunityTab extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
-        initializeComponents();
-
         add(closeButton);
     }
 
@@ -65,9 +68,37 @@ public class CommunityTab extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
+    void addActionListener(){
+        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
+        updateButton.addActionListener((x)->{
+            updateCommunityListener.updateRequested(community);
+        });
+        deleteButton.addActionListener((e)->{
+            confirmCommunityDeletionFrame.setVisible(true);
+        });
+        addLabelButton.addActionListener((e)->{
+            addLabelListener.buttonClicked(this);
+        });
+        ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
+        addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
+        exportButton.addActionListener((e)-> exportListener.componentSubmitted(this));
+        commentButton.addActionListener((x) -> commentPopup.setVisible(true));
+    }
+
+    void initializeDeletalFrame(){
+        confirmCommunityDeletionFrame = new ConfirmExemplarDeletionFrame(exemplar.getName());
+        confirmExemplarDeletionFrame.setVisible(false);
+        confirmExemplarDeletionFrame.setSize(new Dimension(400
+                ,300));
+        confirmExemplarDeletionFrame.setLocationRelativeTo(this);
+        confirmExemplarDeletionFrame.setConfirmListener((x)->{
+            confirmExemplarDeletionFrame.setVisible(false);
+            deleteExemplarListener.deleteRequested(exemplar.getName(), this);
+        });
+    }
+
     void initializeComponents(){
         initializeMetaInfoPanel();
-       /*initializeAddUserPopupFrame();
         configurationPanel.setLayout(new GridLayout(1, 8));
         if(editable){
             configurationPanel.add(updateButton);
@@ -78,7 +109,7 @@ public class CommunityTab extends JPanel {
         configurationPanel.add(addLabelButton);
         configurationPanel.add(ratingButton);
         configurationPanel.add(commentButton);
-        configurationPanel.add(closeButton);*/
+        configurationPanel.add(closeButton);
     }
 
     private void initializeMetaInfoPanel() {
@@ -94,18 +125,12 @@ public class CommunityTab extends JPanel {
         metaInfoPanel.setLayout(new GridLayout(5,1));
 
 
-        /*labelPanel = initializeLabelPanel();
-        contributorPanel = initializeContributorPanel();*/
-
-
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
         /*metaInfoPanel.add(avgRatingLabel);
         metaInfoPanel.add(labelPanel);
         metaInfoPanel.add(contributorPanel);*/
     }
-
-
 
 
     void addActionListener(){
