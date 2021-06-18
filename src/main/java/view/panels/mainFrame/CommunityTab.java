@@ -131,9 +131,6 @@ public class CommunityTab extends JPanel {
 
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
-        /*metaInfoPanel.add(avgRatingLabel);
-        metaInfoPanel.add(labelPanel);
-        metaInfoPanel.add(contributorPanel);*/
     }
 
     public JButton getUpdateButton() {
