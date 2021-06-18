@@ -105,7 +105,6 @@ public class MyCommunitiesPanel extends JPanel {
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,2));
         JButton createCommunityButton = new JButton("Create New Community");
-        JButton searchAllButton = new JButton("Search All Communities");
         buttonPanel.add(createCommunityButton);
         createCommunityButton.addActionListener(x->createCommunityListener.actionPerformed(x));
         //buttonPanel.add(searchAllButton);
@@ -114,7 +113,6 @@ public class MyCommunitiesPanel extends JPanel {
     public void setNewTabListener(NewTabListener newTabListener) {
         this.newTabListener = newTabListener;
     }
-
 
     public void setCommuniyListener(NewTabListener communiyListener) {
         this.newTabListener = communiyListener;
