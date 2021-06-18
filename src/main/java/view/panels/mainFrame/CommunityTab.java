@@ -17,7 +17,7 @@ public class CommunityTab extends JPanel {
     private ActionWithComponentListener closeListener;
     private Exemplar[] referenceExemplars;
 
-    private UpdateCommunityListener updateCommuniyListener;
+    private UpdateCommunityListener updateCommunityListener;
     private DeleteCommunityListener deleteCommunityListener;
 
     JButton updateButton = new JButton ("Update");
@@ -46,7 +46,7 @@ public class CommunityTab extends JPanel {
     }
 
     public void setUpdateCommunityListener(UpdateCommunityListener updateCommunityListener) {
-        this.updateCommunityListener = updateExemplarListener;
+        this.updateCommunityListener = updateCommunityListener;
     }
 
     public void setDeleteCommunityListener(DeleteCommunityListener deleteCommunityListener) {
