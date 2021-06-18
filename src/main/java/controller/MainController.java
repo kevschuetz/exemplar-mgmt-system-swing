@@ -653,7 +653,7 @@ public class MainController implements Runnable{
             if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
-        newCommunityTab.setCommunityListener((community)->{
+        newCommunityTab.setUpdateCommunityListener((community)->{
             exemplarClient.update(community.getName(), community);
         });
         newExemplarTab.setDeleteCommunityListener((id, tab)->{

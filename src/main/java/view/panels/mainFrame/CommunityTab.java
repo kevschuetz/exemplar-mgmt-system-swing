@@ -4,6 +4,10 @@ import model.entities.Community;
 import model.entities.Exemplar;
 import model.entities.Label;
 import view.listeners.mainframe.ActionWithComponentListener;
+import view.listeners.mainframe.communityTap.DeleteCommunityListener;
+import view.listeners.mainframe.communityTap.UpdateCommunityListener;
+import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
+import view.listeners.mainframe.exemplarTab.UpdateExemplarListener;
 
 import javax.swing.*;
 
@@ -12,6 +16,9 @@ public class CommunityTab extends JPanel {
     private JButton closeButton = new JButton("Close");
     private ActionWithComponentListener closeListener;
     private Exemplar[] referenceExemplars;
+
+    private UpdateCommunityListener updateCommuniyListener;
+    private DeleteCommunityListener deleteCommunityListener;
 
     JButton updateButton = new JButton ("Update");
     JButton deleteButton = new JButton("Delete");
@@ -36,6 +43,14 @@ public class CommunityTab extends JPanel {
 
     public JButton getUpdateButton() {
         return updateButton;
+    }
+
+    public void setUpdateCommunityListener(UpdateExemplarListener updateExemplarListener) {
+        this.updateExemplarListener = updateExemplarListener;
+    }
+
+    public void setDeleteCommunityListener(DeleteExemplarListener deleteExemplarListener) {
+        this.deleteExemplarListener = deleteExemplarListener;
     }
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
