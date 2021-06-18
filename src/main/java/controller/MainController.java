@@ -441,6 +441,13 @@ public class MainController implements Runnable{
         });
 
         /**
+         * Makes the NewCommunityPopupFrame visible to enter name
+         */
+        homeTab.setCreateCommunityListener((c)->{
+            newCommunityPopupFrame.setVisible(true);
+        });
+
+        /**
          * Fetches all communities from the database according to their names in the list and opens
          * a CommunityTab for each of them
          */

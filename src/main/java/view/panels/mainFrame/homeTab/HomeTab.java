@@ -66,6 +66,8 @@ public class HomeTab extends JPanel {
 
     public void setCreateExemplarListener(ActionListener createExemplarListener) { myExemplarsPanel.setCreateExemplarListener(createExemplarListener);}
 
+    public void setCreateCommunityListener(ActionListener createCommunityListener) { myCommunitiesPanel.setCreateExemplarListener(createCommunityListener);}
+
     public void setUser(User user) {
         this.user = user;
         profilePanel.setUser(user);
