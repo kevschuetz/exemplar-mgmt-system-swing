@@ -78,6 +78,10 @@ public class MainFrame extends JFrame{
         menuPanel.contributorButton.addActionListener(l);
     }
 
+    public void setCommunityButtonListener(ActionListener l){
+        menuPanel.communityButton.addActionListener(l);
+    }
+
     public void setSearchExemplarListener(ActionListener l){menuPanel.searchExemplarListener = l;}
 
     public void setSearchContributorListener(ActionListener l) {menuPanel.searchContributorListener = l;}

@@ -17,6 +17,7 @@ import model.httpclients.*;
 import view.frames.mainFrame.*;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
+import view.panels.mainFrame.CommunityLibraryTab;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ContributorLibraryTab;
 import view.panels.mainFrame.ExemplarLibraryTab;
@@ -75,6 +76,7 @@ public class MainController implements Runnable{
     private AddMemberFrame addMemberFrame;
     private ExemplarLibraryTab initialExemplarLibraryTab;
     private ContributorLibraryTab initialContributorLibraryTab;
+    private CommunityLibraryTab initialCommunityLibraryTab;
     boolean librarysLoaded = false;
 
     private ActionListener logoutListener;
@@ -144,6 +146,7 @@ public class MainController implements Runnable{
         mainFrame.setSize(new Dimension(1300, 1000));
         mainFrame.setExemplarButtonListener(getOpenExemplarLibraryListener(false));
         mainFrame.setContributorButtonListener(getOpenContributorLibraryListener(false));
+        mainFrame.setCommunityButtonListener(getOpenCommunityLibraryListener(false));
         mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
         mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
         mainFrame.setImportListener((path)->{
@@ -430,6 +433,45 @@ public class MainController implements Runnable{
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
+            }
+        });
+    }
+
+    /**
+     * Creates an ActionListener that opens a new communityLibrary in a seperate tab and selects that tab
+     * @return the listener created
+     */
+    ActionListener getOpenCommunityLibraryListener(boolean searchableByMainFrame){
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommunityLibraryTab communityLibrary;
+
+                if(searchableByMainFrame) {
+                    communityLibrary = new CommunityLibraryTab(mainFrame.getSearchTerm());
+                }
+                else communityLibrary = new CommunityLibraryTab("");
+
+                if(searchableByMainFrame){
+                    for(JComponent c : mainFrame.getOpenSearchTabs()){
+                        mainFrame.removeTab(c);
+                    }
+                    java.util.List<JComponent> list = new ArrayList<>();
+                    list.add(communityLibrary);
+                    mainFrame.setOpenSearchTabs(list);
+                    mainFrame.addTab("Search Communities", communityLibrary);
+                } else mainFrame.addTab("Community Library", communityLibrary);
+
+                mainFrame.setLastTabSelected();
+            }
+        };
+    }
+
+    void addListenersToCommunityLibrary(CommunityLibraryTab communityLibrary){
+        communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        communityLibrary.setContributorListener(selectedEntities -> {
+            for(String e1 : selectedEntities){
+                createNewCommunityAndInitializeTab(e1);
             }
         });
     }
@@ -782,6 +824,7 @@ public class MainController implements Runnable{
         initialExemplarLibraryTab = new ExemplarLibraryTab("");
         initialContributorLibraryTab = new ContributorLibraryTab("");
         addListenersToContributorLibrary(initialContributorLibraryTab);
+        addListenersToCommunityLibrary(initialCommunityLibraryTab);
         addListenersToExemplarLibrary(initialExemplarLibraryTab);
         librarysLoaded = true;
         return;
