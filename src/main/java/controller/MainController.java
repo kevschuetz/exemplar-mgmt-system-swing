@@ -331,17 +331,18 @@ public class MainController implements Runnable{
          * adds the contributor to the exemplar and persists the update.
          * Refreshes the info panel from the ExemplarTab to reflect changes.
          */
-        addMemberFrame.setListener((u)->{
-            CommunityTab tab = addMemberFrame.getTab();
+        addContributorFrame.setListener((u)->{
+            ExemplarTab tab = addContributorFrame.getTab();
+            if(u.getUsername() != null){
             Exemplar e = tab.getExemplar();
                 if(!e.getContributors().contains(u)){
                     e.getContributors().add(u);
                     Exemplar updated = exemplarClient.update(e.getName(), e);
                     tab.refreshInfoPanel();
                     if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
-                }else JOptionPane.showMessageDialog(tab, "User already a contributor");
+                }else JOptionPane.showMessageDialog(tab, "User already in community");
             }else{
-                JOptionPane.showMessageDialog(tab, u.getUsername() + " does not have Contributor status");
+                JOptionPane.showMessageDialog(tab, u.getUsername() + " is no user");
             }
 
         });
@@ -706,11 +707,11 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-        newCommunityTab.setUserListener((t)->{
+        /*newCommunityTab.setUserListener((t)->{
             addMemberFrame.setTab(t);
             addMemberFrame.setTitle(t.getExemplar().getName());
             addMemberFrame.setVisible(true);
-        });
+        });*/
     }
 
     private void exportExemplar(String path, Exemplar exemplar) {

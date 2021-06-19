@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class AddMemberFrame {
+public class AddMemberFrame extends JFrame{
         private CommunityTab tab;
         private JPanel parentPanel = new JPanel();
         private JTextField searchField = new JTextField();
@@ -22,9 +22,9 @@ public class AddMemberFrame {
         private UserClient client = new UserClient();
         private AddUserListener listener;
 
-//tab added
+
         public AddMemberFrame(){
-            tab.setLayout(new GridLayout(1,1));
+            setLayout(new GridLayout(1,1));
             parentPanel.setLayout(new GridBagLayout());
             parentPanel.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createTitledBorder("New User"),
@@ -32,7 +32,7 @@ public class AddMemberFrame {
             initializeComponents();
             addComponents();
             addActionListeners();
-            tab.getRootPane().setDefaultButton(searchButton);
+            getRootPane().setDefaultButton(searchButton);
         }
 
         void initializeComponents(){
@@ -62,8 +62,8 @@ public class AddMemberFrame {
             c.gridy = 2;
             c.weighty = 0.05;
             parentPanel.add(addButton, c);
-//"tab" added
-            tab.add(parentPanel);
+
+            add(parentPanel);
         }
 
         User[] fetchUsers(String s){

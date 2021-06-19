@@ -29,6 +29,7 @@ import java.util.List;
 public class CommunityTab extends JPanel {
     private Community community;
     private User currentUser;
+    private User[] members;
 
     private ActionWithComponentListener closeListener;
     private List <Exemplar> referenceExemplars;
@@ -320,4 +321,6 @@ public class CommunityTab extends JPanel {
         return this.editable;
     }
 
+    /*public Exemplar getExemplar() {
+    }*/
 }
