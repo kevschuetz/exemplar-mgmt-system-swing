@@ -72,6 +72,7 @@ public class MainController implements Runnable{
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
     private AddUserrFrame addContributorFrame;
+    private AddMemberFrame addMemberFrame;
     private ExemplarLibraryTab initialExemplarLibraryTab;
     private ContributorLibraryTab initialContributorLibraryTab;
     boolean librarysLoaded = false;
@@ -87,6 +88,7 @@ public class MainController implements Runnable{
         initializeNewLabelPopupFrame();
         initializeNewRatingPopupFrame();
         initializeAddContributorFrame();
+        initializeAddMemberFrame();
 
         //login
        loginController = new LoginController();
@@ -316,6 +318,35 @@ public class MainController implements Runnable{
         });
     }
 
+    /**
+     * Initializes the Frame used to add Users to a Community
+     */
+    void initializeAddMemberFrame(){
+        addMemberFrame = new AddMemberFrame();
+        addMemberFrame.setVisible(false);
+        addMemberFrame.setSize(new Dimension(350, 500));
+        addMemberFrame.setLocationRelativeTo(mainFrame);
+        /**
+         * Sets the listener of the frame to check if the selected user has contributor status,
+         * adds the contributor to the exemplar and persists the update.
+         * Refreshes the info panel from the ExemplarTab to reflect changes.
+         */
+        addMemberFrame.setListener((u)->{
+            CommunityTab tab = addMemberFrame.getTab();
+            if(u.getIsContributor()==1){
+                Exemplar e = tab.getExemplar();
+                if(!e.getContributors().contains(u)){
+                    e.getContributors().add(u);
+                    Exemplar updated = exemplarClient.update(e.getName(), e);
+                    tab.refreshInfoPanel();
+                    if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
+                }else JOptionPane.showMessageDialog(tab, "User already a contributor");
+            }else{
+                JOptionPane.showMessageDialog(tab, u.getUsername() + " does not have Contributor status");
+            }
+
+        });
+    }
     /**
      * Creates an ActionListener that opens a new ExemplarLibrary in a new tab and selects that tab
      * @return the listener created
