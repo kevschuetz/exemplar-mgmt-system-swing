@@ -29,7 +29,6 @@ import java.util.List;
 public class CommunityTab extends JPanel {
     private Community community;
     private User currentUser;
-    private User[] members;
 
     private ActionWithComponentListener closeListener;
     private List <Exemplar> referenceExemplars;
@@ -50,7 +49,6 @@ public class CommunityTab extends JPanel {
 
     private AddUserListener addUserListener;
 
-    private AddUserrFrame userPopup;
     private List<User> members;
     private JLabel label;
     private UpdateCommunityListener updateCommunityListener;
@@ -295,7 +293,6 @@ public class CommunityTab extends JPanel {
             membersParentPanel.add(membersJPanelMap.get(m));
         }
     }
-
 
     public JButton getUpdateButton() {
         return updateButton;
