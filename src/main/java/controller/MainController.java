@@ -676,18 +676,11 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-
-        /*newExemplarTab.setRatingListener((t)->{
-            newRatingPopupFrame.setTab(t);
-            newRatingPopupFrame.setTitle(t.getExemplar().getName());
-            newRatingPopupFrame.setVisible(true);
-        });
-
-        newExemplarTab.setContributorListener((t)->{
+        newCommunityTab.setUserListener((t)->{
             addContributorFrame.setTab(t);
             addContributorFrame.setTitle(t.getExemplar().getName());
             addContributorFrame.setVisible(true);
-        });*/
+        });
     }
 
     private void exportExemplar(String path, Exemplar exemplar) {

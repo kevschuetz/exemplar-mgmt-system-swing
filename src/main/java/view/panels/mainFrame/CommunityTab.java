@@ -311,6 +311,11 @@ public class CommunityTab extends JPanel {
         this.closeListener = closeListener;
     }
 
+    public void setUserListener(AddUserListener userListener) {
+        this.addUserListener = userListener;
+    }
+
+
     public boolean isEditable(){
         return this.editable;
     }
