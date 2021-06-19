@@ -823,6 +823,7 @@ public class MainController implements Runnable{
     public void run() {
         initialExemplarLibraryTab = new ExemplarLibraryTab("");
         initialContributorLibraryTab = new ContributorLibraryTab("");
+        initialCommunityLibraryTab = new CommunityLibraryTab("");
         addListenersToContributorLibrary(initialContributorLibraryTab);
         addListenersToCommunityLibrary(initialCommunityLibraryTab);
         addListenersToExemplarLibrary(initialExemplarLibraryTab);

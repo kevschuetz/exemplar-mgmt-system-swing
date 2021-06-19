@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class CommunityLibraryTab extends JPanel{
 
     private ExemplarClient exemplarClient = new ExemplarClient();
     private RatingClient ratingClient = new RatingClient();
+    private CommunityClient communityClient = new CommunityClient();
 
     private JComboBox sortingComboBox;
     private JComboBox sortingComboBox2;
@@ -54,24 +56,25 @@ public class CommunityLibraryTab extends JPanel{
 
         fetchCommunities(searchTerm);
         communityPanelParent.setLayout(new GridLayout(allCommunities.size()+1, 1));
-        addUsersToScrollPane();
+        addCommunitiesToScrollPane();
         initializeSortingListener();
         initializeFilterLabelFrame();
         initializeButtonPanel();
         addComponents();
     }
 
+
     public void fetchCommunities(String searchTerm){
         allCommunities = new CommunityClient().searchCommunities(searchTerm);
         allCommunities = allCommunities
                 .stream()
-                .filter(u->u.getName() != null)
+                .filter(c->c.getName() != null)
                 .collect(Collectors.toList());
-
+        if(allCommunities.size() <= 0) System.exit(0);
     }
 
 
-    public void addUsersToScrollPane(){
+    public void addCommunitiesToScrollPane(){
         int i = 0;
         List<Community> communities = allCommunities;
         for(Community c : communities){
@@ -85,7 +88,7 @@ public class CommunityLibraryTab extends JPanel{
                         if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
                             List<String> users = new ArrayList<>();
                             users.add(c.getName());
-                            userListener.tabRequested(users);
+                            //userListener.tabRequested(users);
                         }
                     }
                 });
@@ -93,13 +96,13 @@ public class CommunityLibraryTab extends JPanel{
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(c.getName());
                 JLabel labelCreator = new JLabel("Creator: ");
-                JLabel creator = new JLabel((Icon) c.getCreator());
+                //JLabel creator = new JLabel(c.getCreator().getUsername());
                 JLabel labelNumberOfUsers = new JLabel("Number of Users: ");
-                JLabel numberOfUsers = new JLabel((Icon) c.getMembers());
+                JLabel numberOfUsers = new JLabel(String.valueOf(c.getMembers().size()));
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
-                JLabel numberOfExemplars = new JLabel(String.valueOf((int)exemplarMap.get(c)[1]));
+                JLabel numberOfExemplars = new JLabel(String.valueOf(c.getExemplars().size()));
                 JLabel labelAverageRatingOfExemplars = new JLabel("Average Rating: ");
-                JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(c)[0] * 100.00) / 100.00));
+                //JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(c)[0] * 100.00) / 100.00));
                 JLabel labelExemplarLabels = new JLabel("Labels of Exemplars: ");
 
                 JCheckBox checkBox = new JCheckBox();
@@ -108,7 +111,7 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(userName);
                 panel.add(new JLabel(""));
                 panel.add(labelCreator);
-                panel.add(creator);
+                //panel.add(creator);
                 panel.add(new JLabel(""));
                 panel.add(labelNumberOfUsers);
                 panel.add(numberOfUsers);
@@ -117,7 +120,7 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(numberOfExemplars);
                 panel.add(new JLabel(""));
                 panel.add(labelAverageRatingOfExemplars);
-                panel.add(averageRatingOfExemplars);
+                //panel.add(averageRatingOfExemplars);
                 panel.add(new JLabel(""));
                 panel.add(labelExemplarLabels);
                 StringBuilder labels = new StringBuilder();
@@ -171,7 +174,7 @@ public class CommunityLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        openContributorsButton.addActionListener((x)->openContributors());
+        openContributorsButton.addActionListener((x)->openCommunities());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
 
         buttonPanel.add(sortingComboBox);
@@ -181,7 +184,7 @@ public class CommunityLibraryTab extends JPanel{
         buttonPanel.setBorder(border);
     }
 
-    void openContributors(){
+    void openCommunities(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
         List<String> selectedContributors = new ArrayList<>();
         for(Map.Entry<String, JCheckBox> e: entrySet){
@@ -242,7 +245,7 @@ public class CommunityLibraryTab extends JPanel{
     public void updateTab (){
         removeAll();
         communityPanelParent.removeAll();
-        addUsersToScrollPane();
+        addCommunitiesToScrollPane();
         addComponents();
     }
 
