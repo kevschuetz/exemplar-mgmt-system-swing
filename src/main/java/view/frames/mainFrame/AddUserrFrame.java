@@ -3,7 +3,6 @@ package view.frames.mainFrame;
 import model.entities.User;
 import model.httpclients.UserClient;
 import view.listeners.mainframe.AddContributorListener;
-import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 
 import javax.swing.*;

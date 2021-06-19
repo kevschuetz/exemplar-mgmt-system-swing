@@ -22,9 +22,9 @@ public class AddMemberFrame {
         private UserClient client = new UserClient();
         private AddUserListener listener;
 
-
+//tab added
         public AddMemberFrame(){
-            setLayout(new GridLayout(1,1));
+            tab.setLayout(new GridLayout(1,1));
             parentPanel.setLayout(new GridBagLayout());
             parentPanel.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createTitledBorder("New User"),
@@ -32,7 +32,7 @@ public class AddMemberFrame {
             initializeComponents();
             addComponents();
             addActionListeners();
-            getRootPane().setDefaultButton(searchButton);
+            tab.getRootPane().setDefaultButton(searchButton);
         }
 
         void initializeComponents(){
@@ -62,8 +62,8 @@ public class AddMemberFrame {
             c.gridy = 2;
             c.weighty = 0.05;
             parentPanel.add(addButton, c);
-
-            add(parentPanel);
+//"tab" added
+            tab.add(parentPanel);
         }
 
         User[] fetchUsers(String s){
@@ -99,6 +99,5 @@ public class AddMemberFrame {
         public void setListener(AddUserListener listener) {
             this.listener = listener;
         }
-    }
-
 }
+

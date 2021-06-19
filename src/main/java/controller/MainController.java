@@ -333,8 +333,7 @@ public class MainController implements Runnable{
          */
         addMemberFrame.setListener((u)->{
             CommunityTab tab = addMemberFrame.getTab();
-            if(u.getIsContributor()==1){
-                Exemplar e = tab.getExemplar();
+            Exemplar e = tab.getExemplar();
                 if(!e.getContributors().contains(u)){
                     e.getContributors().add(u);
                     Exemplar updated = exemplarClient.update(e.getName(), e);
@@ -708,9 +707,9 @@ public class MainController implements Runnable{
             }
         });
         newCommunityTab.setUserListener((t)->{
-            addContributorFrame.setTab(t);
-            addContributorFrame.setTitle(t.getExemplar().getName());
-            addContributorFrame.setVisible(true);
+            addMemberFrame.setTab(t);
+            addMemberFrame.setTitle(t.getExemplar().getName());
+            addMemberFrame.setVisible(true);
         });
     }
 

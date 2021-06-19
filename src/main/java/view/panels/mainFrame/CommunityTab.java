@@ -76,7 +76,7 @@ public class CommunityTab extends JPanel {
         this.membersParentPanel = new JPanel();
         this.members = community.getMembers();
         this.referenceExemplars = community.getExemplars();
-        //fetchExemplars();
+        fetchExemplars();
         addExemplarPanelsToParentPanel();
         createExemplarPanels();
         createMemberPanels();
@@ -319,4 +319,5 @@ public class CommunityTab extends JPanel {
     public boolean isEditable(){
         return this.editable;
     }
+
 }
