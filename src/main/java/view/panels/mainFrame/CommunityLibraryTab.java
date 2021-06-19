@@ -1,11 +1,11 @@
 package view.panels.mainFrame;
 
+import model.entities.Community;
 import model.entities.Exemplar;
 import model.entities.Label;
-import model.entities.User;
+import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
-import model.httpclients.UserClient;
 import view.frames.mainFrame.FilterLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.FilterByLabelListener;
@@ -40,11 +40,11 @@ public class CommunityLibraryTab extends JPanel{
 
     private List<String> filteredLabels = new ArrayList<>();
     private Set<Label> allLabels = new HashSet<>();
-    private List<User> allUsers;
-    private Map<User, double []> exemplarMap = new HashMap(); // [0] = average Rating [1] = number of Exemplars
-    private Map <User, List<model.entities.Label>> labelsPerContributor = new HashMap();
-    private Map<String, JCheckBox> selectedUserMap = new HashMap<>();
-    private Map<User, List<Exemplar>> userExemplarMap = new HashMap<>();
+    private List<Community> allCommunities;
+    private Map<Community, double []> exemplarMap = new HashMap();
+    private Map <Community, List<model.entities.Label>> labelsPerCommunity = new HashMap();
+    private Map<String, JCheckBox> selectedCommunityMap = new HashMap<>();
+    private Map<Community, List<Exemplar>> communityExemplarMap = new HashMap<>();
 
     boolean filtered = false;
 
@@ -52,10 +52,8 @@ public class CommunityLibraryTab extends JPanel{
         scrollPane = new JScrollPane(communityPanelParent);
         scrollPane.setLayout(new ScrollPaneLayout());
 
-        fetchUsers(searchTerm);
-        addExemplarInformation();
-
-        communityPanelParent.setLayout(new GridLayout(allUsers.size()+1, 1));
+        fetchCommunities(searchTerm);
+        communityPanelParent.setLayout(new GridLayout(allCommunities.size()+1, 1));
         addUsersToScrollPane();
         initializeSortingListener();
         initializeFilterLabelFrame();
@@ -63,41 +61,21 @@ public class CommunityLibraryTab extends JPanel{
         addComponents();
     }
 
-    public void fetchUsers(String searchTerm){
-        allUsers = new UserClient().searchUsers(searchTerm);
-        allUsers = allUsers
+    public void fetchCommunities(String searchTerm){
+        allCommunities = new CommunityClient().searchCommunities(searchTerm);
+        allCommunities = allCommunities
                 .stream()
-                .filter(u->u.getUsername() != null)
+                .filter(u->u.getName() != null)
                 .collect(Collectors.toList());
 
     }
 
-    public void addExemplarInformation(){
-        for(User u : allUsers){
-            List<Exemplar> forUser = exemplarClient.getExemplarsForUser(u.getUsername());
-            userExemplarMap.put(u, forUser);
-            exemplarMap.put(u,
-                    new double[]{
-                            forUser.stream().
-                                    mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
-                                    average().orElse(0),
-                            forUser.size()});
-
-            List<model.entities.Label> labelsForContributor = forUser.stream().
-                    flatMap(e -> e.getLabels().stream()).collect(Collectors.toList());
-            for(model.entities.Label l : labelsForContributor){
-                allLabels.add(l);
-            }
-            labelsPerContributor.put(u, labelsForContributor);
-        }
-
-    }
 
     public void addUsersToScrollPane(){
         int i = 0;
-        List<User> users = allUsers;
-        for(User u : users){
-            if(u.getUsername() != null) {
+        List<Community> communities = allCommunities;
+        for(Community c : communities){
+            if(c.getName() != null) {
                 JPanel panel = new JPanel();
                 panel.setLayout(new GridLayout(5, 3));
 
@@ -106,24 +84,34 @@ public class CommunityLibraryTab extends JPanel{
                     public void mouseClicked(MouseEvent event) {
                         if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
                             List<String> users = new ArrayList<>();
-                            users.add(u.getUsername());
+                            users.add(c.getName());
                             userListener.tabRequested(users);
                         }
                     }
                 });
 
                 JLabel name = new JLabel("Name: ");
-                JLabel userName = new JLabel(u.getUsername());
+                JLabel userName = new JLabel(c.getName());
+                JLabel labelCreator = new JLabel("Creator: ");
+                JLabel creator = new JLabel((Icon) c.getCreator());
+                JLabel labelNumberOfUsers = new JLabel("Number of Users: ");
+                JLabel numberOfUsers = new JLabel((Icon) c.getMembers());
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
-                JLabel numberOfExemplars = new JLabel(String.valueOf((int)exemplarMap.get(u)[1]));
+                JLabel numberOfExemplars = new JLabel(String.valueOf((int)exemplarMap.get(c)[1]));
                 JLabel labelAverageRatingOfExemplars = new JLabel("Average Rating: ");
-                JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(u)[0] * 100.00) / 100.00));
+                JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(c)[0] * 100.00) / 100.00));
                 JLabel labelExemplarLabels = new JLabel("Labels of Exemplars: ");
 
                 JCheckBox checkBox = new JCheckBox();
                 // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
+                panel.add(new JLabel(""));
+                panel.add(labelCreator);
+                panel.add(creator);
+                panel.add(new JLabel(""));
+                panel.add(labelNumberOfUsers);
+                panel.add(numberOfUsers);
                 panel.add(new JLabel(""));
                 panel.add(labelNumberOfExemplars);
                 panel.add(numberOfExemplars);
@@ -133,15 +121,15 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(new JLabel(""));
                 panel.add(labelExemplarLabels);
                 StringBuilder labels = new StringBuilder();
-                for(model.entities.Label l: labelsPerContributor.get(u)){
+                /*for(model.entities.Label l: labelsPerContributor.get(u)){
                     labels.append(l.getValue() + "   ");
-                }
+                }*/
                 panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
                 panel.setPreferredSize(new Dimension(200, 50));
                 //if (i % 2 == 0) panel.setBackground(Color.LIGHT_GRAY);
-                selectedUserMap.put(u.getUsername(), checkBox);
+                selectedCommunityMap.put(c.getName(), checkBox);
                 communityPanelParent.add(panel);
                 i++;
             }
@@ -178,7 +166,6 @@ public class CommunityLibraryTab extends JPanel{
         String [] sortingComboBoxList2 = {"ascending", "descending" };
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
-        JButton filterButton = new JButton("Filter by Label");
         JButton openContributorsButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
         sortingComboBox.addItemListener(sortingListener);
@@ -186,23 +173,16 @@ public class CommunityLibraryTab extends JPanel{
 
         openContributorsButton.addActionListener((x)->openContributors());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
-        filterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filterLabelPopupFrame.setVisible(true);
-            }
-        });
 
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
-        buttonPanel.add(filterButton);
         buttonPanel.add(openContributorsButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
     }
 
     void openContributors(){
-        Set<Map.Entry<String, JCheckBox>> entrySet = selectedUserMap.entrySet();
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
         List<String> selectedContributors = new ArrayList<>();
         for(Map.Entry<String, JCheckBox> e: entrySet){
             if(e.getValue().isSelected()) {
@@ -221,11 +201,11 @@ public class CommunityLibraryTab extends JPanel{
                  * Sort alphabetically
                  */
                 if(sortingComboBox.getSelectedIndex() == 0) {
-                    allUsers = allUsers.stream().
-                            sorted(Comparator.comparing(c -> c.getUsername())).collect(Collectors.toList());
+                    allCommunities = allCommunities.stream().
+                            sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allUsers);
+                        Collections.reverse(allCommunities);
                         //Collections.reverse(filteredContributors);
                     }
                 }
@@ -233,12 +213,12 @@ public class CommunityLibraryTab extends JPanel{
                  * Sort by avg rating of exemplar
                  */
                 if(sortingComboBox.getSelectedIndex() == 1) {
-                    allUsers = allUsers.stream().
+                    allCommunities = allCommunities.stream().
                             sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
 
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allUsers);
+                        Collections.reverse(allCommunities);
                         //Collections.reverse(filteredContributors);
                     }
                 }
@@ -246,11 +226,11 @@ public class CommunityLibraryTab extends JPanel{
                  * Sort by number of users
                  */
                 if(sortingComboBox.getSelectedIndex() == 2) {
-                    allUsers= allUsers.stream().
+                    allCommunities= allCommunities.stream().
                             sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
 
                     if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allUsers);
+                        Collections.reverse(allCommunities);
 
                     }
                 }

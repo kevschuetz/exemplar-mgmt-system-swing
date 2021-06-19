@@ -10,7 +10,7 @@ public class ConfirmCommunityDeletionFrame extends JFrame {
     private JTextField textField = new JTextField();
     private JButton button = new JButton("Delete");
     private ActionListener confirmListener;
-    private String communityrName;
+    private String communityName;
 
     public ConfirmCommunityDeletionFrame(String communityName){
         setLayout(new GridLayout(1,1));
