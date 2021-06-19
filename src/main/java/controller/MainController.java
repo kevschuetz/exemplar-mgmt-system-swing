@@ -749,9 +749,9 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-        /*newCommunityTab.setUserListener((t)->{
-            addMemberFrame.setTab(t);
-            addMemberFrame.setTitle(t.getExemplar().getName());
+        /*newCommunityTab.setUserListener((u)->{
+            addMemberFrame.setTab(u);
+            addMemberFrame.setTitle(t..getName());
             addMemberFrame.setVisible(true);
         });*/
     }
