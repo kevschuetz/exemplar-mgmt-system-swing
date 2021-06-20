@@ -71,7 +71,6 @@ public class CommunityLibraryTab extends JPanel{
                         if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
                             List<String> users = new ArrayList<>();
                             users.add(c.getName());
-                            //userListener.tabRequested(users);
                         }
                     }
                 });
@@ -122,6 +121,18 @@ public class CommunityLibraryTab extends JPanel{
 
     }
 
+    void openCommunities(){
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
+        List<String> selectedCommunity = new ArrayList<>();
+        for(Map.Entry<String, JCheckBox> e: entrySet){
+            if(e.getValue().isSelected()) {
+                selectedCommunity.add(e.getKey());
+                e.getValue().doClick();
+            }
+        }
+        communityListener.tabRequested(selectedCommunity);
+    }
+
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -144,18 +155,6 @@ public class CommunityLibraryTab extends JPanel{
         buttonPanel.setBorder(border);
     }
 
-    void openCommunities(){
-        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
-        List<String> selectedCommunity = new ArrayList<>();
-        for(Map.Entry<String, JCheckBox> e: entrySet){
-            if(e.getValue().isSelected()) {
-                selectedCommunity.add(e.getKey());
-                e.getValue().doClick();
-            }
-        }
-        communityListener.tabRequested(selectedCommunity);
-    }
-
     private void initializeSortingListener() {
         sortingListener = new ItemListener() {
             @Override
@@ -169,7 +168,6 @@ public class CommunityLibraryTab extends JPanel{
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allCommunities);
-                        //Collections.reverse(filteredContributors);
                     }
                 }
                 /**
