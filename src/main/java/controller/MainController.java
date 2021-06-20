@@ -437,10 +437,11 @@ public class MainController implements Runnable{
         });
     }
 
+
     /**
      * Creates an ActionListener that opens a new communityLibrary in a seperate tab and selects that tab
      * @return the listener created
-     */
+    */
     ActionListener getOpenCommunityLibraryListener(boolean searchableByMainFrame){
         return new ActionListener() {
             @Override
@@ -459,7 +460,7 @@ public class MainController implements Runnable{
                     java.util.List<JComponent> list = new ArrayList<>();
                     list.add(communityLibrary);
                     mainFrame.setOpenSearchTabs(list);
-                    mainFrame.addTab("Search Communities", communityLibrary);
+                    //mainFrame.addTab("Search Communities", communityLibrary);
                 } else mainFrame.addTab("Community Library", communityLibrary);
 
                 mainFrame.setLastTabSelected();
@@ -475,6 +476,7 @@ public class MainController implements Runnable{
             }
         });
     }
+
     /**
      * Adds all the listeners required for the home tab
      */
@@ -556,8 +558,7 @@ public class MainController implements Runnable{
         });
 
         homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener(false));
-        homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener(false));
-
+        //homeTab.setCreateCommunityLibraryListener(getOpenCommunityLibraryListener(false));
         homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener(false));
 
     }

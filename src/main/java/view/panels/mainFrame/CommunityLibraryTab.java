@@ -20,15 +20,18 @@ public class CommunityLibraryTab extends JPanel{
     Border border = BorderFactory.createBevelBorder(0);
     JPanel buttonPanel;
 
+
     private CommunityClient communityClient = new CommunityClient();
     private ExemplarClient exemplarClient = new ExemplarClient();
+
+    private ActionWithComponentListener closeListener;
+    private NewTabListener communityListener;
 
     private JComboBox sortingComboBox;
     private JComboBox sortingComboBox2;
 
     private ItemListener sortingListener;
-    private ActionWithComponentListener closeListener;
-    private NewTabListener communityListener;
+
 
     private List<Community> allCommunities;
     private Map<Community, double []> exemplarMap = new HashMap();
@@ -55,7 +58,6 @@ public class CommunityLibraryTab extends JPanel{
                 .collect(Collectors.toList());
         if(allCommunities.size() <= 0) System.exit(0);
     }
-
 
     public void addCommunitiesToScrollPane(){
         int i = 0;
@@ -121,18 +123,6 @@ public class CommunityLibraryTab extends JPanel{
 
     }
 
-    void openCommunities(){
-        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
-        List<String> selectedCommunity = new ArrayList<>();
-        for(Map.Entry<String, JCheckBox> e: entrySet){
-            if(e.getValue().isSelected()) {
-                selectedCommunity.add(e.getKey());
-                e.getValue().doClick();
-            }
-        }
-        communityListener.tabRequested(selectedCommunity);
-    }
-
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -145,14 +135,14 @@ public class CommunityLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        openCommunityButton.addActionListener((x)->openCommunities());
-        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
-
         //buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(openCommunityButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
+
+        openCommunityButton.addActionListener((x)->openCommunities());
+        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
     }
 
     private void initializeSortingListener() {
@@ -192,6 +182,18 @@ public class CommunityLibraryTab extends JPanel{
         communityPanelParent.removeAll();
         addCommunitiesToScrollPane();
         addComponents();
+    }
+
+    void openCommunities(){
+        Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
+        List<String> selectedCommunity = new ArrayList<>();
+        for(Map.Entry<String, JCheckBox> e: entrySet){
+            if(e.getValue().isSelected()) {
+                selectedCommunity.add(e.getKey());
+                e.getValue().doClick();
+            }
+        }
+        communityListener.tabRequested(selectedCommunity);
     }
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
