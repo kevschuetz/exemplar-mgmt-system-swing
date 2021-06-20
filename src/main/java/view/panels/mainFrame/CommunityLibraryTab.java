@@ -26,29 +26,19 @@ public class CommunityLibraryTab extends JPanel{
     Border border = BorderFactory.createBevelBorder(0);
     JPanel buttonPanel;
 
-    private ExemplarClient exemplarClient = new ExemplarClient();
-    private RatingClient ratingClient = new RatingClient();
     private CommunityClient communityClient = new CommunityClient();
+    private ExemplarClient exemplarClient = new ExemplarClient();
 
     private JComboBox sortingComboBox;
     private JComboBox sortingComboBox2;
 
     private ItemListener sortingListener;
     private ActionWithComponentListener closeListener;
-    FilterByLabelListener filterListener;
     private NewTabListener userListener;
 
-    FilterLabelPopupFrame filterLabelPopupFrame;
-
-    private List<String> filteredLabels = new ArrayList<>();
-    private Set<Label> allLabels = new HashSet<>();
     private List<Community> allCommunities;
     private Map<Community, double []> exemplarMap = new HashMap();
-    private Map <Community, List<model.entities.Label>> labelsPerCommunity = new HashMap();
     private Map<String, JCheckBox> selectedCommunityMap = new HashMap<>();
-    private Map<Community, List<Exemplar>> communityExemplarMap = new HashMap<>();
-
-    boolean filtered = false;
 
     public CommunityLibraryTab(String searchTerm){
         scrollPane = new JScrollPane(communityPanelParent);
@@ -58,7 +48,6 @@ public class CommunityLibraryTab extends JPanel{
         communityPanelParent.setLayout(new GridLayout(allCommunities.size()+1, 1));
         addCommunitiesToScrollPane();
         initializeSortingListener();
-        initializeFilterLabelFrame();
         initializeButtonPanel();
         addComponents();
     }
@@ -95,23 +84,15 @@ public class CommunityLibraryTab extends JPanel{
 
                 JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(c.getName());
-                JLabel labelCreator = new JLabel("Creator: ");
-                //JLabel creator = new JLabel(c.getCreator().getUsername());
                 JLabel labelNumberOfUsers = new JLabel("Number of Users: ");
                 JLabel numberOfUsers = new JLabel(String.valueOf(c.getMembers().size()));
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
                 JLabel numberOfExemplars = new JLabel(String.valueOf(c.getExemplars().size()));
-                JLabel labelAverageRatingOfExemplars = new JLabel("Average Rating: ");
-                //JLabel averageRatingOfExemplars = new JLabel(String.valueOf(Math.round(exemplarMap.get(c)[0] * 100.00) / 100.00));
-                JLabel labelExemplarLabels = new JLabel("Labels of Exemplars: ");
 
                 JCheckBox checkBox = new JCheckBox();
                 // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
-                panel.add(new JLabel(""));
-                panel.add(labelCreator);
-                //panel.add(creator);
                 panel.add(new JLabel(""));
                 panel.add(labelNumberOfUsers);
                 panel.add(numberOfUsers);
@@ -119,14 +100,7 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(labelNumberOfExemplars);
                 panel.add(numberOfExemplars);
                 panel.add(new JLabel(""));
-                panel.add(labelAverageRatingOfExemplars);
-                //panel.add(averageRatingOfExemplars);
-                panel.add(new JLabel(""));
-                panel.add(labelExemplarLabels);
                 StringBuilder labels = new StringBuilder();
-                /*for(model.entities.Label l: labelsPerContributor.get(u)){
-                    labels.append(l.getValue() + "   ");
-                }*/
                 panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
@@ -248,24 +222,6 @@ public class CommunityLibraryTab extends JPanel{
         addCommunitiesToScrollPane();
         addComponents();
     }
-
-    void initializeFilterLabelFrame(){
-        filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Contributors");
-        filterLabelPopupFrame.setVisible(false);
-        filterLabelPopupFrame.setSize(new Dimension(350, 400));
-        filterLabelPopupFrame.setLocationRelativeTo(this);
-
-        filterLabelPopupFrame.setListener((labels) -> {
-            filteredLabels = labels;
-            if(filteredLabels.size()==0) filtered = false;
-            //else filterUsers();
-            updateTab();
-            filterLabelPopupFrame.setVisible(false);
-
-        });
-    }
-
-
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
