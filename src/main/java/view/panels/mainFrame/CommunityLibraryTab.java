@@ -1,21 +1,15 @@
 package view.panels.mainFrame;
 
 import model.entities.Community;
-import model.entities.Exemplar;
-import model.entities.Label;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
-import model.httpclients.RatingClient;
-import view.frames.mainFrame.FilterLabelPopupFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
-import view.listeners.mainframe.FilterByLabelListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -88,7 +82,6 @@ public class CommunityLibraryTab extends JPanel{
                 JLabel numberOfUsers = new JLabel(String.valueOf(c.getMembers().size()));
 
                 JCheckBox checkBox = new JCheckBox();
-                // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
                 panel.add(labelNumberOfUsers);
@@ -99,7 +92,6 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(checkBox);
                 panel.setBorder(border);
                 panel.setPreferredSize(new Dimension(200, 50));
-                //if (i % 2 == 0) panel.setBackground(Color.LIGHT_GRAY);
                 selectedCommunityMap.put(c.getName(), checkBox);
                 communityPanelParent.add(panel);
                 i++;
@@ -145,7 +137,7 @@ public class CommunityLibraryTab extends JPanel{
         openContributorsButton.addActionListener((x)->openCommunities());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
 
-        buttonPanel.add(sortingComboBox);
+        //buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(openContributorsButton);
         buttonPanel.add(closeLibraryButton);
