@@ -86,19 +86,13 @@ public class CommunityLibraryTab extends JPanel{
                 JLabel userName = new JLabel(c.getName());
                 JLabel labelNumberOfUsers = new JLabel("Number of Users: ");
                 JLabel numberOfUsers = new JLabel(String.valueOf(c.getMembers().size()));
-                JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
-                JLabel numberOfExemplars = new JLabel(String.valueOf(c.getExemplars().size()));
 
                 JCheckBox checkBox = new JCheckBox();
                 // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
                 panel.add(name);
                 panel.add(userName);
-                panel.add(new JLabel(""));
                 panel.add(labelNumberOfUsers);
                 panel.add(numberOfUsers);
-                panel.add(new JLabel(""));
-                panel.add(labelNumberOfExemplars);
-                panel.add(numberOfExemplars);
                 panel.add(new JLabel(""));
                 StringBuilder labels = new StringBuilder();
                 panel.add(new JLabel(labels.toString()));
@@ -139,7 +133,7 @@ public class CommunityLibraryTab extends JPanel{
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
-        String [] sortingComboBoxList = {"Sort Alphabetically", "Sort by average Rating of Exemplars", "Sort by Number of Exemplars"};
+        String [] sortingComboBoxList = {"Sort Alphabetically"};
         String [] sortingComboBoxList2 = {"ascending", "descending" };
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
@@ -180,19 +174,6 @@ public class CommunityLibraryTab extends JPanel{
                 if(sortingComboBox.getSelectedIndex() == 0) {
                     allCommunities = allCommunities.stream().
                             sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allCommunities);
-                        //Collections.reverse(filteredContributors);
-                    }
-                }
-                /**
-                 * Sort by avg rating of exemplar
-                 */
-                if(sortingComboBox.getSelectedIndex() == 1) {
-                    allCommunities = allCommunities.stream().
-                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
-
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allCommunities);
