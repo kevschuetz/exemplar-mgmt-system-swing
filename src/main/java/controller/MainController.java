@@ -453,6 +453,8 @@ public class MainController implements Runnable{
                 }
                 else communityLibrary = new CommunityLibraryTab("");
 
+                addListenersToCommunityLibrary(communityLibrary);
+
                 if(searchableByMainFrame){
                     for(JComponent c : mainFrame.getOpenSearchTabs()){
                         mainFrame.removeTab(c);
@@ -472,7 +474,7 @@ public class MainController implements Runnable{
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
         communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
-                createNewCommunityAndInitializeTab(e1);
+                //createNewCommunityAndInitializeTab(e1);
             }
         });
     }

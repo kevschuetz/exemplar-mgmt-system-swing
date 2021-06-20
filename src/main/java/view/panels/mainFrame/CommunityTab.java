@@ -177,7 +177,7 @@ public class CommunityTab extends JPanel {
     void initializeButtons(){
         updateButton = new JButton ("Update");
         deleteButton = new JButton("Delete");
-        addUserButton = new JButton("add User");
+        addUserButton = new JButton("Join");
         closeButton = new JButton("Close");
         if(editable){
             buttons.add(updateButton);
