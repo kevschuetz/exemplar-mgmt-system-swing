@@ -10,8 +10,8 @@ import view.frames.mainFrame.AddUserrFrame;
 import view.frames.mainFrame.ConfirmCommunityDeletionFrame;
 import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
-import view.listeners.mainframe.communityTap.AddUserListener;
 import view.listeners.mainframe.communityTap.DeleteCommunityListener;
+import view.listeners.mainframe.communityTap.JoinCommunityListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
 import view.listeners.mainframe.exemplarTab.AddLabelListener;
 import view.listeners.mainframe.exemplarTab.DeleteExemplarListener;
@@ -41,13 +41,13 @@ public class CommunityTab extends JPanel {
     private JPanel buttons;
     private JButton updateButton;
     private JButton deleteButton;
-    private JButton addUserButton;
+    private JButton joinButton;
     private JButton closeButton;
 
     private JPanel exemplarParentPanel;
     private JPanel membersParentPanel;
 
-    private AddUserListener addUserListener;
+    private JoinCommunityListener joinListener;
 
     private List<User> members;
     private JLabel label;
@@ -139,6 +139,21 @@ public class CommunityTab extends JPanel {
     }
 
     void addActionListener(){
+        joinListener = u -> {
+            List <User> allMembers = community.getMembers();
+            if(!allMembers.contains(u)){
+                allMembers.add(u);
+                community.setMembers(allMembers);
+                try {
+                    communityClient.update(community.getName(), community);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
         closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
         updateButton.addActionListener((x)->{
             try {
@@ -153,7 +168,7 @@ public class CommunityTab extends JPanel {
             confirmCommunityDeletionFrame.setVisible(true);
         });
 
-        addUserButton.addActionListener((e)-> addUserListener.buttonClicked(this));
+        joinButton.addActionListener((e)-> joinListener.addingRequested(currentUser));
     }
 
     void initializeDeleteFrame(){
@@ -177,12 +192,12 @@ public class CommunityTab extends JPanel {
     void initializeButtons(){
         updateButton = new JButton ("Update");
         deleteButton = new JButton("Delete");
-        addUserButton = new JButton("Join");
+        joinButton = new JButton("Join");
         closeButton = new JButton("Close");
         if(editable){
             buttons.add(updateButton);
             if(community.getCreator().equals(currentUser))buttons.add(deleteButton);
-            buttons.add(addUserButton);
+            if(!userIsMember(currentUser)) buttons.add(joinButton);
         }
         buttons.add(closeButton);
     }
@@ -202,6 +217,10 @@ public class CommunityTab extends JPanel {
 
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
+    }
+
+    public boolean userIsMember(User u){
+        return community.getMembers().contains(u);
     }
 
     public void fetchExemplars (){
@@ -309,8 +328,8 @@ public class CommunityTab extends JPanel {
         this.closeListener = closeListener;
     }
 
-    public void setUserListener(AddUserListener userListener) {
-        this.addUserListener = userListener;
+    public void setJoinCommunityListener(JoinCommunityListener joinListener) {
+        this.joinListener = joinListener;
     }
 
 

@@ -65,7 +65,7 @@ public class CommunityLibraryTab extends JPanel{
         for(Community c : communities){
             if(c.getName() != null) {
                 JPanel panel = new JPanel();
-                panel.setLayout(new GridLayout(5, 3));
+                panel.setLayout(new GridLayout(4, 3));
 
                 panel.addMouseListener(new MouseAdapter() {
                     @Override

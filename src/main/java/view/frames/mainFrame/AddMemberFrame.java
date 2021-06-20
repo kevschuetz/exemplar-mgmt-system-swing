@@ -2,7 +2,7 @@ package view.frames.mainFrame;
 
 import model.entities.User;
 import model.httpclients.UserClient;
-import view.listeners.mainframe.communityTap.AddUserListener;
+import view.listeners.mainframe.communityTap.JoinCommunityListener;
 import view.panels.mainFrame.CommunityTab;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class AddMemberFrame extends JFrame{
         private JButton addButton = new JButton("Add");
         private JScrollPane listScroller;
         private UserClient client = new UserClient();
-        private AddUserListener listener;
+        private JoinCommunityListener listener;
 
 
         public AddMemberFrame(){
@@ -96,7 +96,7 @@ public class AddMemberFrame extends JFrame{
             this.tab = tab;
         }
 
-        public void setListener(AddUserListener listener) {
+        public void setListener(JoinCommunityListener listener) {
             this.listener = listener;
         }
 }

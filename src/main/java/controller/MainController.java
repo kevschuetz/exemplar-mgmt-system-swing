@@ -602,7 +602,10 @@ public class MainController implements Runnable{
         Community c = new Community();
         c.setName(s);
         c.setCreator(currentUser);
-        c.setMembers(new ArrayList<>());
+        List <User> members = new ArrayList<>();
+        members.add(currentUser);
+        c.setMembers(members);
+        c.setExemplars(new ArrayList<>());
         try {
             communityClient.add(c);
             CommunityTab newCommunityTab = new CommunityTab(c, currentUser);

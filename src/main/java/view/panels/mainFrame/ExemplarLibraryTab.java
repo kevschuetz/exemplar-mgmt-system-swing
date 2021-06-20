@@ -73,9 +73,9 @@ public class ExemplarLibraryTab extends JPanel{
                  */
                 if(sortingComboBox.getSelectedIndex() == 0) {
                     allExemplars = allExemplars.stream().
-                            sorted(Comparator.comparing(e -> e.getName())).collect(Collectors.toList());
+                            sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
                     filteredExemplars=filteredExemplars.stream().
-                            sorted(Comparator.comparing(e -> e.getName())).collect(Collectors.toList());
+                            sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
                     if(sortingComboBox2.getSelectedIndex() == 1){
                         Collections.reverse(allExemplars);
                         Collections.reverse(filteredExemplars);
@@ -120,6 +120,7 @@ public class ExemplarLibraryTab extends JPanel{
         ExemplarClient exemplarClient = new ExemplarClient();
         RatingClient ratingClient = new RatingClient();
         allExemplars = exemplarClient.searchExemplars(searchTerm);
+        allExemplars = allExemplars.stream().sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
         for (Exemplar e : allExemplars){
             List<Rating> ratingsForExemplarTmp = ratingClient.getRatingsForExemplar(e.getName());
             java.sql.Date oneWeekAgo = java.sql.Date.valueOf(LocalDate.now().minusDays(7));

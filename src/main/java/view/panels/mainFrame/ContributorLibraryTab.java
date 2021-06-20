@@ -68,8 +68,8 @@ public class ContributorLibraryTab extends JPanel {
         allContributors = allContributors
                 .stream()
                 .filter(u->u.getIsContributor()==1)
+                .sorted(Comparator.comparing(c -> c.getUsername().toLowerCase()))
                 .collect(Collectors.toList());
-
     }
 
     public void addExemplarInformation(){
@@ -100,7 +100,7 @@ public class ContributorLibraryTab extends JPanel {
         for(User u : contributors){
             if(u.getIsContributor() ==1) {
                 JPanel panel = new JPanel();
-                panel.setLayout(new GridLayout(5, 3));
+                panel.setLayout(new GridLayout(4, 3));
 
                 panel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -223,10 +223,10 @@ public class ContributorLibraryTab extends JPanel {
                  */
                 if(sortingComboBox.getSelectedIndex() == 0) {
                     allContributors = allContributors.stream().
-                            sorted(Comparator.comparing(c -> c.getUsername())).collect(Collectors.toList());
+                            sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
 
                     filteredContributors = filteredContributors.stream().
-                            sorted(Comparator.comparing(c -> c.getUsername())).collect(Collectors.toList());
+                            sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
 
                     if(sortingComboBox2.getSelectedIndex() == 1) {
                         Collections.reverse(allContributors);
