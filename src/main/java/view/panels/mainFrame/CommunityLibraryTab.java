@@ -28,7 +28,7 @@ public class CommunityLibraryTab extends JPanel{
 
     private ItemListener sortingListener;
     private ActionWithComponentListener closeListener;
-    private NewTabListener userListener;
+    private NewTabListener communityListener;
 
     private List<Community> allCommunities;
     private Map<Community, double []> exemplarMap = new HashMap();
@@ -129,31 +129,31 @@ public class CommunityLibraryTab extends JPanel{
         String [] sortingComboBoxList2 = {"ascending", "descending" };
         sortingComboBox = new JComboBox(sortingComboBoxList);
         sortingComboBox2 = new JComboBox(sortingComboBoxList2);
-        JButton openContributorsButton = new JButton("Open Selected");
+        JButton openCommunityButton = new JButton("Open Selected");
         JButton closeLibraryButton = new JButton("Close Library");
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        openContributorsButton.addActionListener((x)->openCommunities());
+        openCommunityButton.addActionListener((x)->openCommunities());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
 
         //buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
-        buttonPanel.add(openContributorsButton);
+        buttonPanel.add(openCommunityButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
     }
 
     void openCommunities(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
-        List<String> selectedContributors = new ArrayList<>();
+        List<String> selectedCommunity = new ArrayList<>();
         for(Map.Entry<String, JCheckBox> e: entrySet){
             if(e.getValue().isSelected()) {
-                selectedContributors.add(e.getKey());
+                selectedCommunity.add(e.getKey());
                 e.getValue().doClick();
             }
         }
-        userListener.tabRequested(selectedContributors);
+        communityListener.tabRequested(selectedCommunity);
     }
 
     private void initializeSortingListener() {
@@ -200,8 +200,8 @@ public class CommunityLibraryTab extends JPanel{
         this.closeListener = closeListener;
     }
 
-    public void setContributorListener(NewTabListener userListener) {
-        this.userListener = userListener;
+    public void setCommunityListener(NewTabListener communityListener) {
+        this.communityListener = communityListener;
     }
 }
 

@@ -469,7 +469,7 @@ public class MainController implements Runnable{
 
     void addListenersToCommunityLibrary(CommunityLibraryTab communityLibrary){
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
-        communityLibrary.setContributorListener(selectedEntities -> {
+        communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
                 createNewCommunityAndInitializeTab(e1);
             }
