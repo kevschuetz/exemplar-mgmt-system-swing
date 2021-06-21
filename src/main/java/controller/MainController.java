@@ -474,7 +474,7 @@ public class MainController implements Runnable{
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
         communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
-                //createNewCommunityAndInitializeTab(e1);
+                addCommunityTabToMainframe(e1);
             }
         });
     }
@@ -665,6 +665,28 @@ public class MainController implements Runnable{
             ExemplarTab newExemplarTab = new ExemplarTab(e, editable, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
+        }
+    }
+    /**
+     * Fetches the community with the given id, initializes a CommunityTab with it and adds the tab to the mainFrame
+     * @param s
+     */
+    void addCommunityTabToMainframe(String s){
+        Community c = null;
+        try {
+            c = communityClient.get(s);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+        if(c != null){
+            boolean editable = false;
+            if(c.getName() == null) editable = false;
+            else editable = c.getName().equals(currentUser) ? true : false;
+            CommunityTab newCommunityTab = new CommunityTab(c, currentUser);
+            addListenersToCommunityTab(newCommunityTab);
+            mainFrame.addTab(s,newCommunityTab);
         }
     }
 
