@@ -211,12 +211,16 @@ public class CommunityTab extends JPanel {
         joinButton = new JButton("Join");
         closeButton = new JButton("Close");
         if(editable){
-            buttons.add(updateButton);
-            if(community.getCreator().equals(currentUser))buttons.add(deleteButton);
+            //buttons.add(updateButton);
+
+            if(community.getCreator().equals(currentUser)){
+                buttons.add(deleteButton);
+            }else{
+                if(!userIsMember(currentUser)){
+                    buttons.add(joinButton);
+                }else{buttons.add(leaveButton);};
+            }
             buttons.add(closeButton);
-            if(!userIsMember(currentUser)){
-                buttons.add(joinButton);
-            }else{buttons.add(leaveButton);};
         }
 
     }
