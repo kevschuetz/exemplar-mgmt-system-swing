@@ -2,7 +2,7 @@ package view.frames.mainFrame;
 
 import model.entities.User;
 import model.httpclients.UserClient;
-import view.listeners.mainframe.communityTap.JoinCommunityListener;
+import view.listeners.mainframe.communityTap.ActionWithUserListener;
 import view.panels.mainFrame.CommunityTab;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class AddMemberFrame extends JFrame{
         private JButton addButton = new JButton("Add");
         private JScrollPane listScroller;
         private UserClient client = new UserClient();
-        private JoinCommunityListener listener;
+        private ActionWithUserListener listener;
 
 
         public AddMemberFrame(){
@@ -84,7 +84,7 @@ public class AddMemberFrame extends JFrame{
             });
             addButton.addActionListener((x)->{
                 User u = searchList.getSelectedValue();
-                if(u!=null)listener.addingRequested(u);
+                if(u!=null)listener.actionPerformed(u);
             });
         }
 
@@ -96,7 +96,7 @@ public class AddMemberFrame extends JFrame{
             this.tab = tab;
         }
 
-        public void setListener(JoinCommunityListener listener) {
+        public void setListener(ActionWithUserListener listener) {
             this.listener = listener;
         }
 }

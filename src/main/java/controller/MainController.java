@@ -786,8 +786,18 @@ public class MainController implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-
+        });
+        newCommunityTab.setLeaveListener((u)->{
+            Community c = null;
+            try {
+                c = communityClient.get(newCommunityTab.getCommunity().getName());
+                c.getMembers().remove(u);
+                c = communityClient.update(c.getName(), c);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
     }
 
