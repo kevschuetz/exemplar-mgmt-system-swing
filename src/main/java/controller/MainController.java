@@ -471,6 +471,7 @@ public class MainController implements Runnable{
     }
 
     void addListenersToCommunityLibrary(CommunityLibraryTab communityLibrary){
+
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
         communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
@@ -535,7 +536,7 @@ public class MainController implements Runnable{
                     Community c = client.get(s);
                     if(c != null){
                         CommunityTab tab = new CommunityTab(c, currentUser);
-                        tab.setCloseListener((x)->mainFrame.removeTab(x));
+                        addListenersToCommunityTab(tab);
                         mainFrame.addTab(s,tab);
                     }
                 }
@@ -758,9 +759,6 @@ public class MainController implements Runnable{
      */
     void addListenersToCommunityTab(CommunityTab newCommunityTab){
         newCommunityTab.setCloseListener((c)->{
-            CommunityTab tab = (CommunityTab)c;
-            JButton updateButton = tab.getUpdateButton();
-            if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
         newCommunityTab.setUpdateCommunityListener((community)->{
@@ -777,11 +775,20 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-        /*newCommunityTab.setUserListener((u)->{
-            addMemberFrame.setTab(u);
-            addMemberFrame.setTitle(t..getName());
-            addMemberFrame.setVisible(true);
-        });*/
+        newCommunityTab.setJoinCommunityListener((u)->{
+            Community c = null;
+            try {
+                c = communityClient.get(newCommunityTab.getCommunity().getName());
+                c.getMembers().add(u);
+                c = communityClient.update(c.getName(), c);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        });
     }
 
     private void exportExemplar(String path, Exemplar exemplar) {

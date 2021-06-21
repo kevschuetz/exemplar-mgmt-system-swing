@@ -44,7 +44,7 @@ public class CommunityTab extends JPanel {
     private JButton joinButton;
     private JButton closeButton;
 
-    private JPanel exemplarParentPanel;
+    private JPanel exemplarParentPanel=new JPanel();
     private JPanel membersParentPanel;
 
     private JoinCommunityListener joinListener;
@@ -75,9 +75,8 @@ public class CommunityTab extends JPanel {
         this.membersParentPanel = new JPanel();
         this.members = community.getMembers();
         this.referenceExemplars = community.getExemplars();
-        fetchExemplars();
-        addExemplarPanelsToParentPanel();
         createExemplarPanels();
+        addExemplarPanelsToParentPanel();
         createMemberPanels();
         addMemberPanelsToParentPanel();
 
@@ -139,20 +138,9 @@ public class CommunityTab extends JPanel {
     }
 
     void addActionListener(){
-        joinListener = u -> {
-            List <User> allMembers = community.getMembers();
-            if(!allMembers.contains(u)){
-                allMembers.add(u);
-                community.setMembers(allMembers);
-                try {
-                    communityClient.update(community.getName(), community);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        joinButton.addActionListener((e)->{
+            joinListener.addingRequested(currentUser);
+        });
 
         closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
         updateButton.addActionListener((x)->{
@@ -167,8 +155,6 @@ public class CommunityTab extends JPanel {
         deleteButton.addActionListener((e)->{
             confirmCommunityDeletionFrame.setVisible(true);
         });
-
-        joinButton.addActionListener((e)-> joinListener.addingRequested(currentUser));
     }
 
     void initializeDeleteFrame(){
@@ -224,13 +210,7 @@ public class CommunityTab extends JPanel {
     }
 
     public void fetchExemplars (){
-        referenceExemplars = new ArrayList <Exemplar> ();
-        Set<Exemplar> allExemplars = new HashSet<>();
-
-        for(User m : members){
-            allExemplars.addAll(exemplarClient.getExemplarsForUser(m.getUsername()));
-        }
-        referenceExemplars.addAll(allExemplars);
+        referenceExemplars = community.getExemplars();
     }
 
     public void createExemplarPanels(){
@@ -277,8 +257,14 @@ public class CommunityTab extends JPanel {
 
 
     void addExemplarPanelsToParentPanel(){
+        if(referenceExemplars == null) return;
+        exemplarParentPanel=new JPanel();
+        exemplarParentPanel.setLayout(new GridLayout(referenceExemplars.size(), 1));
+
         for(Exemplar e : referenceExemplars){
-            exemplarParentPanel.add(exemplarJPanelMap.get(e));
+            JPanel panel = exemplarJPanelMap.get(e);
+            System.out.println(panel == null);
+           // exemplarParentPanel.add(exemplarJPanelMap.get(e));
         }
     }
 
@@ -337,6 +323,7 @@ public class CommunityTab extends JPanel {
         return this.editable;
     }
 
-    /*public Exemplar getExemplar() {
-    }*/
+    public Community getCommunity() {
+        return community;
+    }
 }
