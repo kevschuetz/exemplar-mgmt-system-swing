@@ -18,6 +18,7 @@ public class Community {
     @ManyToOne
     private User creator;
 
+
     public Community(){};
 
     public String getName() {
@@ -55,6 +56,11 @@ public class Community {
     public String toString(){
         return this.name;
     }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
+    }
+
 
     @Override
     public boolean equals(Object o) {

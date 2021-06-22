@@ -243,6 +243,7 @@ public class CommunityTab extends JPanel {
         if(community.getCreator() != null)  creatorLabel = new JLabel ("Creator: " + community.getCreator().getUsername());
         creatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
         JLabel numberOfExemplars = new JLabel("Number  of Exemplars: "+ referenceExemplars.size());
+        JLabel numberOfMembers = new JLabel("Number  of Members: "+ community.getMembers().size());
 
         List<model.entities.Label> labels = new ArrayList<>();
         Set<model.entities.Label> labelsDistinct = new HashSet<>();
@@ -277,6 +278,7 @@ public class CommunityTab extends JPanel {
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
         metaInfoPanel.add(numberOfExemplars);
+        metaInfoPanel.add(numberOfMembers);
         if(topLabel != null) metaInfoPanel.add(topLabel);
     }
 
@@ -303,8 +305,6 @@ public class CommunityTab extends JPanel {
         JButton removeButton = new JButton("Remove");
         removeButton.setSize(new Dimension(60,60));
         removeButton.addActionListener((e)->{
-            int index = exemplarList.getSelectedIndex();
-            exemplarList.remove(index);
             removeExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
         });
         exemplarButtonPanel.add(showButton);

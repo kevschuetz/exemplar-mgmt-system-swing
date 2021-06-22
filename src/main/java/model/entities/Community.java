@@ -9,6 +9,7 @@ public class Community {
     private List<User> members;
     private User creator;
 
+
     public Community(){};
 
     public String getName() {
@@ -38,6 +39,7 @@ public class Community {
     public User getCreator() {
         return creator;
     }
+
 
     public void setCreator(User creator) {
         this.creator = creator;
