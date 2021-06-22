@@ -837,6 +837,28 @@ public class MainController implements Runnable{
                 }
             }
         });
+
+        newCommunityTab.setRemoveExemplarListener(new ActionWithStringListener() {
+            @Override
+            public void stringSubmitted(String s) {
+                try {
+                    Community c = communityClient.get(newCommunityTab.getCommunity().getName());
+                    c.getExemplars().remove(exemplarClient.get(s));
+                    communityClient.update(c.getName(),c);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        newCommunityTab.setShowExemplarListener(new ActionWithStringListener() {
+            @Override
+            public void stringSubmitted(String s) {
+                addExemplarTabToMainframe(s);
+            }
+        });
     }
 
     private void exportExemplar(String path, Exemplar exemplar) {

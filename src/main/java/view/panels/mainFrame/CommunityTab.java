@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommunityTab extends JPanel {
     private Community community;
@@ -46,6 +47,8 @@ public class CommunityTab extends JPanel {
 
     private ActionWithUserListener joinListener;
     private ActionWithUserListener leaveListener;
+    private ActionWithStringListener showExemplarListener;
+    private ActionWithStringListener removeExemplarListener;
     private ActionListener joinAction;
     private ActionListener leaveAction;
 
@@ -77,8 +80,6 @@ public class CommunityTab extends JPanel {
         this.membersParentPanel = new JPanel();
         this.members = community.getMembers();
         this.referenceExemplars = community.getExemplars();
-        createExemplarPanels();
-        addExemplarPanelsToParentPanel();
         createMemberPanels();
         addMemberPanelsToParentPanel();
 
@@ -106,26 +107,28 @@ public class CommunityTab extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
-        //c.anchor= Anchor.HORIZONTAL;
-        parentPanel.add(metaInfoPanel, c);
+        parentPanel.add(metaInfoPanel,c);
 
-        scrollPane = new JScrollPane(parentPanel);
-        c.weighty=0.97;
-        c.gridy = 0;
-        add(scrollPane,c);
-
-        c.weighty=0.03;
+        c.weighty=0.7;
         c.gridy=1;
-        add(configurationPanel,c);
-
         membersParentPanel.setBorder(getBorder( "Members:"));
-        c.gridx = 0;
         parentPanel.add(membersParentPanel, c);
 
-        exemplarParentPanel.setBorder(getBorder( "Exemplars:"));
-        c.gridx = 0;
-        parentPanel.add(exemplarParentPanel, c);
+        c.gridy=2;
+        parentPanel.add(exemplarParentPanel,c);
 
+
+        scrollPane = new JScrollPane(parentPanel);
+        setLayout(new GridBagLayout());
+        c.weighty = 0.9;
+        c.weightx=1;
+        c.gridy = 0;
+        c.gridx = 0;
+        c.fill= GridBagConstraints.BOTH;
+        add(scrollPane,c);
+        c.gridy=1;
+        c.weighty=0.01;
+        add(configurationPanel,c);
     }
 
     void setLayout(){
@@ -204,6 +207,7 @@ public class CommunityTab extends JPanel {
 
     void initializeComponents(){
         initializeMetaInfoPanel();
+        initializeExemplarParentPanel();
         configurationPanel.setLayout(new GridLayout(3, 8));
         configurationPanel.add(buttons);
     }
@@ -249,62 +253,47 @@ public class CommunityTab extends JPanel {
         return community.getMembers().contains(u);
     }
 
-    public void fetchExemplars (){
-        referenceExemplars = community.getExemplars();
-    }
+    void initializeExemplarParentPanel(){
+        exemplarParentPanel.removeAll();
+        JList exemplarList = new JList(referenceExemplars
+                .stream()
+                .map(e->e.getName())
+                .collect(Collectors.toList())
+                .toArray());
+        exemplarParentPanel.setBorder(getBorder("Exemplars"));
 
-    public void createExemplarPanels(){
-        for(Exemplar e : referenceExemplars){
-            JPanel panel = new JPanel();
-            panel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent event) {
-                    if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
-                        List<String> exemplar = new ArrayList<>();
-                        exemplar.add(e.getName());
-                        //exemplarListener.tabRequested(exemplar);
-                    }
-                }
-            });
-            panel.setLayout(new GridLayout(4,3));
-
-            JLabel name = new JLabel("Name: ");
-            JLabel exemplarName = new JLabel(e.getName());
-            exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
-            JLabel ratingLabel = new JLabel("Rating:");
-            JCheckBox checkBox = new JCheckBox();
-            panel.add(exemplarName);
-            panel.add(new JLabel(""));
-            panel.add(new JLabel(""));
-            panel.add(ratingLabel);
-            String rating = "";
-            rating += ratingClient.getAvgRatingForExemplar(e.getName());
-            panel.add(new JLabel(rating));
-            panel.add(checkBox);
-            panel.add(new JLabel("Labels: "));
-            String labels = "";
-            for(model.entities.Label l : e.getLabels()){
-                labels +=l.getValue()+", ";
-            }
-            panel.add(new JLabel(labels));
-
-            panel.setBorder(getBorder());
-            panel.setPreferredSize(new Dimension(200, 75));
-            //selectedExemplarMap.put(e.getName(), checkBox);
-            exemplarJPanelMap.put(e, panel);
-        }
-    }
+        JPanel exemplarButtonPanel = new JPanel();
+        exemplarButtonPanel.setLayout(new GridLayout(1,2));
+        JButton showButton = new JButton("Show");
+        showButton.setSize(new Dimension(60,60));
+        showButton.addActionListener((e)->{
+            showExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
+        });
+        JButton removeButton = new JButton("Remove");
+        removeButton.setSize(new Dimension(60,60));
+        removeButton.addActionListener((e)->{
+            removeExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
+            exemplarList.remove(exemplarList.getSelectedIndex());
+        });
+        exemplarButtonPanel.add(showButton);
+        exemplarButtonPanel.add(removeButton);
+        exemplarButtonPanel.setBorder(getBorder("Options"));
 
 
-    void addExemplarPanelsToParentPanel(){
-        if(referenceExemplars == null) return;
-        exemplarParentPanel=new JPanel();
-        exemplarParentPanel.setLayout(new GridLayout(referenceExemplars.size(), 1));
+        exemplarParentPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridy=0;
+        c.gridx=0;
+        c.weighty=0.9;
+        c.weightx=1;
+        c.fill=GridBagConstraints.BOTH;
 
-        for(Exemplar e : referenceExemplars){
-            JPanel panel = exemplarJPanelMap.get(e);
-           // exemplarParentPanel.add(exemplarJPanelMap.get(e));
-        }
+        exemplarParentPanel.add(exemplarList,c);
+
+        c.weightx=0.1;
+        c.gridx=1;
+        c.weighty=0.05;
+        exemplarParentPanel.add(exemplarButtonPanel, c);
     }
 
     public void createMemberPanels(){
@@ -375,5 +364,13 @@ public class CommunityTab extends JPanel {
 
     public void setMemberClickedListener(ActionWithStringListener memberClickedListener) {
         this.memberClickedListener = memberClickedListener;
+    }
+
+    public void setShowExemplarListener(ActionWithStringListener showExemplarListener) {
+        this.showExemplarListener = showExemplarListener;
+    }
+
+    public void setRemoveExemplarListener(ActionWithStringListener removeExemplarListener) {
+        this.removeExemplarListener = removeExemplarListener;
     }
 }
