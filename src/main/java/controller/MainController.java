@@ -628,6 +628,10 @@ public class MainController implements Runnable{
      */
     void createNewContributorTab(String username) throws IOException, InterruptedException {
         User contributor = userClient.get(username);
+        if(contributor.getIsContributor()==0){
+            JOptionPane.showMessageDialog(mainFrame, "User "+username+" is not a Contributor");
+            return;
+        }
         ContributorTab newContributorTab = new ContributorTab(contributor);
         newContributorTab.setCloseListener(new ActionWithComponentListener(){
             @Override
@@ -818,6 +822,19 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        });
+
+        newCommunityTab.setMemberClickedListener(new ActionWithStringListener() {
+            @Override
+            public void stringSubmitted(String s) {
+                try {
+                    createNewContributorTab(s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -5,12 +5,14 @@ import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.frames.mainFrame.ConfirmCommunityDeletionFrame;
+import view.listeners.ActionWithStringListener;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.communityTap.DeleteCommunityListener;
 import view.listeners.mainframe.communityTap.ActionWithUserListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,6 +54,7 @@ public class CommunityTab extends JPanel {
     private UpdateCommunityListener updateCommunityListener;
     private DeleteCommunityListener deleteCommunityListener;
     private ConfirmCommunityDeletionFrame confirmCommunityDeletionFrame;
+    private ActionWithStringListener memberClickedListener;
 
     boolean editable = false;
 
@@ -313,22 +316,19 @@ public class CommunityTab extends JPanel {
 
     public JPanel createMemberPanel(User m){
         JPanel panel = new JPanel();
+        panel.setBorder(getBorder(""));
+        //panel.setPreferredSize(new Dimension(50,35));
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent event) {
                 if(event.getClickCount()==2 && event.getButton() == MouseEvent.BUTTON1){
-                    List<String> exemplar = new ArrayList<>();
-                    exemplar.add(m.getUsername());
-                    //exemplarListener.tabRequested(exemplar);
+                    memberClickedListener.stringSubmitted(m.getUsername());
                 }
             }
         });
-        panel.setLayout(new GridLayout(4,3));
-        JLabel usernameLabel = new JLabel("Username: ");
+        panel.setLayout(new GridLayout(1,1));
         JLabel username = new JLabel(m.getUsername());
         panel.add(username);
-
-
         return panel;
     }
 
@@ -371,5 +371,9 @@ public class CommunityTab extends JPanel {
 
     public void setLeaveListener(ActionWithUserListener leaveListener) {
         this.leaveListener = leaveListener;
+    }
+
+    public void setMemberClickedListener(ActionWithStringListener memberClickedListener) {
+        this.memberClickedListener = memberClickedListener;
     }
 }
