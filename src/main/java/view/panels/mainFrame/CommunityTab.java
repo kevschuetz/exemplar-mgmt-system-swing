@@ -1,6 +1,7 @@
 package view.panels.mainFrame;
 
 import model.entities.*;
+import model.entities.Label;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
@@ -11,6 +12,7 @@ import view.listeners.mainframe.communityTap.DeleteCommunityListener;
 import view.listeners.mainframe.communityTap.ActionWithUserListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
 
+import javax.print.attribute.HashPrintJobAttributeSet;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -240,13 +242,42 @@ public class CommunityTab extends JPanel {
         JLabel creatorLabel = new JLabel("");
         if(community.getCreator() != null)  creatorLabel = new JLabel ("Creator: " + community.getCreator().getUsername());
         creatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        JLabel numberOfExemplars = new JLabel("Number  of Exemplars: "+ referenceExemplars.size());
 
+        List<model.entities.Label> labels = new ArrayList<>();
+        Set<model.entities.Label> labelsDistinct = new HashSet<>();
+        for(Exemplar e : referenceExemplars){
+            labels.addAll(e.getLabels());
+            labelsDistinct.addAll(e.getLabels());
+        }
+
+        Map<Label, Integer> labelCount = new HashMap<>();
+        for(Label l : labelsDistinct){
+            labelCount.put(l, 0);
+        }
+        for(Label l : labels){
+            labelCount.put(l, labelCount.get(l)+1);
+        }
+       Iterator it = labelCount.entrySet().iterator();
+       int highest = -1;
+       Label top = null;
+       while(it.hasNext()){
+           Map.Entry<Label, Integer> entry = (Map.Entry<Label, Integer>) it.next();
+           if(entry.getValue()>highest){
+               highest = entry.getValue();
+               top = entry.getKey();
+           }
+       }
+        JLabel topLabel = null;
+        if(top != null)  topLabel = new JLabel("Top Label: "+top.getValue());
         metaInfoPanel.setBorder(getBorder("Info"));
         metaInfoPanel.setLayout(new GridLayout(5,1));
 
 
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(creatorLabel);
+        metaInfoPanel.add(numberOfExemplars);
+        if(topLabel != null) metaInfoPanel.add(topLabel);
     }
 
     public boolean userIsMember(User u){
@@ -272,8 +303,9 @@ public class CommunityTab extends JPanel {
         JButton removeButton = new JButton("Remove");
         removeButton.setSize(new Dimension(60,60));
         removeButton.addActionListener((e)->{
+            int index = exemplarList.getSelectedIndex();
+            exemplarList.remove(index);
             removeExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
-            exemplarList.remove(exemplarList.getSelectedIndex());
         });
         exemplarButtonPanel.add(showButton);
         exemplarButtonPanel.add(removeButton);
