@@ -127,6 +127,7 @@ public class MainController implements Runnable{
         if(librarysLoaded){
             mainFrame.addTab("Exemplar Library", initialExemplarLibraryTab);
             mainFrame.addTab("Contributor Library", initialContributorLibraryTab);
+            mainFrame.addTab("Community Library", initialCommunityLibraryTab);
         }else{
             Thread waitingThread = new Thread(()-> {
                 try {
@@ -150,6 +151,7 @@ public class MainController implements Runnable{
         mainFrame.setCommunityButtonListener(getOpenCommunityLibraryListener(false));
         mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
         mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
+        mainFrame.setSearchCommunityListener(getOpenCommunityLibraryListener(true));
         mainFrame.setImportListener((path)->{
             Path pathTo = Path.of(path);
             try {
@@ -463,7 +465,7 @@ public class MainController implements Runnable{
                     java.util.List<JComponent> list = new ArrayList<>();
                     list.add(communityLibrary);
                     mainFrame.setOpenSearchTabs(list);
-                    //mainFrame.addTab("Search Communities", communityLibrary);
+                    mainFrame.addTab("Search Communities", communityLibrary);
                 } else mainFrame.addTab("Community Library", communityLibrary);
 
                 mainFrame.setLastTabSelected();

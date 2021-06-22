@@ -77,14 +77,16 @@ public class CommunityLibraryTab extends JPanel{
                     }
                 });
 
-                JLabel name = new JLabel("Name: ");
+
                 JLabel userName = new JLabel(c.getName());
+                userName.setFont(new Font("Verdana", Font.BOLD, 14));
                 JLabel labelNumberOfUsers = new JLabel("Number of Users: ");
                 JLabel numberOfUsers = new JLabel(String.valueOf(c.getMembers().size()));
 
                 JCheckBox checkBox = new JCheckBox();
-                panel.add(name);
+
                 panel.add(userName);
+                panel.add(new JLabel());
                 panel.add(labelNumberOfUsers);
                 panel.add(numberOfUsers);
                 panel.add(new JLabel(""));
@@ -92,7 +94,7 @@ public class CommunityLibraryTab extends JPanel{
                 panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
-                panel.setPreferredSize(new Dimension(200, 50));
+                panel.setPreferredSize(new Dimension(200, 75));
                 selectedCommunityMap.put(c.getName(), checkBox);
                 communityPanelParent.add(panel);
                 i++;

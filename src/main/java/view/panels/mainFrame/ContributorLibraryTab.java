@@ -113,8 +113,9 @@ public class ContributorLibraryTab extends JPanel {
                     }
                 });
 
-                JLabel name = new JLabel("Name: ");
+                //JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
+                userName.setFont(new Font("Verdana", Font.BOLD, 14));
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
                 JLabel numberOfExemplars = new JLabel(String.valueOf((int)exemplarMap.get(u)[1]));
                 JLabel labelAverageRatingOfExemplars = new JLabel("Average Rating: ");
@@ -123,8 +124,9 @@ public class ContributorLibraryTab extends JPanel {
 
                 JCheckBox checkBox = new JCheckBox();
                // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
-                panel.add(name);
+
                 panel.add(userName);
+                panel.add(new JLabel());
                 panel.add(new JLabel(""));
                 panel.add(labelNumberOfExemplars);
                 panel.add(numberOfExemplars);

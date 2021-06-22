@@ -86,6 +86,8 @@ public class MainFrame extends JFrame{
 
     public void setSearchContributorListener(ActionListener l) {menuPanel.searchContributorListener = l;}
 
+    public void setSearchCommunityListener(ActionListener l) {menuPanel.searchCommunityListener = l;}
+
     public void setImportListener(ActionWithStringListener importListener) {
         menuBar.importListener = importListener;
     }
@@ -104,6 +106,7 @@ public class MainFrame extends JFrame{
         ActionListener exemplarButtonListener;
         ActionListener searchExemplarListener;
         ActionListener searchContributorListener;
+        ActionListener searchCommunityListener;
 
 
         MenuPanel(){
@@ -161,7 +164,7 @@ public class MainFrame extends JFrame{
                         searchContributorListener.actionPerformed(e);
                         break;
                     case 2:
-                        System.out.println("");
+                        searchCommunityListener.actionPerformed(e);
                 }
             });
         }
