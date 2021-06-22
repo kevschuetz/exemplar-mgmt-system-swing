@@ -15,6 +15,7 @@ import model.httpclients.UserClient;
 import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
+import view.listeners.ActionWithStringListener;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 import view.panels.mainFrame.CommunityLibraryTab;
@@ -751,6 +752,26 @@ public class MainController implements Runnable{
                 exportExemplar(path, tab.getExemplar());
             }
         });
+
+        newExemplarTab.setAddToCommunityListener(new ActionWithStringListener() {
+            @Override
+            public void stringSubmitted(String s) {
+                try {
+                    Community c = communityClient.get(s);
+                    if(c == null)return;
+                    c.getExemplars().add(newExemplarTab.getExemplar());
+                    communityClient.update(c.getName(), c);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 
     /**
