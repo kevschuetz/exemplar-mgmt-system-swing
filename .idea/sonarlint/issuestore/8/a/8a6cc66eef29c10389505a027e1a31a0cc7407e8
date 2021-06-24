@@ -1,0 +1,47 @@
+
+?
+java:S1604¨"(Make this anonymous inner class a lambda(€§‹
+?
+java:S1604¶"(Make this anonymous inner class a lambda(ˆÕ¬ƒ
+Q
+java:S1128";Remove this unused import 'javax.swing.border.BevelBorder'.(óöèû
+f
+java:S1128"KRemove this unused import 'javax.print.attribute.HashPrintJobAttributeSet'.(«Ã•şÿÿÿÿ
+F
+java:S1611˜"/Remove the parentheses around the "x" parameter(çî’
+K
+java:S1611™"/Remove the parentheses around the "x" parameter(ì•šîüÿÿÿÿ
+u
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+\
+java:S2147"ECombine this catch with the one at line 156, which has the same body.(ä ¹€
+K
+java:S1611¢"/Remove the parentheses around the "e" parameter(ÌÍ§¾şÿÿÿÿ
+H
+java:S1602¢",Remove useless curly braces around statement(ÌÍ§¾şÿÿÿÿ
+F
+java:S1611Ì"/Remove the parentheses around the "x" parameter(®¨‚ª
+W	java:S125ß"<This block of commented-out lines of code should be removed.(œ£Ñïûÿÿÿÿ
+8
+java:S1116æ"Remove this empty statement.( öÿùÿÿÿÿ
+H
+java:S1612¥",Replace this lambda with a method reference.(™ Ã¤úÿÿÿÿ
+K
+java:S1611®"/Remove the parentheses around the "e" parameter(è´§øÿÿÿÿ
+H
+java:S1602®",Remove useless curly braces around statement(è´§øÿÿÿÿ
+F
+java:S1611³"/Remove the parentheses around the "e" parameter(¥ÙÒÅ
+C
+java:S1602³",Remove useless curly braces around statement(¥ÙÒÅ
+W	java:S125Õ"<This block of commented-out lines of code should be removed.(ÊÎÜÑüÿÿÿÿ
+?
+java:S1068:")Remove this unused "label" private field.(ßë·²
+H
+java:S1068B"2Remove this unused "exemplarClient" private field.(–ŞÌ
+N
+java:S1068C"3Remove this unused "communityClient" private field.(¤šíıÿÿÿÿ
+K
+java:S1068D"0Remove this unused "ratingClient" private field.(½ªìäùÿÿÿÿ
+K
+java:S1068E"5Remove this unused "exemplarJPanelMap" private field.(Ã‡Û

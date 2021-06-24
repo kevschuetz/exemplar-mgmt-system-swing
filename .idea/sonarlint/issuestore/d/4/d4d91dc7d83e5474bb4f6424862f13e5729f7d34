@@ -1,0 +1,41 @@
+
+8
+java:S1643”"Use a StringBuilder instead.(ò³«ñúÿÿÿÿ
+3
+java:S1643õ"Use a StringBuilder instead.(„Ã»‘
+n
+java:S1450""YRemove the "labelPanel" field and declare it as a local variable in the relevant methods.(º¡]
+}
+java:S1450'"bRemove the "openExemplarsButton" field and declare it as a local variable in the relevant methods.(žä‹øûÿÿÿÿ
+E
+java:S1611\"/Remove the parentheses around the "x" parameter(ÍÝ˜º
+X
+java:S1854n"=Remove this useless assignment to local variable "avgRating".(ŠíÃ‚üÿÿÿÿ
+X
+java:S1117n"=Rename "avgRating" which hides the field declared at line 25.(ŠíÃ‚üÿÿÿÿ
+Z
+java:S1117‹">Rename "labelPanel" which hides the field declared at line 34.(ƒö¦÷üÿÿÿÿ
+Q	java:S125‘"<This block of commented-out lines of code should be removed.(±Ž·f
+W	java:S125£"<This block of commented-out lines of code should be removed.(Ý‘¡­þÿÿÿÿ
+W
+java:S1117¶"@Rename "ratingClient" which hides the field declared at line 48.(Ù·ó‰
+F
+java:S1611À"/Remove the parentheses around the "x" parameter(çî’
+O
+java:S1854à"8Remove this useless assignment to local variable "name".(ÀëÆ¼
+Q
+java:S1117ó":Rename "labels" which hides the field declared at line 26.(íˆÀÓ
+I
+java:S1481n".Remove this unused "avgRating" local variable.(ŠíÃ‚üÿÿÿÿ
+@
+java:S1481à")Remove this unused "name" local variable.(ÀëÆ¼
+H
+java:S1068"-Remove this unused "avgRating" private field.(ä—ÿÚùÿÿÿÿ
+E
+java:S1068"*Remove this unused "mapper" private field.(íÉûÿÿÿÿ
+J
+java:S1068#"4Remove this unused "contributorPanel" private field.(öÔ§
+M
+java:S1068+"7Remove this unused "contributorListener" private field.(ßœªã
+[
+java:S1068-"@Remove this unused "confirmExemplarDeletionFrame" private field.(È á’úÿÿÿÿ

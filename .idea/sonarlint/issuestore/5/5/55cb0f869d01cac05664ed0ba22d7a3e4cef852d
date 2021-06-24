@@ -1,0 +1,14 @@
+
+o	java:S116"URename this field "RATING_MIN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¸§“Ôÿÿÿÿÿ
+j	java:S116"URename this field "RATING_MAX" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡»íå
+o	java:S116"URename this field "RATING_INI" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ð•ºÅøÿÿÿÿ
+<
+java:S1170"!Make this final field static too.(¸§“Ôÿÿÿÿÿ
+7
+java:S1170"!Make this final field static too.(‡»íå
+<
+java:S1170"!Make this final field static too.(Ð•ºÅøÿÿÿÿ
+`
+java:S3252"EUse static access with "javax.swing.SwingConstants" for "HORIZONTAL".(‡­ö‹ÿÿÿÿÿ
+J
+java:S1611"/Remove the parentheses around the "x" parameter(’×œõýÿÿÿÿ

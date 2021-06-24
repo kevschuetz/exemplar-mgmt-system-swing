@@ -20,10 +20,6 @@ public class CommunityLibraryTab extends JPanel{
     Border border = BorderFactory.createBevelBorder(0);
     JPanel buttonPanel;
 
-
-    private CommunityClient communityClient = new CommunityClient();
-    private ExemplarClient exemplarClient = new ExemplarClient();
-
     private ActionWithComponentListener closeListener;
     private NewTabListener communityListener;
 
@@ -56,11 +52,9 @@ public class CommunityLibraryTab extends JPanel{
                 .stream()
                 .filter(c->c.getName() != null)
                 .collect(Collectors.toList());
-        if(allCommunities.size() <= 0) System.exit(0);
     }
 
     public void addCommunitiesToScrollPane(){
-        int i = 0;
         List<Community> communities = allCommunities;
         for(Community c : communities){
             if(c.getName() != null) {
@@ -97,7 +91,6 @@ public class CommunityLibraryTab extends JPanel{
                 panel.setPreferredSize(new Dimension(200, 75));
                 selectedCommunityMap.put(c.getName(), checkBox);
                 communityPanelParent.add(panel);
-                i++;
             }
         }
 
@@ -137,45 +130,42 @@ public class CommunityLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        //buttonPanel.add(sortingComboBox);
+
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(openCommunityButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
 
-        openCommunityButton.addActionListener((x)->openCommunities());
+        openCommunityButton.addActionListener(x ->openCommunities());
         closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
     }
 
     private void initializeSortingListener() {
-        sortingListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                /**
-                 * Sort alphabetically
-                 */
-                if(sortingComboBox.getSelectedIndex() == 0) {
-                    allCommunities = allCommunities.stream().
-                            sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
+        sortingListener = event -> {
+            /**
+             * Sort alphabetically
+             */
+            if(sortingComboBox.getSelectedIndex() == 0) {
+                allCommunities = allCommunities.stream().
+                        sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allCommunities);
-                    }
+                if(sortingComboBox2.getSelectedIndex() == 1) {
+                    Collections.reverse(allCommunities);
                 }
-                /**
-                 * Sort by number of users
-                 */
-                if(sortingComboBox.getSelectedIndex() == 2) {
-                    allCommunities= allCommunities.stream().
-                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allCommunities);
-
-                    }
-                }
-                updateTab();
             }
+            /**
+             * Sort by number of users
+             */
+            if(sortingComboBox.getSelectedIndex() == 2) {
+                allCommunities= allCommunities.stream().
+                        sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+
+                if(sortingComboBox2.getSelectedIndex() == 1){
+                    Collections.reverse(allCommunities);
+
+                }
+            }
+            updateTab();
         };
     }
 

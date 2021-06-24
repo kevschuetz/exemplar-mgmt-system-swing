@@ -1,9 +1,12 @@
 package model.httpclients;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Community;
-import model.entities.Exemplar;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,27 +18,27 @@ import java.util.List;
 
 public class CommunityClient extends Client<Community>{
     private final HttpClient client;
-    private final String URL;
+    private final String url;
     private final ObjectMapper mapper;
     private HttpRequest request;
     private HttpResponse<String> response;
     public CommunityClient(){
         client = HttpClient.newHttpClient();
-        URL = HttpConstants.URL + "/communities";
+        url = HttpConstants.URL + "/communities";
         mapper = new ObjectMapper();
-    };
+    }
 
     @Override
     public Community add(Community value) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(value)))
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            Community added =  mapper.readValue(response.body(), Community.class);
-            return added;
+            return mapper.readValue(response.body(), Community.class);
+
         }catch (Exception e){
             return null;
         }
@@ -44,7 +47,7 @@ public class CommunityClient extends Client<Community>{
     @Override
     public void delete(String id) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+"/"+id))
+                .uri(URI.create(url +"/"+id))
                 .DELETE()
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -53,75 +56,94 @@ public class CommunityClient extends Client<Community>{
     @Override
     public List<Community> getAll() throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
-            return all;
+           return mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
+
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Community>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
     @Override
     public Community get(String id) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+"/"+id))
+                .uri(URI.create(url +"/"+id))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try {
-            Community entity = mapper.readValue(response.body(), Community.class);
-            return entity;
+            return mapper.readValue(response.body(), Community.class);
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public Community update(String id, Community value) throws IOException, InterruptedException {
-        try{
+    public Community update(String id, Community value) {
+        try {
             request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL+"/"+id))
+                    .uri(URI.create(url +"/"+id))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(value)))
                     .build();
-            response= client.send(request, HttpResponse.BodyHandlers.ofString());
-            Community updated =  mapper.readValue(response.body(), Community.class);
-            return updated;
-        }catch (Exception e){
-            return null;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
+        try {
+            response= client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Community updated = null;
+        try {
+            updated = mapper.readValue(response.body(), Community.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return updated;
     }
 
     public List<Community> getCommunitiesForUser(String username){
         try{
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+"/member?member="+username))
+                .uri(URI.create(url +"/member?member="+username))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
-            return all;
+          return mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
+
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Community>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
     public List<Community> searchCommunities(String value){
         try{
             request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL+"/search?value="+value))
+                    .uri(URI.create(url +"/search?value="+value))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
             return all;
-        }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Community>();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+            return new LinkedList<>();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+            return new LinkedList<>();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+            return new LinkedList<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 

@@ -15,8 +15,7 @@ public class AddUserrFrame extends JFrame {
     private JTextField searchField = new JTextField();
     private JButton searchButton = new JButton("Search");
     private JPanel searchPanel = new JPanel();
-    private JList<User> searchList = new JList<User>();
-    private List<User> foundUsers;
+    private JList<User> searchList = new JList<>();
     private JButton addButton = new JButton("Add");
     private JScrollPane listScroller;
     private UserClient client = new UserClient();
@@ -36,7 +35,7 @@ public class AddUserrFrame extends JFrame {
     }
 
     void initializeComponents(){
-        searchList = new JList<User>(fetchUsers(""));
+        searchList = new JList<>(fetchUsers(""));
         searchList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         searchList.setVisibleRowCount(-1);
         listScroller = new JScrollPane(searchList);
@@ -78,11 +77,11 @@ public class AddUserrFrame extends JFrame {
     }
 
     void addActionListeners(){
-        searchButton.addActionListener((x)->{
+        searchButton.addActionListener(x->{
             User[] users = fetchUsers(searchField.getText());
             searchList.setListData(users);
         });
-        addButton.addActionListener((x)->{
+        addButton.addActionListener(x ->{
             User u = searchList.getSelectedValue();
             if(u!=null)listener.addingRequested(u);
         });

@@ -1,0 +1,18 @@
+
+x
+java:S1488$"]Immediately return this expression instead of assigning it to the temporary variable "added".(Ö‘í¢øÿÿÿÿ
+P
+java:S1128"5Remove this unused import 'model.entities.Community'.(Ä„ÿ©üÿÿÿÿ
+l
+java:S1450"VRemove the "request" field and declare it as a local variable in the relevant methods.(³‚½³
+m
+java:S1450"WRemove the "response" field and declare it as a local variable in the relevant methods.(ëá¦¼
+œ
+java:S1186,"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(§Œ§…ÿÿÿÿÿ
+c	java:S116"NRename this field "URL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•ÅÁ¶
+7
+java:S1116"Remove this empty statement.(ôŸìúÿÿÿÿ
+t
+java:S2142&"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(”ı¾
+A
+java:S11682"+Return an empty collection instead of null.(¥¹ï

@@ -10,7 +10,7 @@ public class Community {
     private User creator;
 
 
-    public Community(){};
+    public Community(){}
 
     public String getName() {
         return name;

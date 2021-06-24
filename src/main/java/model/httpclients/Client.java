@@ -1,8 +1,8 @@
 package model.httpclients;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.entities.User;
+
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -23,5 +23,5 @@ public abstract class Client<T> {
     public abstract List<T> getAll() throws IOException, InterruptedException;
     public abstract T get(String id) throws IOException, InterruptedException;
     public abstract T update(String id, T value) throws IOException, InterruptedException;
-    //public void update (T value, String attribute, String updatedValue);
+
 }
