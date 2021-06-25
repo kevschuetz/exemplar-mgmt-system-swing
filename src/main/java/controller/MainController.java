@@ -410,6 +410,8 @@ public class MainController implements Runnable{
                 }
                 else contributorLibrary = new ContributorLibraryTab("");
 
+                addListenersToContributorLibrary(contributorLibrary);
+
                 if(searchableByMainFrame){
                     for(JComponent c : mainFrame.getOpenSearchTabs()){
                         mainFrame.removeTab(c);
@@ -697,6 +699,7 @@ public class MainController implements Runnable{
             mainFrame.addTab(s,newCommunityTab);
         }
     }
+
 
     /**
      * Sets all required listeners for a given ExemplarTab
