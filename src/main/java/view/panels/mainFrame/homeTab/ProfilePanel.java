@@ -62,7 +62,7 @@ public class ProfilePanel extends JPanel {
         passwordField1.setText("");
         passwordField2.setText("");
         if(user.getIsContributor()==1){
-            contributorCheckBox.addActionListener((x)->{
+            contributorCheckBox.addActionListener(x->{
                 if(!contributorCheckBox.isSelected()) contributorCheckBox.doClick();
             });
         }
@@ -76,7 +76,7 @@ public class ProfilePanel extends JPanel {
 
 
     void addActionListener(){
-        updateButton.addActionListener((x)->{
+        updateButton.addActionListener(x->{
             String fullname = fullNameText.getText();
             String oldPassword = oldPasswordField.getText();
             String newPassword1 = passwordField1.getText();
@@ -100,17 +100,15 @@ public class ProfilePanel extends JPanel {
             }
         });
 
-        deleteUserButton.addActionListener((x)->{
-            confirmFrame.setVisible(true);
-        });
+        deleteUserButton.addActionListener(x-> confirmFrame.setVisible(true));
     }
 
     void initializeConfirmFrame(){
         confirmFrame = new ConfirmDeletalFrame();
         confirmFrame.setSize(250,200);
         confirmFrame.setVisible(false);
-        confirmFrame.setCancelledListener((x)->confirmFrame.setVisible(false));
-        confirmFrame.setConfirmedListener((x)->{
+        confirmFrame.setCancelledListener(x->confirmFrame.setVisible(false));
+        confirmFrame.setConfirmedListener(x->{
             confirmFrame.setVisible(false);
             deleteListener.updateRequested(user);
         });
@@ -147,8 +145,8 @@ public class ProfilePanel extends JPanel {
         }
 
         void addListeners(){
-            confirmButton.addActionListener((x)-> confirmedListener.actionPerformed(x));
-            cancelButton.addActionListener((x)->cancelledListener.actionPerformed(x));
+            confirmButton.addActionListener(x-> confirmedListener.actionPerformed(x));
+            cancelButton.addActionListener(x->cancelledListener.actionPerformed(x));
         }
         public void setConfirmedListener(ActionListener confirmedListener) {
             this.confirmedListener = confirmedListener;

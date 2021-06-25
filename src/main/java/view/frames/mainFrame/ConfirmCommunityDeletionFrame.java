@@ -10,7 +10,6 @@ public class ConfirmCommunityDeletionFrame extends JFrame {
     private JTextField textField = new JTextField();
     private JButton button = new JButton("Delete");
     private ActionListener confirmListener;
-    private String communityName;
 
     public ConfirmCommunityDeletionFrame(String communityName){
         setLayout(new GridLayout(1,1));
@@ -22,16 +21,11 @@ public class ConfirmCommunityDeletionFrame extends JFrame {
         parentPanel.add(textField);
         parentPanel.add(button);
         add(parentPanel);
-        button.addActionListener((x)->{
+        button.addActionListener(x->{
             if(textField.getText().equals(communityName))confirmListener.actionPerformed(x);
         });
         getRootPane().setDefaultButton(button);
     }
-
-    public ActionListener getConfirmListener() {
-        return confirmListener;
-    }
-
     public void setConfirmListener(ActionListener confirmListener) {
         this.confirmListener = confirmListener;
     }

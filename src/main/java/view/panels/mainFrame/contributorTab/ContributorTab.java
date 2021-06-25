@@ -1,14 +1,12 @@
 package view.panels.mainFrame.contributorTab;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
-import view.frames.mainFrame.ConfirmExemplarDeletionFrame;
 import view.listeners.mainframe.ActionWithComponentListener;
-import view.listeners.mainframe.exemplarTab.*;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
 import javax.swing.*;
@@ -22,27 +20,20 @@ import java.util.stream.Collectors;
 
 public class ContributorTab extends JPanel {
     private User contributor;
-    private double avgRating;
     private List <Label> labels;
     private List<Exemplar> exemplars;
-    private ObjectMapper mapper;
 
     JScrollPane scrollPane = new JScrollPane();
     JPanel parentPanel = new JPanel();
     private JPanel metaInfoPanel = new JPanel();
     private JPanel configurationPanel= new JPanel();
     private JPanel labelPanel;
-    private JPanel contributorPanel;
-
     private JPanel buttonPanel;
     private JButton closeButton;
     private JButton openExemplarsButton;
 
 
     private ActionWithComponentListener closeListener;
-    private ContributorListener contributorListener;
-
-    private ConfirmExemplarDeletionFrame confirmExemplarDeletionFrame;
 
     private ExemplarClient exemplarClient;
     private RatingClient ratingClient;
@@ -63,8 +54,6 @@ public class ContributorTab extends JPanel {
         exemplarPanelParent.setLayout(new GridLayout(exemplars.size()+1, 1));
         createExemplarPanels();
         addExemplarPanelsToParentPanel();
-
-        this.avgRating = getAvgRating();
         this.labels = getLabels();
         setLayout();
         setBorder(getBorder(contributor.getUsername()));
@@ -89,7 +78,7 @@ public class ContributorTab extends JPanel {
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,2));
         openExemplarsButton = new JButton("Open Selected");
-        openExemplarsButton.addActionListener((x)->openExemplars());
+        openExemplarsButton.addActionListener(x->openExemplars());
         closeButton = new JButton("Close Tab");
         buttonPanel.add(openExemplarsButton);
         buttonPanel.add(closeButton);
@@ -106,15 +95,12 @@ public class ContributorTab extends JPanel {
 
         JLabel nameLabel = new JLabel("Username: "+ contributor.getUsername());
         nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
-
-        double avgRating = getAvgRating();
         JLabel avgRatingLabel = new JLabel("Average Rating of Exemplars: " + getAvgRating());
 
         metaInfoPanel.setBorder(getBorder("Info"));
         metaInfoPanel.setLayout(new GridLayout(5,1));
 
         labelPanel = initializeLabelPanel();
-
 
         metaInfoPanel.add(nameLabel);
         metaInfoPanel.add(avgRatingLabel);
@@ -142,9 +128,6 @@ public class ContributorTab extends JPanel {
         labelPanel.add(exemplarLabels);
         String labelsAsString = "";
         for(Label l : labels){
-            //JLabel newLabel = new JLabel(l.getValue());
-           // newLabel.setHorizontalAlignment(SwingConstants.LEFT);
-            //labelPanel.add(newLabel);
             labelsAsString += "  " + l.getValue();
         }
         labelPanel.add(new JLabel(labelsAsString));
@@ -179,7 +162,7 @@ public class ContributorTab extends JPanel {
     }
 
     double getAvgRating()  {
-        RatingClient ratingClient = new RatingClient();
+        ratingClient = new RatingClient();
         return exemplars.stream().mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).average().orElse(0);
     }
 
@@ -189,7 +172,7 @@ public class ContributorTab extends JPanel {
 
 
     void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
+        closeButton.addActionListener(x->closeListener.componentSubmitted(this));
 
     }
 
@@ -221,7 +204,6 @@ public class ContributorTab extends JPanel {
             });
             panel.setLayout(new GridLayout(4,3));
 
-            JLabel name = new JLabel("Name: ");
             JLabel exemplarName = new JLabel(e.getName());
             exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
             JLabel ratingLabel = new JLabel("Rating:");
@@ -240,11 +222,11 @@ public class ContributorTab extends JPanel {
             panel.add(new JLabel(numberOfRatings));
             panel.add(new JPanel());
             panel.add(new JLabel("Labels: "));
-            String labels = "";
+            String labelsString = "";
             for(model.entities.Label l : e.getLabels()){
-                labels +=l.getValue()+", ";
+                labelsString +=l.getValue()+", ";
             }
-            panel.add(new JLabel(labels));
+            panel.add(new JLabel(labelsString));
 
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 75));

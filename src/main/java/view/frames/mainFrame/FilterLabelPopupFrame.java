@@ -3,11 +3,9 @@ package view.frames.mainFrame;
 
 import model.entities.Label;
 import view.listeners.mainframe.FilterByLabelListener;
-import view.panels.mainFrame.exemplarTab.ExemplarTab;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -81,7 +79,6 @@ public class FilterLabelPopupFrame extends JFrame {
 
 class LabelPanel extends JPanel{
     private JCheckBox checkBox = new JCheckBox();
-    private JLabel name;
     private model.entities.Label label;
 
     public LabelPanel(model.entities.Label label){

@@ -25,6 +25,7 @@ public class RegisterForm  extends JFrame {
     JButton resetButton = new JButton("RESET");
     JTextArea welcomeArea = new JTextArea();
     Border border = BorderFactory.createLineBorder(Color.BLACK);
+    private String font = "Arial";
 
     private RegisterFormListener registerFormListener;
 
@@ -89,13 +90,13 @@ public class RegisterForm  extends JFrame {
 
 
         title.setFont(new Font("Arial", Font.PLAIN, 30));
-        userNameLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        userNameText.setFont(new Font("Arial", Font.PLAIN, 15));
-        fullNameLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        fullNameText.setFont(new Font("Arial", Font.PLAIN, 15));
-        passwordLabel1.setFont(new Font("Arial", Font.PLAIN, 20));
-        passwordLabel2.setFont(new Font("Arial", Font.PLAIN, 20));
-        contributorLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        userNameLabel.setFont(new Font(font, Font.PLAIN, 20));
+        userNameText.setFont(new Font(font, Font.PLAIN, 15));
+        fullNameLabel.setFont(new Font(font, Font.PLAIN, 20));
+        fullNameText.setFont(new Font(font, Font.PLAIN, 15));
+        passwordLabel1.setFont(new Font(font, Font.PLAIN, 20));
+        passwordLabel2.setFont(new Font(font, Font.PLAIN, 20));
+        contributorLabel.setFont(new Font(font, Font.PLAIN, 20));
         welcomeArea.setBorder(border);
         userNameText.setBorder(border);
         fullNameText.setBorder(border);
@@ -122,7 +123,7 @@ public class RegisterForm  extends JFrame {
     }
 
     void addActionListeners(){
-        submitButton.addActionListener((x)-> {
+        submitButton.addActionListener(x-> {
             String username = userNameText.getText();
             String fullname = fullNameText.getText();
             String password1 = passwordField1.getText();

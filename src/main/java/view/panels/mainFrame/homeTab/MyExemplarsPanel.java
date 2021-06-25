@@ -5,7 +5,7 @@ import model.entities.User;
 import model.httpclients.ExemplarClient;
 import model.httpclients.RatingClient;
 import view.listeners.mainframe.homeTab.NewTabListener;
-import view.panels.mainFrame.AllExemplarsPanel;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -22,7 +22,7 @@ public class MyExemplarsPanel extends JPanel {
     JPanel exemplarPanelParent = new JPanel();
     private List<Exemplar> myExemplars;
     private JScrollPane scrollPane;
-    Border border = BorderFactory.createBevelBorder(0);//BorderFactory.createEtchedBorder(Color.GRAY, Color.BLACK);
+    Border border = BorderFactory.createBevelBorder(0);
     private NewTabListener exemplarListener;
     private Map<String, JCheckBox> selectedExemplarMap = new HashMap<>();
     JPanel buttonPanel;
@@ -52,7 +52,6 @@ public class MyExemplarsPanel extends JPanel {
     }
 
     public void addExemplarsToScrollPane(){
-        int i = 0;
         RatingClient client = new RatingClient();
         for(Exemplar e : myExemplars){
             JPanel panel = new JPanel();
@@ -71,7 +70,6 @@ public class MyExemplarsPanel extends JPanel {
             JLabel exemplarName = new JLabel(e.getName());
             JLabel ratingLabel = new JLabel("Rating:");
             JCheckBox checkBox = new JCheckBox();
-            //if(i%2==0)checkBox.setBackground(Color.LIGHT_GRAY);
             panel.add(name);
             panel.add(exemplarName);
             panel.add(new JLabel(""));
@@ -82,10 +80,8 @@ public class MyExemplarsPanel extends JPanel {
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
-            //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             selectedExemplarMap.put(e.getName(), checkBox);
             exemplarPanelParent.add(panel);
-            i++;
         }
 
     }
@@ -95,21 +91,18 @@ public class MyExemplarsPanel extends JPanel {
         buttonPanel.setLayout(new GridLayout(1,3));
         JButton openExemplarsButton = new JButton("Open Selected");
         JButton createExemplarButton = new JButton("Create New");
-        JButton searchAllButton = new JButton("Search All");
         JButton exemplarLibraryButton =  new JButton("All Exemplars");
         JButton contributorLibraryButton =  new JButton("All Contributors");
 
         buttonPanel.add(openExemplarsButton);
-        openExemplarsButton.addActionListener((x)->openExemplars());
+        openExemplarsButton.addActionListener(x->openExemplars());
         if(user.getIsContributor()==1){
             buttonPanel.add(createExemplarButton);
             createExemplarButton.addActionListener(x-> createExemplarListener.actionPerformed(x));
         }
-        //buttonPanel.add(searchAllButton);
+
         exemplarLibraryButton.addActionListener(x -> exemplarLibraryListener.actionPerformed(x));
-        //buttonPanel.add(exemplarLibraryButton);
         contributorLibraryButton.addActionListener(x -> contributorLibraryListener.actionPerformed(x));
-        //buttonPanel.add(contributorLibraryButton);
         buttonPanel.setBorder(border);
     }
     void addComponents(){

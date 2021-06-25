@@ -2,7 +2,6 @@ package view.panels.mainFrame;
 
 import model.entities.Community;
 import model.httpclients.CommunityClient;
-import model.httpclients.ExemplarClient;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
@@ -137,7 +136,7 @@ public class CommunityLibraryTab extends JPanel{
         buttonPanel.setBorder(border);
 
         openCommunityButton.addActionListener(x ->openCommunities());
-        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
+        closeLibraryButton.addActionListener(x->closeListener.componentSubmitted(this));
     }
 
     private void initializeSortingListener() {
@@ -147,7 +146,7 @@ public class CommunityLibraryTab extends JPanel{
              */
             if(sortingComboBox.getSelectedIndex() == 0) {
                 allCommunities = allCommunities.stream().
-                        sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
+                        sorted(Comparator.comparing(Community::getName)).collect(Collectors.toList());
 
                 if(sortingComboBox2.getSelectedIndex() == 1) {
                     Collections.reverse(allCommunities);

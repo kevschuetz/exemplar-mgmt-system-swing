@@ -5,10 +5,8 @@ import view.listeners.login.RegisterButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class LoginFrame extends JFrame implements ActionListener {
+public class LoginFrame extends JFrame {
     Container container = getContentPane();
     JLabel userLabel=new JLabel("USERNAME");
     JLabel passwordLabel=new JLabel("PASSWORD");
@@ -54,7 +52,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
     public void addComponentsToContainer()
     {
-        //Adding each component to the Container
         container.add(userLabel);
         container.add(passwordLabel);
         container.add(userTextField);
@@ -77,13 +74,11 @@ public class LoginFrame extends JFrame implements ActionListener {
             }
         });
         registerButton.addActionListener(x->registerListener.registerFormRequested());
-        resetButton.addActionListener((x)->{
+        resetButton.addActionListener(x->{
             userTextField.setText("");
             passwordField.setText("");
         });
-        guestButton.addActionListener((x)->{
-            loginListener.loginRequested("guest","");
-        });
+        guestButton.addActionListener(x-> loginListener.loginRequested("guest",""));
     }
 
     public LoginListener getLoginListener() {
@@ -94,10 +89,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         this.loginListener = loginListener;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
 
     public void setRegisterListener(RegisterButtonListener registerListener) {
         this.registerListener = registerListener;

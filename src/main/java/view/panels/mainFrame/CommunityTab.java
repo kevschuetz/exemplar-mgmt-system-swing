@@ -2,9 +2,6 @@ package view.panels.mainFrame;
 
 import model.entities.*;
 import model.entities.Label;
-import model.httpclients.CommunityClient;
-import model.httpclients.ExemplarClient;
-import model.httpclients.RatingClient;
 import view.frames.mainFrame.ConfirmCommunityDeletionFrame;
 import view.listeners.ActionWithStringListener;
 import view.listeners.mainframe.ActionWithComponentListener;
@@ -12,12 +9,9 @@ import view.listeners.mainframe.communityTap.DeleteCommunityListener;
 import view.listeners.mainframe.communityTap.ActionWithUserListener;
 import view.listeners.mainframe.communityTap.UpdateCommunityListener;
 
-import javax.print.attribute.HashPrintJobAttributeSet;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -55,7 +49,6 @@ public class CommunityTab extends JPanel {
     private ActionListener leaveAction;
 
     private List<User> members;
-    private JLabel label;
     private UpdateCommunityListener updateCommunityListener;
     private DeleteCommunityListener deleteCommunityListener;
     private ConfirmCommunityDeletionFrame confirmCommunityDeletionFrame;
@@ -63,20 +56,12 @@ public class CommunityTab extends JPanel {
 
     boolean editable = false;
 
-    private ExemplarClient exemplarClient;
-    private CommunityClient communityClient;
-    private RatingClient ratingClient;
-    private Map<Exemplar, JPanel> exemplarJPanelMap = new HashMap<>();
     private Map<User, JPanel> membersJPanelMap = new HashMap<>();
     private JButton leaveButton = new JButton("Leave");
 
     public CommunityTab(Community community, User currentUser){
         this.community=community;
         this.currentUser = currentUser;
-        this.exemplarClient = new ExemplarClient();
-        this.communityClient = new CommunityClient();
-        this.ratingClient = new RatingClient();
-        this.label = new JLabel("community details");
         this.buttons = new JPanel();
         this.exemplarParentPanel = new JPanel();
         this.membersParentPanel = new JPanel();
@@ -149,48 +134,39 @@ public class CommunityTab extends JPanel {
         joinButton.addActionListener(joinAction);
         leaveButton.addActionListener(leaveAction);
 
-        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
-        updateButton.addActionListener((x)->{
+        closeButton.addActionListener(x->closeListener.componentSubmitted(this));
+        updateButton.addActionListener(x->{
             try {
                 updateCommunityListener.updateRequested(community);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        deleteButton.addActionListener((e)->{
-            confirmCommunityDeletionFrame.setVisible(true);
-        });
+        deleteButton.addActionListener(e->
+            confirmCommunityDeletionFrame.setVisible(true));
     }
 
     void initializeActionListeners(){
-        this.leaveAction= new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                leaveListener.actionPerformed(currentUser);
-                buttons.setVisible(false);
-                buttons.remove(leaveButton);
-                buttons.add(joinButton);
-                buttons.setVisible(true);
-                members.remove(currentUser);
-                membersJPanelMap.remove(currentUser);
-                addMemberPanelsToParentPanel();
-            }
+        this.leaveAction= e -> {
+            leaveListener.actionPerformed(currentUser);
+            buttons.setVisible(false);
+            buttons.remove(leaveButton);
+            buttons.add(joinButton);
+            buttons.setVisible(true);
+            members.remove(currentUser);
+            membersJPanelMap.remove(currentUser);
+            addMemberPanelsToParentPanel();
         };
 
-        this.joinAction= new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                joinListener.actionPerformed(currentUser);
-                buttons.setVisible(false);
-                buttons.remove(joinButton);
-                buttons.add(leaveButton);
-                buttons.setVisible(true);
-                members.add(currentUser);
-                membersJPanelMap.put(currentUser, createMemberPanel(currentUser));
-                addMemberPanelsToParentPanel();
-            }
+        this.joinAction= e -> {
+            joinListener.actionPerformed(currentUser);
+            buttons.setVisible(false);
+            buttons.remove(joinButton);
+            buttons.add(leaveButton);
+            buttons.setVisible(true);
+            members.add(currentUser);
+            membersJPanelMap.put(currentUser, createMemberPanel(currentUser));
+            addMemberPanelsToParentPanel();
         };
 
     }
@@ -201,7 +177,7 @@ public class CommunityTab extends JPanel {
         confirmCommunityDeletionFrame.setSize(new Dimension(400
                 ,300));
         confirmCommunityDeletionFrame.setLocationRelativeTo(this);
-        confirmCommunityDeletionFrame.setConfirmListener((x)->{
+        confirmCommunityDeletionFrame.setConfirmListener(x->{
             confirmCommunityDeletionFrame.setVisible(false);
             deleteCommunityListener.deleteRequested(community.getName(), this);
         });
@@ -220,14 +196,12 @@ public class CommunityTab extends JPanel {
         joinButton = new JButton("Join");
         closeButton = new JButton("Close");
         if(editable){
-            //buttons.add(updateButton);
-
             if(community.getCreator().equals(currentUser)){
                 buttons.add(deleteButton);
             }else{
                 if(!userIsMember(currentUser)){
                     buttons.add(joinButton);
-                }else{buttons.add(leaveButton);};
+                }else{buttons.add(leaveButton);}
             }
             buttons.add(closeButton);
         }
@@ -290,7 +264,7 @@ public class CommunityTab extends JPanel {
         exemplarParentPanel.removeAll();
         JList exemplarList = new JList(referenceExemplars
                 .stream()
-                .map(e->e.getName())
+                .map(Exemplar::getName)
                 .collect(Collectors.toList())
                 .toArray());
         exemplarParentPanel.setBorder(getBorder("Exemplars"));
@@ -299,14 +273,10 @@ public class CommunityTab extends JPanel {
         exemplarButtonPanel.setLayout(new GridLayout(1,2));
         JButton showButton = new JButton("Show");
         showButton.setSize(new Dimension(60,60));
-        showButton.addActionListener((e)->{
-            showExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
-        });
+        showButton.addActionListener(e-> showExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue()));
         JButton removeButton = new JButton("Remove");
         removeButton.setSize(new Dimension(60,60));
-        removeButton.addActionListener((e)->{
-            removeExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue());
-        });
+        removeButton.addActionListener(e-> removeExemplarListener.stringSubmitted((String)exemplarList.getSelectedValue()));
         exemplarButtonPanel.add(showButton);
         exemplarButtonPanel.add(removeButton);
         exemplarButtonPanel.setBorder(getBorder("Options"));
@@ -338,7 +308,6 @@ public class CommunityTab extends JPanel {
     public JPanel createMemberPanel(User m){
         JPanel panel = new JPanel();
         panel.setBorder(getBorder(""));
-        //panel.setPreferredSize(new Dimension(50,35));
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent event) {

@@ -1,5 +1,0 @@
-
-{
-java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€8ˆñ´ú£/
-a
-java:S2147"DCombine this catch with the one at line 27, which has the same body.(ä ¹€8ˆñ´ú£/

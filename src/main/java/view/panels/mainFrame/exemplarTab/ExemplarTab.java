@@ -1,6 +1,6 @@
 package view.panels.mainFrame.exemplarTab;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import model.entities.*;
 import model.entities.Label;
 import model.httpclients.CommentClient;
@@ -20,13 +20,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static javax.swing.SwingConstants.LEFT;
+
 
 public class ExemplarTab extends JPanel {
     private Exemplar exemplar;
-    private int avgRating;
-    private Label[] labels;
-    private User[] contributors;
-    private ObjectMapper mapper;
 
     JScrollPane scrollPane = new JScrollPane();
     JScrollPane commentScrollPane;
@@ -147,12 +145,11 @@ public class ExemplarTab extends JPanel {
         metaInfoPanel = new JPanel();
 
         JLabel nameLabel = new JLabel("Name: "+ exemplar.getName());
-        nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        nameLabel.setHorizontalAlignment(LEFT);
         JLabel creatorLabel = new JLabel("");
         if(exemplar.getCreator() != null)  creatorLabel = new JLabel ("Creator: "+ exemplar.getCreator().getUsername());
-        creatorLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        creatorLabel.setHorizontalAlignment(LEFT);
 
-        double avgRating = getAvgRating();
         JLabel avgRatingLabel = new JLabel("Rating: " + getAvgRating());
 
         metaInfoPanel.setBorder(getBorder("Info"));
@@ -191,7 +188,7 @@ public class ExemplarTab extends JPanel {
         JLabel contributors = new JLabel("Contributors:");
         contributorPanel.add(contributors);
         for(User u : exemplar.getContributors()){
-            JLabel newLabel = new JLabel(u.getUsername(), JLabel.LEFT);
+            JLabel newLabel = new JLabel(u.getUsername(), LEFT);
             contributorPanel.add(newLabel);
         }
         return contributorPanel;
@@ -203,8 +200,8 @@ public class ExemplarTab extends JPanel {
         JLabel labels = new JLabel("Labels:");
         labelPanel.add(labels);
         for(Label l : exemplar.getLabels()){
-            JLabel newLabel = new JLabel(l.getValue(), JLabel.LEFT);
-            newLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            JLabel newLabel = new JLabel(l.getValue(), LEFT);
+            newLabel.setHorizontalAlignment(LEFT);
             labelPanel.add(newLabel);
         }
         return labelPanel;
@@ -222,7 +219,6 @@ public class ExemplarTab extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
-        //c.anchor= Anchor.HORIZONTAL;
         parentPanel.add(metaInfoPanel, c);
 
         c.weighty = 0.4;
@@ -253,23 +249,21 @@ public class ExemplarTab extends JPanel {
     }
 
     void addActionListener(){
-        closeButton.addActionListener((x)->closeListener.componentSubmitted(this));
-        updateButton.addActionListener((x)->{
+        closeButton.addActionListener(x->closeListener.componentSubmitted(this));
+        updateButton.addActionListener(x->{
             exemplar.setSolution(solutionTextArea.getText());
             exemplar.setProblem(problemTextArea.getText());
             updateExemplarListener.updateRequested(exemplar);
         });
-        deleteButton.addActionListener((e)->{
-            confirmExemplarDeletionFrame.setVisible(true);
-        });
-        addLabelButton.addActionListener((e)->{
-            addLabelListener.buttonClicked(this);
-        });
-        ratingButton.addActionListener((x)-> ratingListener.ratingRequested(this));
-        addContributorButton.addActionListener((x)-> contributorListener.frameRequested(this));
-        exportButton.addActionListener((e)-> exportListener.componentSubmitted(this));
-        commentButton.addActionListener((x) -> commentPopup.setVisible(true));
-        addToCommunityButton.addActionListener((e)->addToCommunityFrame.setVisible(true));
+        deleteButton.addActionListener(e->
+            confirmExemplarDeletionFrame.setVisible(true));
+        addLabelButton.addActionListener(e->
+            addLabelListener.buttonClicked(this));
+        ratingButton.addActionListener(x-> ratingListener.ratingRequested(this));
+        addContributorButton.addActionListener(x-> contributorListener.frameRequested(this));
+        exportButton.addActionListener(e-> exportListener.componentSubmitted(this));
+        commentButton.addActionListener(x -> commentPopup.setVisible(true));
+        addToCommunityButton.addActionListener(e->addToCommunityFrame.setVisible(true));
 
     }
 
@@ -283,7 +277,7 @@ public class ExemplarTab extends JPanel {
         confirmExemplarDeletionFrame.setSize(new Dimension(400
                 ,300));
         confirmExemplarDeletionFrame.setLocationRelativeTo(this);
-        confirmExemplarDeletionFrame.setConfirmListener((x)->{
+        confirmExemplarDeletionFrame.setConfirmListener(x->{
             confirmExemplarDeletionFrame.setVisible(false);
             deleteExemplarListener.deleteRequested(exemplar.getName(), this);
         });
@@ -305,7 +299,7 @@ public class ExemplarTab extends JPanel {
     }
 
     void setDefaultListenerForCommentPopupFrame(){
-        commentPopup.setListener((comment) -> {
+        commentPopup.setListener(comment -> {
             addNewComment(commentPopup.getComment());
             addCommentsToPanel();
             commentPopup.clean();
@@ -325,9 +319,7 @@ public class ExemplarTab extends JPanel {
         c.setExemplar(exemplar);
         try {
             commentClient.add(c);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         comments.add(c);
@@ -349,7 +341,6 @@ public class ExemplarTab extends JPanel {
             LineBorder line = new LineBorder(Color.blue, 4, true);
             comment.setBorder(line);
             comment.setBorder(getBorder(c.getCreator().getUsername()));
-            //Icon replyIcon = new ImageIcon(getClass().getResource("/images/reply.png"));
             JButton replyButton = new JButton("Reply");
             addReplyListenerToButton(replyButton, c);
 
@@ -400,8 +391,8 @@ public class ExemplarTab extends JPanel {
     }
 
     private void addReplyListenerToButton(JButton replyButton, Comment c) {
-        replyButton.addActionListener((e)->{
-            commentPopup.setListener((comment)->{
+        replyButton.addActionListener(e->{
+            commentPopup.setListener(comment->{
                 Comment reply = new Comment();
                 reply.setExemplar(c.getExemplar());
                 reply.setCreator(currentUser);
@@ -468,7 +459,6 @@ class AddToCommunityFrame extends JFrame{
     private JList communityList;
     private List<String> communities;
     private JButton addButton = new JButton("Add");
-    private String selectedCommunity;
     private ActionWithStringListener addListener;
     private CommunityClient communityClient = new CommunityClient();
     private User user;
@@ -477,7 +467,7 @@ class AddToCommunityFrame extends JFrame{
         this.user = user;
 
         fetchCommunities();
-        addButton.addActionListener((e)-> addListener.stringSubmitted((String)communityList.getSelectedValue()));
+        addButton.addActionListener(e-> addListener.stringSubmitted((String)communityList.getSelectedValue()));
         communityList=new JList(communities.toArray());
 
         panel.setLayout(new GridLayout(1,1));
@@ -501,7 +491,7 @@ class AddToCommunityFrame extends JFrame{
     void fetchCommunities(){
         communities = communityClient.getCommunitiesForUser(this.user.getUsername())
                 .stream()
-                .map(c -> c.getName())
+                .map(Community::getName)
                 .collect(Collectors.toList());
 
 

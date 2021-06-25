@@ -6,6 +6,7 @@ public class Label {
     private String value;
 
     public Label(){
+        //empty constructor
     }
 
     public String getValue() {

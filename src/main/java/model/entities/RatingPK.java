@@ -6,7 +6,9 @@ public class RatingPK {
     private User user;
     private Exemplar exemplar;
 
-    public RatingPK(){}
+    public RatingPK(){
+        //empty constructor
+    }
 
     public User getUser() {
         return user;

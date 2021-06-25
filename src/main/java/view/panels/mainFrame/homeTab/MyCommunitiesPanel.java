@@ -47,7 +47,6 @@ public class MyCommunitiesPanel extends JPanel {
     }
 
     void addCommunites(){
-        int i = 0;
         for(Community c : myCommunities){
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(2,3));
@@ -76,11 +75,9 @@ public class MyCommunitiesPanel extends JPanel {
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
-            //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             communityPanelParent.add(panel);
             selectedCommunityMap.put(c.getName(), checkBox);
             myCommunityPanels.add(panel);
-            i++;
         }
     }
 
@@ -111,7 +108,7 @@ public class MyCommunitiesPanel extends JPanel {
         buttonPanel.add(createCommunityButton);
         createCommunityButton.addActionListener(x->createCommunityListener.actionPerformed(x));
         buttonPanel.add(openCommunityButton);
-        openCommunityButton.addActionListener((x)->openCommunity());
+        openCommunityButton.addActionListener(x->openCommunity());
         buttonPanel.setBorder(border);
     }
 

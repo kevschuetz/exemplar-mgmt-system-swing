@@ -118,7 +118,6 @@ public class MainFrame extends JFrame{
             exemplarButton.setBackground(Color.lightGray);
             communityButton.setBackground(Color.lightGray);
             contributorButton.setBackground(Color.lightGray);
-            //searchButton.setBackground(Color.lightGray);
 
             Border emptyBorder = BorderFactory.createEmptyBorder();
             exemplarButton.setBorder(emptyBorder);
@@ -155,7 +154,7 @@ public class MainFrame extends JFrame{
         }
 
         void addSearchButtonListener(){
-            searchButton.addActionListener((e)->{
+            searchButton.addActionListener(e->{
                 switch(searchCombobox.getSelectedIndex()){
                     case 0:
                         searchExemplarListener.actionPerformed(e);
@@ -165,6 +164,8 @@ public class MainFrame extends JFrame{
                         break;
                     case 2:
                         searchCommunityListener.actionPerformed(e);
+                        break;
+                    default: break;
                 }
             });
         }
@@ -198,7 +199,7 @@ public class MainFrame extends JFrame{
         }
 
         private void addListeners() {
-            importExemplarItem.addActionListener((e)->{
+            importExemplarItem.addActionListener(e->{
                 JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
                 jfc.setDialogTitle("Select a text or json file");
                 jfc.setAcceptAllFileFilterUsed(false);
@@ -214,8 +215,8 @@ public class MainFrame extends JFrame{
                 }
             });
 
-            createExemplarItem.addActionListener((e)-> createExemplarListener.actionPerformed(e));
-            logOutItem.addActionListener((e)->logoutListener.actionPerformed(e));
+            createExemplarItem.addActionListener(e-> createExemplarListener.actionPerformed(e));
+            logOutItem.addActionListener(e->logoutListener.actionPerformed(e));
         }
     }
 }

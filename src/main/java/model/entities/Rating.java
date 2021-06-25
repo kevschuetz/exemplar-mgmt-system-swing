@@ -8,6 +8,7 @@ public class Rating {
     private double rating;
     private java.sql.Date sqlDate;
     public Rating(){
+        //empty constructor
     }
 
     public RatingPK getKey() {

@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class LoginController {
     private UserClient userClient = new UserClient();
 
@@ -23,23 +25,13 @@ public class LoginController {
     Color backGroundColor = new Color(157,188,212);
     public LoginController(){
         initializeLoginFrame();
-        loginFrame.setLoginListener((u,p) ->{
-            processLoginRequest(u,p);
-        });
+        loginFrame.setLoginListener(this::processLoginRequest);
 
 
-
-        loginFrame.setRegisterListener(()->{
-            //loginFrame.setVisible(false);
-            registerForm.setVisible(true);
-        });
+        loginFrame.setRegisterListener(()-> registerForm.setVisible(true));
 
         initializeRegisterForm();
-        registerForm.setRegisterFormListener((e)->{
-            processRegistrationRequest(e);
-        });
-
-
+        registerForm.setRegisterFormListener(this::processRegistrationRequest);
 
     }
     /**
@@ -104,7 +96,7 @@ public class LoginController {
         loginFrame.setVisible(false);
         loginFrame.setTitle("Login");
         loginFrame.setBounds(10,10,370,600);
-        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         loginFrame.setResizable(false);
         loginFrame.getContainer().setBackground(backGroundColor);
         loginFrame.getShowPassword().setBackground(backGroundColor);

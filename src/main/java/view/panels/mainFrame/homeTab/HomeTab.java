@@ -3,7 +3,6 @@ package view.panels.mainFrame.homeTab;
 import model.entities.User;
 import view.listeners.mainframe.homeTab.NewTabListener;
 import view.listeners.mainframe.homeTab.ProfilePanelListener;
-import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -16,8 +15,6 @@ public class HomeTab extends JPanel {
     ProfilePanel profilePanel;
     MyExemplarsPanel myExemplarsPanel;
     MyCommunitiesPanel myCommunitiesPanel;
-
-  //  Border border = BorderFactory.createCompoundBorder();
 
     public HomeTab(User user){
         this.user = user;

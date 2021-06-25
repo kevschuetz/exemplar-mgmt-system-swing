@@ -10,7 +10,9 @@ public class Community {
     private User creator;
 
 
-    public Community(){}
+    public Community(){
+        //empty constructor
+    }
 
     public String getName() {
         return name;

@@ -1,9 +1,7 @@
 package model.httpclients;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Community;
 
@@ -95,9 +93,7 @@ public class CommunityClient extends Client<Community>{
         }
         try {
             response= client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         Community updated = null;
@@ -130,18 +126,8 @@ public class CommunityClient extends Client<Community>{
                     .uri(URI.create(url +"/search?value="+value))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Community> all = mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
-            return all;
-        }catch(InterruptedException e){
-            e.printStackTrace();
-            return new LinkedList<>();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-            return new LinkedList<>();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-            return new LinkedList<>();
-        } catch (IOException e) {
+            return mapper.readValue(response.body(), new TypeReference<List<Community>>(){});
+        } catch(InterruptedException | IOException e){
             e.printStackTrace();
             return new LinkedList<>();
         }

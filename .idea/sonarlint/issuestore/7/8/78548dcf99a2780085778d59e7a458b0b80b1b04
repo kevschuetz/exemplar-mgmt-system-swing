@@ -1,28 +1,0 @@
-
-M
-java:S1128"0Remove this unused import 'model.entities.User'.(â…÷÷8ûÂ»ú£/
-T
-java:S1854"7Remove this useless assignment to local variable "avg".(ò” è8øºú£/
-`
-java:S1854">Remove this useless assignment to local variable "userClient".(›Ëòèùÿÿÿÿ8ŠÃ»ú£/
-a
-java:S1854"?Remove this useless assignment to local variable "communities".(ŸÒÄãşÿÿÿÿ8‘ƒºú£/
-\
-java:S1854"?Remove this useless assignment to local variable "communities".(Ø»Ó8Õì¹ú£/
-Y
-java:S1854"=Remove this useless assignment to local variable "exemplars".(¾ÿ8±½¹ú£/
-_
-java:S1854"=Remove this useless assignment to local variable "exemplars".(ª·È¦ÿÿÿÿÿ8Û¹ú£/
-Z
-java:S1854"=Remove this useless assignment to local variable "exemplars".(…ª½ø8Û¹ú£/
-J	java:S108"")Either remove or fill this block of code.(ÏÓ…íùÿÿÿÿ8·Öºú£/
-H
-java:S1481""&Remove this unused "r" local variable.(ÏÓ…íùÿÿÿÿ8·Öºú£/
-K
-java:S1481".Remove this unused "exemplars" local variable.(…ª½ø8Á½¹ú£/
-M
-java:S1481"0Remove this unused "communities" local variable.(Ø»Ó8‘ƒºú£/
-Q
-java:S1481"/Remove this unused "userClient" local variable.(›Ëòèùÿÿÿÿ8ŠÃ»ú£/
-E
-java:S1481"(Remove this unused "avg" local variable.(ò” è8ˆºú£/

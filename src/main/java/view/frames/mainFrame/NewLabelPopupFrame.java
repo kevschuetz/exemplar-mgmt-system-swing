@@ -1,7 +1,5 @@
 package view.frames.mainFrame;
 
-import model.entities.Exemplar;
-import view.listeners.mainframe.NewExemplarListener;
 import view.listeners.mainframe.NewLabelListener;
 import view.panels.mainFrame.exemplarTab.ExemplarTab;
 

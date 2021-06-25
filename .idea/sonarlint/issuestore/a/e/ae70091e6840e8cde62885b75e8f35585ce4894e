@@ -1,33 +1,0 @@
-
-3
-java:S1643·"Use a StringBuilder instead.(„Ã»‘
-Z
-java:S1155…">Use isEmpty() to check whether the collection is empty or not.(’„¤äúÿÿÿÿ
-Z
-java:S1155“">Use isEmpty() to check whether the collection is empty or not.(ûòÈ¡ùÿÿÿÿ
->
-java:S1604D"(Make this anonymous inner class a lambda(„”ç”
-2
-java:S1116"Remove this empty statement.(Ê¡Ø
-F
-java:S1611‚"/Remove the parentheses around the "r" parameter(éç©ó
-E
-java:S1611ƒ"/Remove the parentheses around the "r" parameter(˜ä½
-O
-java:S1854¢"8Remove this useless assignment to local variable "name".(ÀëÆ¼
-K
-java:S1611í"/Remove the parentheses around the "x" parameter(‚ˆ“ğùÿÿÿÿ
-F
-java:S1611î"/Remove the parentheses around the "x" parameter(Íİ˜º
-K
-java:S1611ï"/Remove the parentheses around the "e" parameter(¦¦ºŞûÿÿÿÿ
-H
-java:S1612ú",Replace this lambda with a method reference.(ŸëÖùÿÿÿÿ
-P
-java:S1611‘"4Remove the parentheses around the "labels" parameter(Ù¨¦Öûÿÿÿÿ
-T
-java:S1117"=Rename "allLabels" which hides the field declared at line 27.(û”¢¼
-X
-java:S1126¤"AReplace this if-then-else statement by a single return statement.(Ä…ç©
-@
-java:S1481¢")Remove this unused "name" local variable.(ÀëÆ¼
