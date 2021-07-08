@@ -126,11 +126,11 @@ public class ContributorTab extends JPanel {
         labelPanel.setLayout(new GridLayout(1, labels.size()+2));
         JLabel exemplarLabels = new JLabel("Labels of contributed Exemplars:");
         labelPanel.add(exemplarLabels);
-        String labelsAsString = "";
+        StringBuilder labelsAsString = new StringBuilder("");
         for(Label l : labels){
-            labelsAsString += "  " + l.getValue();
+            labelsAsString.append("  " + l.getValue());
         }
-        labelPanel.add(new JLabel(labelsAsString));
+        labelPanel.add(new JLabel(labelsAsString.toString()));
 
         return labelPanel;
     }
