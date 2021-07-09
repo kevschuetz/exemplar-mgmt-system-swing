@@ -11,5 +11,3 @@ V
 &src/main/java/resources/Community.java,9\a\9a1247eda366dd429d96c67fe95202b80e527249
 U
 %src/main/java/resources/Exemplar.java,4\b\4b1e910e3784f5d2a0f4fabd0be0c4be3c3abfb1
-T
-$src/main/java/resources/Comment.java,8\b\8b3681f9bcd61b08986af28d36323660b75eb35d

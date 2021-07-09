@@ -2,8 +2,7 @@ import model.entities.Label;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class TestLabel {
     private Label label;
@@ -32,6 +31,6 @@ public class TestLabel {
         label.setValue("JUnit");
         Label other = new Label();
         other.setValue("AnotherLabel");
-        assertFalse(label.hashCode() != other.hashCode());
+        assertFalse(label.hashCode() == other.hashCode());
     }
 }

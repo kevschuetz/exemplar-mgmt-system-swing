@@ -15,10 +15,10 @@ public class Comment {
     @Column (length = 2000)
     private String value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User creator;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Exemplar exemplar;
 
     @OneToMany(cascade = CascadeType.ALL)

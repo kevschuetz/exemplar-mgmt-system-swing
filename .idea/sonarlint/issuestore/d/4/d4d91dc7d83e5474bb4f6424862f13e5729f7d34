@@ -1,12 +1,0 @@
-
-8
-java:S1643ƒ"Use a StringBuilder instead.(ò³«ñúÿÿÿÿ
-8
-java:S1643ã"Use a StringBuilder instead.(×îã¬øÿÿÿÿ
-n
-java:S1450"YRemove the "labelPanel" field and declare it as a local variable in the relevant methods.(º¡]
-}
-java:S1450!"bRemove the "openExemplarsButton" field and declare it as a local variable in the relevant methods.(žä‹øûÿÿÿÿ
-Y
-java:S1117}">Rename "labelPanel" which hides the field declared at line 30.(ƒö¦÷üÿÿÿÿ
-W	java:S125’"<This block of commented-out lines of code should be removed.(Ý‘¡­þÿÿÿÿ
