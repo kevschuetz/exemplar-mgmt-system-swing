@@ -121,7 +121,7 @@ public class TestExemplarClient {
      * the returned entity is expected to reflect those changes
      */
     @Test
-    public void Test_updateExistingUser(){
+    public void Test_updateExistingExemplar(){
         try {
             client.add(testEntity);
             testEntity.setProblem("newTestProblem");
@@ -191,4 +191,20 @@ public class TestExemplarClient {
         }
         assertFalse(errorOccured);
     }
+    @Test
+    public void Test_searchExemplars(){
+        try {
+            client.add(testEntity);
+          List<Exemplar> exemplars = client.searchExemplars("test");
+          assertTrue(exemplars.contains(testEntity));
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        }
+        assertFalse(errorOccured);
+    }
+
 }

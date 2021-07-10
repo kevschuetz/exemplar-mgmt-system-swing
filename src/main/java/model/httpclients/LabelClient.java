@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LabelClient extends Client<Label>{
+public class LabelClient {
     private final HttpClient client;
     private final String URL;
     private final ObjectMapper mapper;
@@ -23,7 +23,7 @@ public class LabelClient extends Client<Label>{
         mapper = new ObjectMapper();
     }
 
-    @Override
+
     public Label add(Label value) {
         try{
         request = HttpRequest.newBuilder()
@@ -39,23 +39,4 @@ public class LabelClient extends Client<Label>{
         }
     }
 
-    @Override
-    public void delete(String id) throws IOException, InterruptedException {
-        //not needed
-    }
-
-    @Override
-    public List<Label> getAll() throws IOException, InterruptedException {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Label get(String id) throws IOException, InterruptedException {
-        return null;
-    }
-
-    @Override
-    public Label update(String id, Label value) throws IOException, InterruptedException {
-        return null;
-    }
 }

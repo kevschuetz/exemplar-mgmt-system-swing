@@ -10,12 +10,12 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class TestRatingClient {
     private RatingClient client;
     private Rating testEntity;
+    private Exemplar exemplar;
     boolean errorOccured;
 
     @Before
@@ -24,7 +24,7 @@ public class TestRatingClient {
         testEntity = new Rating();
         RatingPK key = new RatingPK();
         User user = new User("testUserForRating", "fullName", "password", 1);
-        Exemplar exemplar = new Exemplar();
+        exemplar = new Exemplar();
         exemplar.setName("testExemplarForRating");
         new ExemplarClient().add(exemplar);
         new UserClient().add(user);
@@ -142,5 +142,33 @@ public class TestRatingClient {
         }
         assertFalse(errorOccured);
     }
+
+   @Test
+   public void Test_getRatingsForExemplar(){
+       try {
+           client.add(testEntity);
+           List<Rating> ratings = client.getRatingsForExemplar("testExemplarForRating");
+           assertTrue(ratings.contains(testEntity));
+       } catch (IOException e) {
+           e.printStackTrace();
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+   }
+
+   @Test
+    public void Test_getAvgRatingForExemplar(){
+       try {
+           client.add(testEntity);
+           assertEquals(client.getAvgRatingForExemplar("testExemplarForRating"), 5.0, 0.01);
+       } catch (IOException e) {
+           e.printStackTrace();
+           errorOccured=true;
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+           errorOccured=true;
+       }
+      assertFalse(errorOccured);
+   }
 
 }
