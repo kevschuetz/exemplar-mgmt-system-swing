@@ -71,7 +71,7 @@ public class LoginController {
      * the database if so. Schows a message if not.
      * @param e the event containing all the information required for the registration
      */
-    void processRegistrationRequest(UserEvent e){
+    public void processRegistrationRequest(UserEvent e){
         if(e.getUsername().trim().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
         else if(e.getFullname().trim().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
         else if(e.getPassword().trim().length()<8) JOptionPane.showMessageDialog(registerForm, "Password must have at least 8 characters");
@@ -80,7 +80,7 @@ public class LoginController {
             try{
                 User response = userClient.add(newUser);
                 if (newUser.equals(response)) {
-                    JOptionPane.showMessageDialog(registerForm, "Registration succesfully");
+                    //JOptionPane.showMessageDialog(registerForm, "Registration succesfully");
                     registerForm.setVisible(false);
                 }else  {
                     JOptionPane.showMessageDialog(registerForm, "Username is already taken");
@@ -144,6 +144,9 @@ public class LoginController {
         this.currentUser = currentUser;
     }
 
+    public ActionListener getLoginListener() {
+        return loginListener;
+    }
 
 
 }

@@ -111,7 +111,7 @@ public class MainController implements Runnable{
     /**
      * Method is triggered by LoginController after succesfull login. Opens new HomeTab if User is not a guest.
      */
-    void loginSuccesfull(){
+   public void loginSuccesfull(){
         mainFrame.setVisible(true);
 
         if(currentUser != null){
@@ -882,7 +882,7 @@ public class MainController implements Runnable{
      * @param s the given ExemplarName
      * @return true if the name is free, false if not
      */
-    boolean verifyExemplarName(String s){
+    public boolean verifyExemplarName(String s){
         try{
             Exemplar exists = exemplarClient.get(s);
             if(exists == null) return true;
@@ -897,7 +897,7 @@ public class MainController implements Runnable{
      * @param s the given CommunityName
      * @return true if the name is free, false if not
      */
-    boolean verifyCommunityName(String s){
+    public boolean verifyCommunityName(String s){
         try{
             Community exists = communityClient.get(s);
             if(exists == null) return true;
@@ -938,5 +938,34 @@ public class MainController implements Runnable{
         addListenersToExemplarLibrary(initialExemplarLibraryTab);
         librarysLoaded = true;
         return;
+    }
+
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    public NewLabelPopupFrame getNewLabelPopupFrame() {
+        return newLabelPopupFrame;
+    }
+
+    public void setNewLabelPopupFrame(NewLabelPopupFrame newLabelPopupFrame) {
+        this.newLabelPopupFrame = newLabelPopupFrame;
+    }
+
+    public NewRatingPopupFrame getNewRatingPopupFrame() {
+        return newRatingPopupFrame;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setHomeTab(HomeTab homeTab) {
+        this.homeTab = homeTab;
     }
 }

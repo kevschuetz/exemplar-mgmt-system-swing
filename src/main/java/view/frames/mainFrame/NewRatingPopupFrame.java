@@ -67,4 +67,8 @@ public class NewRatingPopupFrame extends JFrame {
     public void setTab(ExemplarTab tab) {
         this.tab = tab;
     }
+
+    public NewRatingListener getListener() {
+        return listener;
+    }
 }

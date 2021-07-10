@@ -56,4 +56,10 @@ public class NewLabelPopupFrame extends JFrame{
     public void clean(){
         nameField.setText("");
     }
+
+    public NewLabelListener getListener() {
+        return listener;
+    }
+
+
 }
