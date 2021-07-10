@@ -125,7 +125,7 @@ public class ContributorTab extends JPanel {
 
 
     private JPanel initializeLabelPanel() {
-        JPanel labelPanel = new JPanel();
+        labelPanel = new JPanel();
         labelPanel.setLayout(new GridLayout(1, labels.size()+2));
         JLabel exemplarLabels = new JLabel("Labels of contributed Exemplars:");
         labelPanel.add(exemplarLabels);
@@ -146,7 +146,6 @@ public class ContributorTab extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         c.fill= GridBagConstraints.BOTH;
-        //c.anchor= Anchor.HORIZONTAL;
         parentPanel.add(metaInfoPanel, c);
 
         scrollPane = new JScrollPane(parentPanel);

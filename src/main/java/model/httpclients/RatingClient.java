@@ -109,8 +109,7 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        Double avg = mapper.readValue(response.body(), Double.class);
-        return avg;
+        return mapper.readValue(response.body(), Double.class);
         }catch(Exception e){
             e.printStackTrace();
             return 0;

@@ -937,7 +937,7 @@ public class MainController implements Runnable{
         addListenersToCommunityLibrary(initialCommunityLibraryTab);
         addListenersToExemplarLibrary(initialExemplarLibraryTab);
         librarysLoaded = true;
-        return;
+
     }
 
 

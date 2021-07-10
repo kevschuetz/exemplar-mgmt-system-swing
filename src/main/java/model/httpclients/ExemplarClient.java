@@ -64,7 +64,7 @@ public class ExemplarClient extends Client<Exemplar>{
         try{
            return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
 
@@ -107,7 +107,7 @@ public class ExemplarClient extends Client<Exemplar>{
            return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
             e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
 
@@ -120,7 +120,7 @@ public class ExemplarClient extends Client<Exemplar>{
             return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
             e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
     public List<Exemplar> searchExemplars(String value){
@@ -132,7 +132,7 @@ public class ExemplarClient extends Client<Exemplar>{
            return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
             e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
 
@@ -145,7 +145,7 @@ public class ExemplarClient extends Client<Exemplar>{
             return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
             e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
 }

@@ -80,7 +80,6 @@ public class LoginController {
             try{
                 User response = userClient.add(newUser);
                 if (newUser.equals(response)) {
-                    //JOptionPane.showMessageDialog(registerForm, "Registration succesfully");
                     registerForm.setVisible(false);
                 }else  {
                     JOptionPane.showMessageDialog(registerForm, "Username is already taken");
