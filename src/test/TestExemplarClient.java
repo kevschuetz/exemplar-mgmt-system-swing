@@ -8,11 +8,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class TestExemplarClient {
     private ExemplarClient client;
@@ -148,5 +148,47 @@ public class TestExemplarClient {
         }
         assertFalse(errorOccured);
     }
+    @Test
+    public void Test_getExemplarsForUser(){
+        try {
+            User u = new User();
+            u.setUsername("testuser");
+            new UserClient().delete(u.getUsername());
+            new UserClient().add(u);
+            testEntity.setCreator(u);
+            client.add(testEntity);
+            List<Exemplar> exemplars = client.getExemplarForCreator(u.getUsername());
+            assertTrue(exemplars.contains(testEntity));
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        }
+        assertFalse(errorOccured);
+    }
 
+    @Test
+    public void Test_getExemplarsForCreator(){
+        try {
+            User u = new User();
+            u.setUsername("testuser");
+            new UserClient().delete(u.getUsername());
+            new UserClient().add(u);
+            List<User> contributors = new ArrayList<>();
+            contributors.add(u);
+            testEntity.setContributors(contributors);
+            client.add(testEntity);
+            List<Exemplar> exemplars = client.getExemplarsForUser(u.getUsername());
+            assertTrue(exemplars.contains(testEntity));
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            errorOccured = true;
+        }
+        assertFalse(errorOccured);
+    }
 }
