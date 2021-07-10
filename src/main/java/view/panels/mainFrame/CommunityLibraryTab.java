@@ -47,7 +47,10 @@ public class CommunityLibraryTab extends JPanel{
         addComponents();
     }
 
-
+    /**
+     * Fetches all the communities from the database
+     * @param searchTerm a string used to search communities by a specific term
+     */
     public void fetchCommunities(String searchTerm){
         allCommunities = new CommunityClient().searchCommunities(searchTerm);
         allCommunities = allCommunities
@@ -56,6 +59,9 @@ public class CommunityLibraryTab extends JPanel{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Adds all the communities to the scroll pane
+     */
     public void addCommunitiesToScrollPane(){
         List<Community> communities = allCommunities;
         for(Community c : communities){
@@ -97,7 +103,9 @@ public class CommunityLibraryTab extends JPanel{
         }
 
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
@@ -119,7 +127,9 @@ public class CommunityLibraryTab extends JPanel{
         setVisible(true);
 
     }
-
+    /**
+     * Initializes the button panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -142,6 +152,9 @@ public class CommunityLibraryTab extends JPanel{
         closeLibraryButton.addActionListener(x->closeListener.componentSubmitted(this));
     }
 
+    /**
+     * Initializes sorting listener that sorts the communities according to the combo-boxes
+     */
     private void initializeSortingListener() {
         sortingListener = event -> {
             /**
@@ -171,6 +184,9 @@ public class CommunityLibraryTab extends JPanel{
         };
     }
 
+    /**
+     * Updates the panel by removing all communities and adding them once more
+     */
     public void updateTab (){
         removeAll();
         communityPanelParent.removeAll();
@@ -178,6 +194,9 @@ public class CommunityLibraryTab extends JPanel{
         addComponents();
     }
 
+    /**
+     * Opens new tabs for the communities which were requested by the user
+     */
     void openCommunities(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
         List<String> selectedCommunity = new ArrayList<>();

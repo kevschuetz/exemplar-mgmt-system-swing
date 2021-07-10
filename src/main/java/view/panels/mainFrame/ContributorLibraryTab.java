@@ -17,7 +17,9 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Panel that lists all the contributors of the system and provides different sorting, filtering options
+ */
 public class ContributorLibraryTab extends JPanel {
     JPanel contributorPanelParent = new JPanel();
     private JScrollPane scrollPane;
@@ -63,6 +65,10 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
+    /**
+     * Fetches all the contributors from the database
+     * @param searchTerm a string used to search contributors by a specific term
+     */
     public void fetchContributors(String searchTerm){
         allContributors = new UserClient().searchUsers(searchTerm);
         allContributors = allContributors
@@ -72,6 +78,9 @@ public class ContributorLibraryTab extends JPanel {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Collects all the relevant information in respect to a contributor's exemplars like average rating or associated labels
+     */
     public void addExemplarInformation(){
         for(User u : allContributors){
             List<Exemplar> forUser = exemplarClient.getExemplarsForUser(u.getUsername());
@@ -92,7 +101,9 @@ public class ContributorLibraryTab extends JPanel {
         }
 
     }
-
+    /**
+     * Adds all the contributors to the scroll pane
+     */
     public void addContributorsToScrollPane(){
         List<User> contributors = allContributors;
         if(filtered) contributors = filteredContributors;
@@ -147,6 +158,9 @@ public class ContributorLibraryTab extends JPanel {
 
     }
 
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
@@ -169,6 +183,9 @@ public class ContributorLibraryTab extends JPanel {
 
     }
 
+    /**
+     * Initializes the button panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -194,6 +211,9 @@ public class ContributorLibraryTab extends JPanel {
         buttonPanel.setBorder(border);
     }
 
+    /**
+     * Opens new tabs for the contributors which were requested by the user
+     */
     void openContributors(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedContributorMap.entrySet();
         List<String> selectedContributors = new ArrayList<>();
@@ -206,6 +226,9 @@ public class ContributorLibraryTab extends JPanel {
         contributorListener.tabRequested(selectedContributors);
     }
 
+    /**
+     * Initializes sorting listener that sorts the contributors according to the combo-boxes
+     */
     private void initializeSortingListener() {
         sortingListener = event -> {
             /**
@@ -256,6 +279,9 @@ public class ContributorLibraryTab extends JPanel {
         };
     }
 
+    /**
+     * Updates the panel by removing all contributors and adding them once more
+     */
     public void updateTab (){
         removeAll();
         contributorPanelParent.removeAll();
@@ -263,6 +289,9 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
+    /**
+     * Initializes the pop up frame for filtering contributors by label
+     */
     void initializeFilterLabelFrame(){
         filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Contributors");
         filterLabelPopupFrame.setVisible(false);
@@ -279,6 +308,9 @@ public class ContributorLibraryTab extends JPanel {
         });
     }
 
+    /**
+     * Filters contributors by label
+     */
     public void filterContributors(){
         filteredContributors = allContributors.stream().
                 filter(c -> {
@@ -293,8 +325,6 @@ public class ContributorLibraryTab extends JPanel {
                 }).collect(Collectors.toList());
         filtered = true;
     }
-
-
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;

@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Represents information about a specific community (Community Dashboard)
+ */
 public class CommunityTab extends JPanel {
     private Community community;
     private User currentUser;
@@ -85,8 +87,9 @@ public class CommunityTab extends JPanel {
     void setEditable(){
         editable = true;
     }
-
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         GridBagConstraints c = new GridBagConstraints();
         c.weighty = 0.3;
@@ -129,7 +132,9 @@ public class CommunityTab extends JPanel {
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
-
+    /**
+     * Adds action listeners to the buttons
+     */
     void addActionListener(){
         joinButton.addActionListener(joinAction);
         leaveButton.addActionListener(leaveAction);
@@ -145,7 +150,9 @@ public class CommunityTab extends JPanel {
         deleteButton.addActionListener(e->
             confirmCommunityDeletionFrame.setVisible(true));
     }
-
+    /**
+     * Initializes button related action listeners
+     */
     void initializeActionListeners(){
         this.leaveAction= e -> {
             leaveListener.actionPerformed(currentUser);
@@ -170,7 +177,9 @@ public class CommunityTab extends JPanel {
         };
 
     }
-
+    /**
+     * Initializes pop-up frame for deleting the community
+     */
     void initializeDeleteFrame(){
         confirmCommunityDeletionFrame = new ConfirmCommunityDeletionFrame(community.getName());
         confirmCommunityDeletionFrame.setVisible(false);
@@ -182,14 +191,18 @@ public class CommunityTab extends JPanel {
             deleteCommunityListener.deleteRequested(community.getName(), this);
         });
     }
-
+    /**
+     * Initializes basic components of the panel
+     */
     void initializeComponents(){
         initializeMetaInfoPanel();
         initializeExemplarParentPanel();
         configurationPanel.setLayout(new GridLayout(3, 8));
         configurationPanel.add(buttons);
     }
-
+    /**
+     * Initializes the button panel
+     */
     void initializeButtons(){
         updateButton = new JButton ("Update");
         deleteButton = new JButton("Delete");
@@ -207,7 +220,9 @@ public class CommunityTab extends JPanel {
         }
 
     }
-
+    /**
+     * Initializes the meta info panel
+     */
     private void initializeMetaInfoPanel() {
         metaInfoPanel = new JPanel();
 
@@ -255,11 +270,17 @@ public class CommunityTab extends JPanel {
         metaInfoPanel.add(numberOfMembers);
         if(topLabel != null) metaInfoPanel.add(topLabel);
     }
-
+    /**
+     * Checks if the given user is a member of this community
+     * @param u the user whose membership needs to be checked 
+     * @return True if the given user is a member False if the user is not a member
+     */
     public boolean userIsMember(User u){
         return community.getMembers().contains(u);
     }
-
+    /**
+     * Initializes the exemplar parent panel which stores all the exemplars which were added to this community
+     */
     void initializeExemplarParentPanel(){
         exemplarParentPanel.removeAll();
         JList exemplarList = new JList(referenceExemplars
@@ -297,14 +318,20 @@ public class CommunityTab extends JPanel {
         c.weighty=0.05;
         exemplarParentPanel.add(exemplarButtonPanel, c);
     }
-
+    /**
+     * Creates panels for all the members of the community
+     */
     public void createMemberPanels(){
         for(User m : members){
             JPanel panel = createMemberPanel(m);
             membersJPanelMap.put(m, panel);
         }
     }
-
+    /**
+     * Creates a panel for the given user
+     * @param m the user for whom a panel should be created
+     * @return panel the panel which was created for the user
+     */
     public JPanel createMemberPanel(User m){
         JPanel panel = new JPanel();
         panel.setBorder(getBorder(""));
@@ -321,7 +348,9 @@ public class CommunityTab extends JPanel {
         panel.add(username);
         return panel;
     }
-
+    /**
+     * Adds all the panels which were created for the community's members to a separate panel
+     */
     void addMemberPanelsToParentPanel(){
         membersParentPanel.removeAll();
         membersParentPanel.setVisible(false);
@@ -329,10 +358,6 @@ public class CommunityTab extends JPanel {
             membersParentPanel.add(membersJPanelMap.get(m));
         }
         membersParentPanel.setVisible(true);
-    }
-
-    public JButton getUpdateButton() {
-        return updateButton;
     }
 
     public void setUpdateCommunityListener(UpdateCommunityListener updateCommunityListener) {

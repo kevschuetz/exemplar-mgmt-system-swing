@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static javax.swing.SwingConstants.LEFT;
 
 /**
- * Represents a given exemplar
+ * Represents a given exemplar (Exemplar Dashboard)
  */
 public class ExemplarTab extends JPanel {
     private Exemplar exemplar;

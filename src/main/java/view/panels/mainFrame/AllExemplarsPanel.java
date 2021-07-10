@@ -42,5 +42,4 @@ public class AllExemplarsPanel extends JPanel {
         showExemplarButton = new JButton("show");
         add(showExemplarButton);
     }
-
 }

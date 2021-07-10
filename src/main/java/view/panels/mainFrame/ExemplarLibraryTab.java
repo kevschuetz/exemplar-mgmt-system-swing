@@ -67,7 +67,7 @@ public class ExemplarLibraryTab extends JPanel{
     }
 
     /**
-     * Sorting listener that sorts the exemplars according to the combo-boxes
+     * Initializes sorting listener that sorts the exemplars according to the combo-boxes
      */
     private void initializeSortingListener() {
         sortingListener = event -> {
@@ -208,7 +208,9 @@ public class ExemplarLibraryTab extends JPanel{
             exemplarPanelParent.add(exemplarJPanelMap.get(e));
         }
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
