@@ -26,7 +26,9 @@ public class HomeTab extends JPanel {
         add(myExemplarsPanel);
         add(communitiesAndProfile);
     }
-
+    /**
+     * Initializes the main panels
+     */
     void initializePanels(){
         profilePanel = new ProfilePanel(user);
         myExemplarsPanel = new MyExemplarsPanel(user);
@@ -40,13 +42,19 @@ public class HomeTab extends JPanel {
         communitiesAndProfile.add(profilePanel);
         communitiesAndProfile.add(myCommunitiesPanel);
     }
-
+    /**
+     * Creates a border for the panel
+     * @param s title of the border
+     * @return the border which was created
+     */
     Border createBorder(String s){
         return BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
-
+    /**
+     * Updates the panel
+     */
     public void refresh(){
         removeAll();
         initializePanels();
@@ -72,6 +80,10 @@ public class HomeTab extends JPanel {
         this.user = user;
         profilePanel.setUser(user);
     }
+    /**
+     * Returns the profile panel of the current User
+     * @return the profile panel of the current User
+     */
     public ProfilePanel getProfilePanel() {
         return profilePanel;
     }

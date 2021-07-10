@@ -939,22 +939,13 @@ public class MainController implements Runnable{
         librarysLoaded = true;
 
     }
-
-
+    
     public User getCurrentUser() {
         return currentUser;
     }
 
     public LoginController getLoginController() {
         return loginController;
-    }
-
-    public NewLabelPopupFrame getNewLabelPopupFrame() {
-        return newLabelPopupFrame;
-    }
-
-    public void setNewLabelPopupFrame(NewLabelPopupFrame newLabelPopupFrame) {
-        this.newLabelPopupFrame = newLabelPopupFrame;
     }
 
     public NewRatingPopupFrame getNewRatingPopupFrame() {

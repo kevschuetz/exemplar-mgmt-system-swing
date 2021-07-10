@@ -47,12 +47,15 @@ public class MyExemplarsPanel extends JPanel {
         initializeButtonPanel();
         addComponents();
     }
-
-
+    /**
+     * Fetches all the Exemplars of the current User from the database
+     */
     public void fetchExemplars(){
         myExemplars = new ExemplarClient().getExemplarsForUser(user.getUsername());
     }
-
+    /**
+     * Adds all the Exemplars of the current User to a scroll pane
+     */
     public void addExemplarsToScrollPane(){
         RatingClient client = new RatingClient();
         for(Exemplar e : myExemplars){
@@ -87,7 +90,9 @@ public class MyExemplarsPanel extends JPanel {
         }
 
     }
-
+    /**
+     * Initializes all the buttons of this panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -107,6 +112,9 @@ public class MyExemplarsPanel extends JPanel {
         contributorLibraryButton.addActionListener(x -> contributorLibraryListener.actionPerformed(x));
         buttonPanel.setBorder(border);
     }
+    /**
+     * Adds the main components to the panel
+     */
     void addComponents(){
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -126,7 +134,9 @@ public class MyExemplarsPanel extends JPanel {
         add(buttonPanel, c);
 
     }
-
+    /**
+     * Creates new tabs for the Exemplars which were requested by the current User
+     */
     void openExemplars(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
         List<String> selectedExemplars = new ArrayList<>();

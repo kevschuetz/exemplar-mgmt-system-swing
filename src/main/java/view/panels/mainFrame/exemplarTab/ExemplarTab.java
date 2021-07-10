@@ -87,18 +87,26 @@ public class ExemplarTab extends JPanel {
         addActionListener();
         initializeDeletalFrame();
     }
-
+    /**
+     * Sets the layout of the panel
+     */
     void setLayout(){
         setLayout(new GridBagLayout());
         parentPanel.setLayout(new GridBagLayout());
     }
-
+    /**
+     * Creates a border for the panel
+     * @param s title of the border
+     * @return the border which was created
+     */
     Border getBorder (String s){
         return BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
-
+    /**
+     * Initializes the panel's main components
+     */
     void initializeComponents(){
         initializeMetaInfoPanel();
         initializeAddCommentPopupFrame();
@@ -142,7 +150,9 @@ public class ExemplarTab extends JPanel {
         configurationPanel.add(addToCommunityButton);
         configurationPanel.add(closeButton);
     }
-
+    /**
+     * Initializes the meta info panel
+     */
     private void initializeMetaInfoPanel() {
         metaInfoPanel = new JPanel();
 
@@ -168,7 +178,9 @@ public class ExemplarTab extends JPanel {
         metaInfoPanel.add(labelPanel);
         metaInfoPanel.add(contributorPanel);
     }
-
+    /**
+     * Updates the meta info panel
+     */
     public void refreshInfoPanel(){
         setVisible(false);
         parentPanel.remove(metaInfoPanel);
@@ -183,7 +195,9 @@ public class ExemplarTab extends JPanel {
         setVisible(true);
 
     }
-
+    /**
+     * Initializes the contributor panel which displays the contributors of the Exemplar
+     */
     private JPanel initializeContributorPanel() {
         JPanel contributorPanel = new JPanel();
         contributorPanel.setLayout(new GridLayout(1,exemplar.getContributors().size()+2));
@@ -195,7 +209,9 @@ public class ExemplarTab extends JPanel {
         }
         return contributorPanel;
     }
-
+    /**
+     * Initializes the label panel which displays the labels of the Exemplar
+     */
     private JPanel initializeLabelPanel() {
         JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new GridLayout(1, exemplar.getLabels().size()+2));
@@ -208,12 +224,16 @@ public class ExemplarTab extends JPanel {
         }
         return labelPanel;
     }
-
+    /**
+     * Sets the text areas for the Exemplar problem and solution to editable
+     */
     void setEditable(){
             solutionTextArea.setEditable(editable);
             problemTextArea.setEditable(editable);
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         GridBagConstraints c = new GridBagConstraints();
         c.weighty = 0.3;
@@ -245,11 +265,16 @@ public class ExemplarTab extends JPanel {
         add(configurationPanel,c);
 
     }
-
+    /**
+     * Calculates the average rating of the Exemplar
+     * @return average rating of the Exemplar
+     */
     double getAvgRating()  {
        return new RatingClient().getAvgRatingForExemplar(exemplar.getName());
     }
-
+    /**
+     * Adds action listeners to the buttons
+     */
     void addActionListener(){
         closeButton.addActionListener(x->closeListener.componentSubmitted(this));
         updateButton.addActionListener(x->{
@@ -272,7 +297,9 @@ public class ExemplarTab extends JPanel {
     public void setAddToCommunityListener(ActionWithStringListener listener){
         addToCommunityFrame.setAddListener(listener);
     }
-
+    /**
+     * Initializes the pop-up frame for deleting the current Exemplar
+     */
     public void initializeDeletalFrame(){
         confirmExemplarDeletionFrame = new ConfirmExemplarDeletionFrame(exemplar.getName());
         confirmExemplarDeletionFrame.setVisible(false);
@@ -284,7 +311,9 @@ public class ExemplarTab extends JPanel {
             deleteExemplarListener.deleteRequested(exemplar.getName(), this);
         });
     }
-
+    /**
+     * Initializes the pop-up frame for adding a comment to the Exemplar
+     */
     void initializeAddCommentPopupFrame(){
         commentPopup = new AddCommentPopupFrame();
         commentPopup.setVisible(false);
@@ -293,13 +322,17 @@ public class ExemplarTab extends JPanel {
         setDefaultListenerForCommentPopupFrame();
 
     }
-
+    /**
+     * Initializes the pop-up frame for adding the current Exemplar to a community
+     */
     void initializeAddToCommunityFrame(){
         addToCommunityFrame = new AddToCommunityFrame(currentUser);
         addToCommunityFrame.setSize(new Dimension(300,300));
         addToCommunityFrame.setVisible(false);
     }
-
+    /**
+     * Sets the default listener for the comment pop-up frame
+     */
     void setDefaultListenerForCommentPopupFrame(){
         commentPopup.setListener(comment -> {
             addNewComment(commentPopup.getComment());
@@ -308,13 +341,17 @@ public class ExemplarTab extends JPanel {
             commentPopup.setVisible(false);
         });
     }
-
+    /**
+     * Fetches all comments for the current Exemplar from the database
+     */
     void fetchComments (){
         comments = commentClient.findCommentsForExemplar(exemplar.getName());
     }
-
+    /**
+     * Adds the given comment to the current Exemplar
+     * @param comment the comment which should be added to the Exemplar
+     */
     void addNewComment(String comment){
-
         Comment c = new Comment();
         c.setCreator(currentUser);
         c.setValue(comment);
@@ -327,8 +364,9 @@ public class ExemplarTab extends JPanel {
         comments.add(c);
         addCommentsToPanel();
     }
-
-
+    /**
+     * Adds all the comments which are connected to the current Exemplar to a separate panel
+     */
     void addCommentsToPanel(){
         commentPanel.removeAll();
         commentPanel.setVisible(false);
@@ -391,7 +429,9 @@ public class ExemplarTab extends JPanel {
         c.weighty=1;
         return c;
     }
-
+    /**
+     * Adds action listener to reply button
+     */
     private void addReplyListenerToButton(JButton replyButton, Comment c) {
         replyButton.addActionListener(e->{
             commentPopup.setListener(comment->{
@@ -443,9 +483,6 @@ public class ExemplarTab extends JPanel {
         return updateButton;
     }
 
-    public void setUpdateButton(JButton updateButton) {
-        this.updateButton = updateButton;
-    }
 
     public void setExportListener(ActionWithComponentListener exportListener) {
         this.exportListener = exportListener;
@@ -489,7 +526,9 @@ class AddToCommunityFrame extends JFrame{
         add(addButton,c);
 
     }
-
+    /**
+     * Fetches all communites in which the current User is a member from the database
+     */
     void fetchCommunities(){
         communities = communityClient.getCommunitiesForUser(this.user.getUsername())
                 .stream()

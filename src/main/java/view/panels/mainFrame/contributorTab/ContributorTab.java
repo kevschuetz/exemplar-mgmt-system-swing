@@ -34,10 +34,7 @@ public class ContributorTab extends JPanel {
     private JPanel buttonPanel;
     private JButton closeButton;
     private JButton openExemplarsButton;
-
-
     private ActionWithComponentListener closeListener;
-
     private ExemplarClient exemplarClient;
     private RatingClient ratingClient;
     private Map<Exemplar, double []> ratingMap = new HashMap<>(); // [0] = average Rating [1] = number of ratings
@@ -52,7 +49,6 @@ public class ContributorTab extends JPanel {
         this.exemplarClient = new ExemplarClient();
         this.ratingClient = new RatingClient();
 
-        //Exemplars
         this.exemplars = exemplarClient.getExemplarsForUser(contributor.getUsername());
         exemplarPanelParent.setLayout(new GridLayout(exemplars.size()+1, 1));
         createExemplarPanels();
@@ -65,18 +61,26 @@ public class ContributorTab extends JPanel {
         addComponents();
         addActionListener();
     }
-
+    /**
+     * Sets the layout of the panel
+     */
     void setLayout(){
         setLayout(new GridBagLayout());
         parentPanel.setLayout(new GridBagLayout());
     }
-
+    /**
+     * Creates a border for the panel
+     * @param s title of the border
+     * @return the border which was created
+     */
     Border getBorder (String s){
         return BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
-
+    /**
+     * Initializes the buttons of the panel
+     */
     void initializeButtons(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,2));
@@ -86,13 +90,17 @@ public class ContributorTab extends JPanel {
         buttonPanel.add(openExemplarsButton);
         buttonPanel.add(closeButton);
     }
-
+    /**
+     * Initializes the main components of the panel
+     */
     void initializeComponents(){
         initializeMetaInfoPanel();
         configurationPanel.setLayout(new GridLayout(1, 7));
         configurationPanel.add(buttonPanel);
     }
-
+    /**
+     * Initializes the meta info panel
+     */
     private void initializeMetaInfoPanel() {
         metaInfoPanel = new JPanel();
 
@@ -109,21 +117,10 @@ public class ContributorTab extends JPanel {
         metaInfoPanel.add(avgRatingLabel);
         metaInfoPanel.add(labelPanel);
     }
-
-    public void refreshInfoPanel(){
-        parentPanel.remove(metaInfoPanel);
-        initializeMetaInfoPanel();
-        GridBagConstraints c = new GridBagConstraints();
-        c.weighty = 0.1;
-        c.weightx=1;
-        c.gridy = 0;
-        c.gridx = 0;
-        c.fill= GridBagConstraints.BOTH;
-        parentPanel.add(metaInfoPanel, c);
-
-    }
-
-
+    /**
+     * Creates a panel and adds all labels which are connected to the given Contributor's Exemplars
+     * @return panel which holds all the labels associated with the given Contributor
+     */
     private JPanel initializeLabelPanel() {
         labelPanel = new JPanel();
         labelPanel.setLayout(new GridLayout(1, labels.size()+2));
@@ -137,8 +134,9 @@ public class ContributorTab extends JPanel {
 
         return labelPanel;
     }
-
-
+    /**
+     * Adds the main components to the panel
+     */
     void addComponents(){
         GridBagConstraints c = new GridBagConstraints();
         c.weighty = 0.3;
@@ -162,34 +160,46 @@ public class ContributorTab extends JPanel {
         parentPanel.add(exemplarPanelParent, c);
 
     }
-
+    /**
+     * Calculates the average rating of the given Contributor's Exemplars
+     * @return the average rating of the Exemplars associated with the given Contributor
+     */
     double getAvgRating()  {
         ratingClient = new RatingClient();
         return exemplars.stream().mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).average().orElse(0);
     }
-
+    /**
+     * Creates a list of all labels which are connected to the given Contributor's Exemplars
+     * @return list of all the labels associated with the given Contributor's Exemplars
+     */
     List <Label> getLabels (){
         return exemplars.stream().flatMap(e -> e.getLabels().stream()).collect(Collectors.toList());
     }
-
-
+    /**
+     * Adds action listener to close button
+     */
     void addActionListener(){
         closeButton.addActionListener(x->closeListener.componentSubmitted(this));
 
     }
-
+    /**
+     * Sets close listener
+     * @param closeListener listener which should be set
+     */
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;
     }
-
+    /**
+     * Returns Contributor associated with this tab
+     * @return the tab's Contributor
+     */
     public User getContributor() {
         return contributor;
     }
-
-    // Exemplars
-
+    /**
+     * Creates panels for all Exemplars which are connected to the given Contributor
+     */
     public void createExemplarPanels(){
-
         for(Exemplar e : exemplars){
             ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
                     ratingClient.getRatingsForExemplar(e.getName()).size()});
@@ -205,7 +215,6 @@ public class ContributorTab extends JPanel {
                 }
             });
             panel.setLayout(new GridLayout(4,3));
-
             JLabel exemplarName = new JLabel(e.getName());
             exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
             JLabel ratingLabel = new JLabel("Rating:");
@@ -236,13 +245,17 @@ public class ContributorTab extends JPanel {
             exemplarJPanelMap.put(e, panel);
         }
     }
-
+    /**
+     * Adds all of the Exemplar panels to a separate panel
+     */
     void addExemplarPanelsToParentPanel(){
         for(Exemplar e : exemplars){
             exemplarPanelParent.add(exemplarJPanelMap.get(e));
         }
     }
-
+    /**
+     * Creates a new tab for all the Exemplars which were requested by the current User
+     */
     void openExemplars(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
         List<String> selectedExemplars = new ArrayList<>();
@@ -254,11 +267,13 @@ public class ContributorTab extends JPanel {
         }
         exemplarListener.tabRequested(selectedExemplars);
     }
-
+    /**
+     * Sets Exemplar listener
+     * @param exemplarListener listener which should be set
+     */
     public void setExemplarListener(NewTabListener exemplarListener) {
         this.exemplarListener = exemplarListener;
     }
-
 
 }
 
