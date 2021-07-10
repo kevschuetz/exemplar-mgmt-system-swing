@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Panel that displays all the information regarding a given user account
+ */
 public class ProfilePanel extends JPanel {
     JLabel userNameLabel = new JLabel("Username");
     JLabel fullNameLabel = new JLabel("Full name");

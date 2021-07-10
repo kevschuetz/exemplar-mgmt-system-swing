@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
-
+/**
+ * The Login Controller contains the business logic regarding the login process
+ */
 public class LoginController {
     private UserClient userClient = new UserClient();
 
@@ -64,6 +66,11 @@ public class LoginController {
         }catch(Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Processes a registration request and verifies if all the constraints are met, adds the user to
+     * the database if so. Schows a message if not.
+     * @param e the event containing all the information required for the registration
+     */
     void processRegistrationRequest(UserEvent e){
         if(e.getUsername().trim().length()<4) JOptionPane.showMessageDialog(registerForm, "Username must have at least 4 characters");
         else if(e.getFullname().trim().length()<1) JOptionPane.showMessageDialog(registerForm, "Fullname cannot be empty");
@@ -102,7 +109,10 @@ public class LoginController {
         loginFrame.getShowPassword().setBackground(backGroundColor);
 
     }
-    // REGISTER
+
+    /**
+     * Initializes the register form (frame)
+      */
     void initializeRegisterForm(){
         registerForm = new RegisterForm();
         registerForm.setVisible(false);

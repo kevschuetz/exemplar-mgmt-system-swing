@@ -3,6 +3,9 @@ package model.entities;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * Represents a rating made by a user of a given exemplar
+ */
 public class Rating {
     RatingPK key;
     private double rating;

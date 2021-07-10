@@ -6,6 +6,9 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Popup-Frame where a comment can be entered
+ */
 public class AddCommentPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Enter a comment:");

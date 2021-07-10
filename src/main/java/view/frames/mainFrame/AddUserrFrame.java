@@ -8,7 +8,9 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-
+/**
+ * Frame that lists all the users
+ */
 public class AddUserrFrame extends JFrame {
     private ExemplarTab tab;
     private JPanel parentPanel = new JPanel();

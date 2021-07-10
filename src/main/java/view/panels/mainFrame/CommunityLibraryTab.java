@@ -13,6 +13,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Panel that lists all the communites of the system
+ */
 public class CommunityLibraryTab extends JPanel{
     JPanel communityPanelParent = new JPanel();
     private JScrollPane scrollPane;

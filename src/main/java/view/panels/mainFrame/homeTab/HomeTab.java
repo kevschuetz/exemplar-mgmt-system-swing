@@ -9,6 +9,9 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Default tab that gets opened at login displaying user-related information (users exemplars, communities, details)
+ */
 public class HomeTab extends JPanel {
     User user;
     JPanel communitiesAndProfile;

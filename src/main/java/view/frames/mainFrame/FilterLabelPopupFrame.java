@@ -9,7 +9,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Set;
 
-
+/**
+ * Lists all the labels with checkboxes used to filter the exemplars by labels
+ */
 public class FilterLabelPopupFrame extends JFrame {
     private JButton button = new JButton("Filter");
 

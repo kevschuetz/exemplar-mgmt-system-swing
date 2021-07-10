@@ -11,7 +11,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-
+/**
+ * Main Frame that has the MenuBar and a JTabbedPane
+ */
 public class MainFrame extends JFrame{
     private JTabbedPane tabPanel = new JTabbedPane();
     private MenuPanel menuPanel = new MenuPanel();
@@ -108,7 +110,9 @@ public class MainFrame extends JFrame{
         ActionListener searchContributorListener;
         ActionListener searchCommunityListener;
 
-
+        /**
+         * MenuPanel used to search entities
+         */
         MenuPanel(){
             setBorder(BorderFactory.createBevelBorder(0));
             exemplarButton = new JButton("Exemplars");

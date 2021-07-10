@@ -5,6 +5,9 @@ import view.listeners.mainframe.NewExemplarListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Frame that takes the name of a new exemplar to be created
+ */
 public class NewExemplarPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Please provide a name for your new Exemplar");

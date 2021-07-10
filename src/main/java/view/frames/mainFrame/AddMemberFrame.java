@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Frame that lists all the users
+ */
 public class AddMemberFrame extends JFrame{
         private CommunityTab tab;
         private JPanel parentPanel = new JPanel();

@@ -6,6 +6,9 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Frame that takes the value of a new label to be assigned to an exempalar
+ */
 public class NewLabelPopupFrame extends JFrame{
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Enter a value for the label");

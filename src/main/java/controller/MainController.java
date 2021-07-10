@@ -40,7 +40,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The Main Controller of the application contains most of the business logic
+ */
 public class MainController implements Runnable{
+
+    /**
+     * main Method that sets initializes a new MainController and sets the LogoutListener of it
+     * @param args
+     */
     public static void main(String[] args) {
         final MainController[] controller = {new MainController()};
         controller[0].setLogoutListener(new ActionListener() {
@@ -77,7 +85,8 @@ public class MainController implements Runnable{
 
     private ActionListener logoutListener;
     /**
-     * Initializes the LoginController and starts the login process
+     * Initializes the Frames and the LoginController and starts the login process.
+     * Starts a new Thread to load the libraries in advance
      */
     public MainController(){
         initializeMainFrame();
@@ -118,6 +127,9 @@ public class MainController implements Runnable{
 
     }
 
+    /**
+     * Adds the Libraries (Exemplar, Community, Contributor) as Tabs to the Main Frame after they are loaded in a seperate thread
+     */
     void addInitialLibrarys(){
         if(librarysLoaded){
             mainFrame.addTab("Exemplar Library", initialExemplarLibraryTab);
@@ -136,6 +148,9 @@ public class MainController implements Runnable{
         }
     }
 
+    /**
+     * Initializes the MainFrame
+     */
     void initializeMainFrame(){
         mainFrame = new MainFrame();
         mainFrame.setVisible(false);
@@ -147,6 +162,9 @@ public class MainController implements Runnable{
         mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
         mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
         mainFrame.setSearchCommunityListener(getOpenCommunityLibraryListener(true));
+        /**
+         * Implements the listener used to import an exemplar from the local file system
+         */
         mainFrame.setImportListener(path->{
             Path pathTo = Path.of(path);
             try {
@@ -199,6 +217,9 @@ public class MainController implements Runnable{
         });
     }
 
+    /**
+     * Initializes the Frame used to create a new Community
+     */
     void initializeNewCommunityFrame(){
         newCommunityPopupFrame = new NewCommunityPopupFrame();
         newCommunityPopupFrame.setVisible(false);
@@ -376,6 +397,10 @@ public class MainController implements Runnable{
         };
     }
 
+    /**
+     * Adds the necessary listeners to an ExemplarLibrary instance
+     * @param exemplarLibrary the library
+     */
     void addListenersToExemplarLibrary(ExemplarLibraryTab exemplarLibrary){
         exemplarLibrary.setCloseListener(c -> mainFrame.removeTab(c));
         exemplarLibrary.setExemplarListener(selectedEntities -> {
@@ -414,8 +439,15 @@ public class MainController implements Runnable{
         };
     }
 
+    /**
+     * Adds the listeners to a Contributor Library instance
+     * @param contributorLibrary the library
+     */
     void addListenersToContributorLibrary(ContributorLibraryTab contributorLibrary){
         contributorLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        /**
+         * Implements the listener used to open contributorTabs for selected contributors
+         */
         contributorLibrary.setContributorListener(selectedEntities -> {
             for(String e1 : selectedEntities){
                 try {
@@ -459,9 +491,16 @@ public class MainController implements Runnable{
         };
     }
 
+    /**
+     * Adds listeners to a CommunityLibrary instance
+     * @param communityLibrary the library
+     */
     void addListenersToCommunityLibrary(CommunityLibraryTab communityLibrary){
 
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        /**
+         * Implements the listener used to open communityTabs for selected communities
+         */
         communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
                 addCommunityTabToMainframe(e1);
@@ -548,6 +587,9 @@ public class MainController implements Runnable{
 
     }
 
+    /**
+     * Calls the refresh method form the hometab
+     */
     void refreshHomeTab(){
         homeTab.refresh();
         addListenersToHomeTab();
@@ -678,6 +720,9 @@ public class MainController implements Runnable{
             if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
+        /**
+         * Implements the listener used to update a given exemplar
+         */
         newExemplarTab.setUpdateExemplarListener(exemplar-> exemplarClient.update(exemplar.getName(), exemplar));
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
@@ -704,7 +749,9 @@ public class MainController implements Runnable{
             addContributorFrame.setTitle(t.getExemplar().getName());
             addContributorFrame.setVisible(true);
         });
-
+        /**
+         * Implements the listener used to export an exemplar
+         */
         newExemplarTab.setExportListener(c->{
             ExemplarTab tab = (ExemplarTab)c;
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -723,7 +770,9 @@ public class MainController implements Runnable{
                 exportExemplar(path, tab.getExemplar());
             }
         });
-
+        /**
+         * Implements the listener used to add an exemplar to a community
+         */
         newExemplarTab.setAddToCommunityListener(s -> {
             try {
                 Community c = communityClient.get(s);
@@ -756,6 +805,9 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
+        /**
+         * Implements the listener used to join a community
+         */
         newCommunityTab.setJoinCommunityListener(u->{
             Community c = null;
             try {
@@ -766,6 +818,9 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
+        /**
+         * Implements the listener used to leava a community
+         */
         newCommunityTab.setLeaveListener(u->{
             Community c = null;
             try {
@@ -776,7 +831,9 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-
+        /**
+         * Implements the listener that gets activated afer a community member has been double-clicked
+         */
         newCommunityTab.setMemberClickedListener(s -> {
             try {
                 createNewContributorTab(s);
@@ -784,7 +841,9 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-
+        /**
+         * Implements the listener used to remove an exemplar from the community
+         */
         newCommunityTab.setRemoveExemplarListener(s -> {
             try {
                 Community c = communityClient.get(newCommunityTab.getCommunity().getName());
@@ -794,10 +853,17 @@ public class MainController implements Runnable{
                 e.printStackTrace();
             }
         });
-
+        /**
+         * Impelemnts the listener used to open an exemplar from within the community
+         */
         newCommunityTab.setShowExemplarListener(this::addExemplarTabToMainframe);
     }
 
+    /**
+     * Exports an exemplar to the users local file system
+     * @param path the path where the exemplar needs to be saved
+     * @param exemplar the exemplar to be saved
+     */
     private void exportExemplar(String path, Exemplar exemplar) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -848,6 +914,9 @@ public class MainController implements Runnable{
         mainFrame.setLogoutListener(e-> logout());
     }
 
+    /**
+     * disposes the frames before calling the logout method for memory performance reasons
+     */
     private void logout() {
         addContributorFrame.dispose();
         newLabelPopupFrame.dispose();
@@ -856,6 +925,9 @@ public class MainController implements Runnable{
         logoutListener.actionPerformed(null);
     }
 
+    /**
+     * Implements the runnable interface and loads the libraries from the database
+     */
     @Override
     public void run() {
         initialExemplarLibraryTab = new ExemplarLibraryTab("");

@@ -14,6 +14,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Used to interact with the Exemplar entity
+ */
 public class ExemplarClient extends Client<Exemplar>{
     private final HttpClient client;
     private final String URL;

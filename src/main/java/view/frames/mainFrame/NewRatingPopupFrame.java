@@ -9,6 +9,9 @@ import java.awt.*;
 
 import static javax.swing.SwingConstants.HORIZONTAL;
 
+/**
+ * Frame that has a slider to adjust the rating of an exemplar
+ */
 public class NewRatingPopupFrame extends JFrame {
     private Exemplar exemplar;
     private ExemplarTab tab;

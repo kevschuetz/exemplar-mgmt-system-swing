@@ -18,6 +18,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents information about a specific contributor
+ */
 public class ContributorTab extends JPanel {
     private User contributor;
     private List <Label> labels;

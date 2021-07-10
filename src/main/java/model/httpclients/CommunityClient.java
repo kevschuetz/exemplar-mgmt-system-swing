@@ -14,6 +14,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Used to interact with the Community entity
+ */
 public class CommunityClient extends Client<Community>{
     private final HttpClient client;
     private final String url;

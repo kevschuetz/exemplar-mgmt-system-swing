@@ -16,7 +16,9 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-
+/**
+ * Panel that lists all the exemplars of a given user as part of the home tab
+ */
 public class MyExemplarsPanel extends JPanel {
     private User user;
     JPanel exemplarPanelParent = new JPanel();

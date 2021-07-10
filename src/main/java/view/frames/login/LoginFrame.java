@@ -6,6 +6,9 @@ import view.listeners.login.RegisterButtonListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Displays a login frame used to log in to the system
+ */
 public class LoginFrame extends JFrame {
     Container container = getContentPane();
     JLabel userLabel=new JLabel("USERNAME");
@@ -21,6 +24,9 @@ public class LoginFrame extends JFrame {
     RegisterButtonListener registerListener;
     JLabel title = new JLabel("LOGIN");
 
+    /**
+     * Initializes the frame
+     */
     public LoginFrame(){
         setLayoutManager();
         setLocationAndSize();
@@ -29,12 +35,18 @@ public class LoginFrame extends JFrame {
         getRootPane().setDefaultButton(loginButton);
     }
 
+    /**
+     * Sets the layout manager
+     */
     public void setLayoutManager()
     {
         //Setting layout manager of Container to null
         container.setLayout(null);
     }
 
+    /**
+     * Sets the location and size
+     */
     public void setLocationAndSize()
     {
         //Setting location and Size of each components using setBounds() method.
@@ -50,6 +62,10 @@ public class LoginFrame extends JFrame {
         title.setBounds(130,50,100,30);
         title.setFont(new Font("Arial", Font.PLAIN, 30));
     }
+
+    /**
+     * Adds JComponents to the frame
+     */
     public void addComponentsToContainer()
     {
         container.add(userLabel);
@@ -64,6 +80,9 @@ public class LoginFrame extends JFrame {
         container.add(title);
     }
 
+    /**
+     * Adds Listeners to the components
+     */
     public void addListenersToComponents(){
         loginButton.addActionListener(x-> loginListener.loginRequested(userTextField.getText(), passwordField.getText()));
         showPassword.addActionListener(x->{

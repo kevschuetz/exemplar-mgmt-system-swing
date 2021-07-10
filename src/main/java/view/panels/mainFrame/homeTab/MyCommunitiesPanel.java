@@ -14,6 +14,9 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Panel that lists all the communites of a given user
+ */
 public class MyCommunitiesPanel extends JPanel {
     private User user;
     JPanel communityPanelParent = new JPanel();

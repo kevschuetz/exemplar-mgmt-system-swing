@@ -2,6 +2,9 @@ package model.entities;
 
 import java.util.Objects;
 
+/**
+ * Represents a label that can be attached to an exemplar
+ */
 public class Label {
     private String value;
 

@@ -17,7 +17,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Panel that lists all the exemplars of the system and provides different sorting, filtering options
+ */
 public class ExemplarLibraryTab extends JPanel{
     private List<Exemplar> allExemplars;
     private List<Exemplar> filteredExemplars=new ArrayList<>();
@@ -64,6 +66,9 @@ public class ExemplarLibraryTab extends JPanel{
         addComponents();
     }
 
+    /**
+     * Sorting listener that sorts the exemplars according to the combo-boxes
+     */
     private void initializeSortingListener() {
         sortingListener = event -> {
             /**
@@ -113,6 +118,10 @@ public class ExemplarLibraryTab extends JPanel{
         };
     }
 
+    /**
+     * Fetches all the exemplars from the database
+     * @param searchTerm a string used to search exemplars by a specific term
+     */
     public void fetchExemplars(String searchTerm){
         ExemplarClient exemplarClient = new ExemplarClient();
         RatingClient ratingClient = new RatingClient();
@@ -141,6 +150,11 @@ public class ExemplarLibraryTab extends JPanel{
 
     }
 
+    /**
+     * Creates a panel for every exemplar with different details and a listener that gets activated
+     * by double-clicking the panel and calls the exemplarListener.tabRequested() method that gets processed by
+     * the controller
+     */
     public void createExemplarPanels(){
         for(Exemplar e : allExemplars){
             JPanel panel = new JPanel();
@@ -215,7 +229,9 @@ public class ExemplarLibraryTab extends JPanel{
         add(buttonPanel, c);
         setVisible(true);
     }
-
+    /**
+     * Initializes the panel with all the buttons used to interact with the exemplar
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -260,6 +276,9 @@ public class ExemplarLibraryTab extends JPanel{
         buttonPanel.setBorder(border);
     }
 
+    /**
+     * Initializes the frame used to filter the exemplars by label
+     */
     void initializeFilterLabelFrame(){
         filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Exemplars");
         filterLabelPopupFrame.setVisible(false);
@@ -275,6 +294,9 @@ public class ExemplarLibraryTab extends JPanel{
         });
     }
 
+    /**
+     * Filters the exemplars according to the filtered labels
+     */
     private void filterExemplars() {
         filteredExemplars = allExemplars.stream().
                 filter(e->{
@@ -290,6 +312,10 @@ public class ExemplarLibraryTab extends JPanel{
         filtered=true;
     }
 
+    /**
+     * calls the tabRequested() method of the exemplarListener defined by the controller
+     * to open exemplars selected via the exemplar panels checkboxes
+     */
     void openExemplars(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
         List<String> selectedExemplars = new ArrayList<>();
@@ -310,6 +336,9 @@ public class ExemplarLibraryTab extends JPanel{
         this.exemplarListener = exemplarListener;
     }
 
+    /**
+     * Updates the tab after a sorting/filtering action has been performed
+     */
     public void updateTab (){
         removeAll();
         exemplarPanelParent.removeAll();

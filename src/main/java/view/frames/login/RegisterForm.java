@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
+/**
+ * Displays a registration JFrame used to register in the system
+ */
 public class RegisterForm  extends JFrame {
     Container container = getContentPane();
     JLabel title = new JLabel("Registration Form");

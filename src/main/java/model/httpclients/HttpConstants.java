@@ -1,5 +1,7 @@
 package model.httpclients;
-
+/**
+ * Contains constants required by many classes
+ */
 public class HttpConstants {
     private HttpConstants(){}
 

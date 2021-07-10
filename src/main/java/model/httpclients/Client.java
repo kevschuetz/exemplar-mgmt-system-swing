@@ -10,6 +10,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Abstract method representing an HttpClient used to interact with a given entity
+ * @param <T> the entity
+ */
 public abstract class Client<T> {
     private  HttpClient client;
     private  String URL;

@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Frame that takes a text to confirm deletion of community
+ */
 public class ConfirmCommunityDeletionFrame extends JFrame {
     private JPanel parentPanel = new JPanel();
     private JLabel label = new JLabel("Please confirm by typing in the name of the community");

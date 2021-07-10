@@ -13,7 +13,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Used to interact with the User entity
+ */
 public class UserClient extends Client<User> {
     private final HttpClient client;
     private final String URL;
