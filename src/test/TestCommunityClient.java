@@ -1,16 +1,18 @@
 import model.entities.Community;
 import model.entities.Exemplar;
+import model.entities.User;
 import model.httpclients.CommunityClient;
 import model.httpclients.ExemplarClient;
+import model.httpclients.UserClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 
 public class TestCommunityClient {
@@ -141,6 +143,48 @@ public class TestCommunityClient {
             assertEquals(null, updated);
         }catch(Exception e){
             errorOccured = true;
+        }
+        assertFalse(errorOccured);
+    }
+
+    @Test
+    public void Test_getCommunitiesForUser(){
+        errorOccured=false;
+        try {
+            User member = new User();
+            member.setUsername("member");
+            new UserClient().add(member);
+
+            List<User> members = new ArrayList<>();
+            members.add(member);
+            testEntity.setMembers(members);
+
+            client.add(testEntity);
+            List<Community> getMembers = client.getCommunitiesForUser(member.getUsername());
+            assertTrue(getMembers.contains(testEntity));
+            new UserClient().add(member);
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorOccured=true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            errorOccured=true;
+        }
+        assertFalse(errorOccured);
+    }
+
+    @Test
+    public void Test_searchCommunities(){
+        try {
+            client.add(testEntity);
+            List<Community> communities = client.searchCommunities("test");
+            assertTrue(communities.contains(testEntity));
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorOccured=true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            errorOccured=true;
         }
         assertFalse(errorOccured);
     }
