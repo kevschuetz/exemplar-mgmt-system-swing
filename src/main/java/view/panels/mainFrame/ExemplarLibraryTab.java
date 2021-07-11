@@ -1,5 +1,6 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.Rating;
 import model.httpclients.ExemplarClient;
@@ -123,12 +124,17 @@ public class ExemplarLibraryTab extends JPanel{
      * @param searchTerm a string used to search exemplars by a specific term
      */
     public void fetchExemplars(String searchTerm){
-        ExemplarClient exemplarClient = new ExemplarClient();
-        RatingClient ratingClient = new RatingClient();
-        allExemplars = exemplarClient.searchExemplars(searchTerm);
+        allExemplars = MainController.exemplars
+                .stream()
+                .filter(e->e.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
         allExemplars = allExemplars.stream().sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
+
         for (Exemplar e : allExemplars){
-            List<Rating> ratingsForExemplarTmp = ratingClient.getRatingsForExemplar(e.getName());
+            List<Rating> ratingsForExemplarTmp = MainController.ratings
+                    .stream()
+                    .filter(r->r.getKey().getExemplar().equals(e))
+                    .collect(Collectors.toList());
             java.sql.Date oneWeekAgo = java.sql.Date.valueOf(LocalDate.now().minusDays(7));
             List<Rating> ratingsLastWeek =
                     ratingsForExemplarTmp
@@ -136,10 +142,10 @@ public class ExemplarLibraryTab extends JPanel{
                             .filter(r->r.getSqlDate()!=null)
                             .filter(r-> r.getSqlDate().after(oneWeekAgo))
                             .collect(Collectors.toList());
-            if(ratingsLastWeek.isEmpty()) ratingsForExemplarLastWeek.put(e, ratingsLastWeek);
+            if(!ratingsLastWeek.isEmpty()) ratingsForExemplarLastWeek.put(e, ratingsLastWeek);
             allRatingsForExemplar.put(e, ratingsForExemplarTmp);
             int numberOfRatingsForExemplar = ratingsForExemplarTmp.size();
-            exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
+            exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{MainController.ratings.stream().filter(r->r.getKey().getExemplar().equals(e)).mapToDouble(r->r.getRating()).average().orElse(0),
                     numberOfRatingsForExemplar});
             for(model.entities.Label l : e.getLabels()){
                 allLabels.add(l);

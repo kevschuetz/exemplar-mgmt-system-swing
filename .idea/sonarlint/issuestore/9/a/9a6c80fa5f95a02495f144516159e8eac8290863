@@ -1,0 +1,6 @@
+
+l
+java:S1450"VRemove the "request" field and declare it as a local variable in the relevant methods.(≥ÇΩ≥
+m
+java:S1450"WRemove the "response" field and declare it as a local variable in the relevant methods.(Î·¶º
+c	java:S116"NRename this field "URL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï≈¡∂

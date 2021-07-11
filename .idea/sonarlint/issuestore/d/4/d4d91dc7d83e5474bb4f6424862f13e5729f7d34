@@ -1,0 +1,15 @@
+
+?
+java:S1643ÿ"Use a StringBuilder instead.(×îã¬øÿÿÿÿ8÷Ú¸©©/
+}
+java:S1450%"bRemove the "openExemplarsButton" field and declare it as a local variable in the relevant methods.(ä‹øûÿÿÿÿ
+j
+java:S1602¬"SRemove useless curly braces around statement and then remove useless return keyword(Œèõø
+H
+java:S1612°",Replace this lambda with a method reference.(üøÔŒùÿÿÿÿ
+H
+java:S1612Û",Replace this lambda with a method reference.(üøÔŒùÿÿÿÿ
+H
+java:S1068'"2Remove this unused "exemplarClient" private field.(–ŞÌ
+K
+java:S1068("0Remove this unused "ratingClient" private field.(½ªìäùÿÿÿÿ

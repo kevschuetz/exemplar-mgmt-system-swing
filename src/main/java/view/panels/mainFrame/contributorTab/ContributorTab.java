@@ -1,6 +1,7 @@
 package view.panels.mainFrame.contributorTab;
 
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.Label;
 import model.entities.User;
@@ -49,7 +50,7 @@ public class ContributorTab extends JPanel {
         this.exemplarClient = new ExemplarClient();
         this.ratingClient = new RatingClient();
 
-        this.exemplars = exemplarClient.getExemplarsForUser(contributor.getUsername());
+        this.exemplars = MainController.exemplars.stream().filter(e->(e.getContributors() != null && e.getContributors().contains(contributor)) || (e.getCreator() != null && e.getCreator().equals(contributor))).collect(Collectors.toList());
         exemplarPanelParent.setLayout(new GridLayout(exemplars.size()+1, 1));
         createExemplarPanels();
         addExemplarPanelsToParentPanel();
@@ -166,7 +167,15 @@ public class ContributorTab extends JPanel {
      */
     double getAvgRating()  {
         ratingClient = new RatingClient();
-        return exemplars.stream().mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).average().orElse(0);
+        return  exemplars
+                .stream()
+                .mapToDouble(e->{
+                    return MainController.ratings
+                            .stream()
+                            .filter(r->r.getKey().getExemplar().equals(e))
+                            .mapToDouble(r->r.getRating())
+                            .average().orElse(0);
+                }).average().orElse(0);
     }
     /**
      * Creates a list of all labels which are connected to the given Contributor's Exemplars
@@ -201,8 +210,16 @@ public class ContributorTab extends JPanel {
      */
     public void createExemplarPanels(){
         for(Exemplar e : exemplars){
-            ratingMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
-                    ratingClient.getRatingsForExemplar(e.getName()).size()});
+            ratingMap.put(e,
+                    new double[]
+                            {
+                                    MainController.ratings
+                                    .stream()
+                                    .filter(r->r.getKey().getExemplar() != null && r.getKey().getExemplar().equals(e))
+                                    .mapToDouble(r->r.getRating())
+                                    .average().orElse(0)
+                                    ,
+                                    MainController.ratings.stream().filter(r->r.getKey().getExemplar() != null && r.getKey().getExemplar().equals(e)).collect(Collectors.toList()).size()});
             JPanel panel = new JPanel();
             panel.addMouseListener(new MouseAdapter() {
                 @Override

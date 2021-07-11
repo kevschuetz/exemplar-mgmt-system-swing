@@ -1,5 +1,6 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Community;
 import model.httpclients.CommunityClient;
 import view.listeners.mainframe.ActionWithComponentListener;
@@ -30,7 +31,6 @@ public class CommunityLibraryTab extends JPanel{
 
     private ItemListener sortingListener;
 
-
     private List<Community> allCommunities;
     private Map<Community, double []> exemplarMap = new HashMap();
     private Map<String, JCheckBox> selectedCommunityMap = new HashMap<>();
@@ -52,7 +52,9 @@ public class CommunityLibraryTab extends JPanel{
      * @param searchTerm a string used to search communities by a specific term
      */
     public void fetchCommunities(String searchTerm){
-        allCommunities = new CommunityClient().searchCommunities(searchTerm);
+        allCommunities = MainController.communities
+                .stream().filter(c->c.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
         allCommunities = allCommunities
                 .stream()
                 .filter(c->c.getName() != null)

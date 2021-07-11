@@ -1,6 +1,7 @@
 package view.panels.mainFrame.exemplarTab;
 
 
+import controller.MainController;
 import model.entities.*;
 import model.entities.Label;
 import model.httpclients.CommentClient;
@@ -345,7 +346,10 @@ public class ExemplarTab extends JPanel {
      * Fetches all comments for the current Exemplar from the database
      */
     void fetchComments (){
-        comments = commentClient.findCommentsForExemplar(exemplar.getName());
+        comments = MainController.comments
+                .stream()
+                .filter(c->c.getExemplar().equals(exemplar))
+                .collect(Collectors.toList());
     }
     /**
      * Adds the given comment to the current Exemplar
@@ -530,12 +534,11 @@ class AddToCommunityFrame extends JFrame{
      * Fetches all communites in which the current User is a member from the database
      */
     void fetchCommunities(){
-        communities = communityClient.getCommunitiesForUser(this.user.getUsername())
+        communities = MainController.communities
                 .stream()
+                .filter(c->(c.getCreator() != null && c.getCreator().equals(user)) || (c.getMembers() != null && c.getMembers().contains(user)))
                 .map(Community::getName)
                 .collect(Collectors.toList());
-
-
     }
 
     public void setAddListener(ActionWithStringListener addListener) {

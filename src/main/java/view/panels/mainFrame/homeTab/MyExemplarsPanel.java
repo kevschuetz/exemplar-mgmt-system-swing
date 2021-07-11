@@ -1,5 +1,6 @@
 package view.panels.mainFrame.homeTab;
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
@@ -15,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Panel that lists all the exemplars of a given user as part of the home tab
@@ -51,7 +53,10 @@ public class MyExemplarsPanel extends JPanel {
      * Fetches all the Exemplars of the current User from the database
      */
     public void fetchExemplars(){
-        myExemplars = new ExemplarClient().getExemplarsForUser(user.getUsername());
+        myExemplars = MainController.exemplars
+                .stream()
+                .filter(e->e.getCreator() != null && e.getCreator().equals(user) || e.getContributors() != null && e.getContributors().contains(user))
+                .collect(Collectors.toList());
     }
     /**
      * Adds all the Exemplars of the current User to a scroll pane
@@ -80,7 +85,7 @@ public class MyExemplarsPanel extends JPanel {
             panel.add(new JLabel(""));
             panel.add(ratingLabel);
             String rating = "";
-            rating += client.getAvgRatingForExemplar(e.getName());
+            rating += MainController.ratings.stream().filter(r->r.getKey().getExemplar().equals(e)).mapToDouble(r-> r.getRating()).average().orElse(0);
             panel.add(new JLabel(rating));
             panel.add(checkBox);
             panel.setBorder(border);

@@ -1,5 +1,6 @@
 package view.frames.mainFrame;
 
+import controller.MainController;
 import model.entities.User;
 import model.httpclients.UserClient;
 import view.listeners.mainframe.AddContributorListener;
@@ -8,10 +9,12 @@ import view.panels.mainFrame.exemplarTab.ExemplarTab;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Frame that lists all the users
  */
-public class AddUserrFrame extends JFrame {
+public class AddUserFrame extends JFrame {
     private ExemplarTab tab;
     private JPanel parentPanel = new JPanel();
     private JTextField searchField = new JTextField();
@@ -24,7 +27,7 @@ public class AddUserrFrame extends JFrame {
     private AddContributorListener listener;
 
 
-    public AddUserrFrame(){
+    public AddUserFrame(){
         setLayout(new GridLayout(1,1));
         parentPanel.setLayout(new GridBagLayout());
         parentPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -68,7 +71,7 @@ public class AddUserrFrame extends JFrame {
     }
 
     User[] fetchUsers(String s){
-        List<User> list = client.searchUsers(s);
+        List<User> list = MainController.users.stream().filter(u->u.getUsername().contains(s)).collect(Collectors.toList());
         User[] array = new User[list.size()];
         int i = 0;
         for(User u : list){

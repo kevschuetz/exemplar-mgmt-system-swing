@@ -1,5 +1,6 @@
 package view.panels.mainFrame.homeTab;
 
+import controller.MainController;
 import model.entities.Community;
 import model.entities.User;
 import model.httpclients.CommunityClient;
@@ -13,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Panel that lists all the communites of a given user
@@ -48,7 +50,10 @@ public class MyCommunitiesPanel extends JPanel {
      * Fetches all communities in which the current User is a member from the database
      */
     void fetchCommunites(){
-        myCommunities= new CommunityClient().getCommunitiesForUser(user.getUsername());
+        myCommunities= MainController.communities
+                .stream()
+                .filter(c->(c.getCreator() != null && c.getCreator().equals(user)) || (c.getMembers() != null && c.getMembers().contains(user)))
+                .collect(Collectors.toList());
     }
     /**
      * Creates panels for all of the communities of the current User and adds them to a separate panel

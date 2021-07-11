@@ -124,4 +124,14 @@ public class LoginFrame extends JFrame {
     public JCheckBox getShowPassword() {
         return showPassword;
     }
+
+    public void setEditable(boolean editable){
+        this.passwordField.setEditable(editable);
+        this.userTextField.setEditable(editable);
+        this.guestButton.setEnabled(editable);
+        this.loginButton.setEnabled(editable);
+        this.registerButton.setEnabled(editable);
+        this.resetButton.setEnabled(editable);
+        this.showPassword.setEnabled(editable);
+    }
 }

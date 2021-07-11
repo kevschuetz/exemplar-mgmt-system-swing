@@ -54,8 +54,8 @@ public class LoginController {
             }else{
                 User user = userClient.get(username.trim());
                 if(user != null && user.getPassword().trim().equals(password.trim())) {
-                    loginFrame.setVisible(false);
                     JOptionPane.showMessageDialog(loginFrame, "Login Successful");
+                    loginFrame.setEditable(false);
                     currentUser = user;
                     loginListener.actionPerformed(null);
                 }else{
@@ -79,6 +79,7 @@ public class LoginController {
             User newUser = new User(e.getUsername().trim(), e.getFullname().trim(), e.getPassword().trim(), e.getIsContributor());
             try{
                 User response = userClient.add(newUser);
+                MainController.users.add(newUser);
                 if (newUser.equals(response)) {
                     registerForm.setVisible(false);
                 }else  {

@@ -39,11 +39,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * The Main Controller of the application contains most of the business logic
  */
-public class MainController implements Runnable{
+public class MainController{
 
     /**
      * main Method that sets initializes a new MainController and sets the LogoutListener of it
@@ -64,11 +65,13 @@ public class MainController implements Runnable{
     private LoginController loginController;
 
     private User currentUser;
+
     private UserClient userClient = new UserClient();
     private ExemplarClient exemplarClient = new ExemplarClient();
     private CommunityClient communityClient = new CommunityClient();
     private LabelClient labelClient = new LabelClient();
     private RatingClient ratingClient = new RatingClient();
+    private CommentClient commentClient = new CommentClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
@@ -76,42 +79,86 @@ public class MainController implements Runnable{
     private NewLabelPopupFrame newLabelPopupFrame;
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
-    private AddUserrFrame addContributorFrame;
-    private AddMemberFrame addMemberFrame;
+    private AddUserFrame addContributorFrame;
     private ExemplarLibraryTab initialExemplarLibraryTab;
     private ContributorLibraryTab initialContributorLibraryTab;
     private CommunityLibraryTab initialCommunityLibraryTab;
     boolean librarysLoaded = false;
 
     private ActionListener logoutListener;
+
+    public static List<Exemplar> exemplars;
+    public static List<User> users;
+    public static List<Community> communities;
+    public static List<Label> labels;
+    public static List<Rating> ratings;
+    public static List<Comment> comments;
+    boolean dataLoaded = false;
+
     /**
      * Initializes the Frames and the LoginController and starts the login process.
      * Starts a new Thread to load the libraries in advance
      */
     public MainController(){
         initializeMainFrame();
+        Thread dataThread = new Thread(()->{
+            asyncLoadData();
+        });
+        dataThread.start();
+
+        //login
+        loginController = new LoginController();
+        loginController.setLoginListener(x->{
+            currentUser = loginController.getCurrentUser();
+            waitForDataAfterLogin();
+        });
+        loginController.startLoginProcess();
+
+        checkDataStatus();
+    }
+
+    void checkDataStatus(){
+        if(dataLoaded)startApplication();
+        else {
+            Thread waitingThread = new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                    checkDataStatus();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            waitingThread.start();
+        }
+    }
+
+    void startApplication(){
         initializeNewExemplarFrame();
         initializeNewCommunityFrame();
         initializeNewLabelPopupFrame();
         initializeNewRatingPopupFrame();
         initializeAddContributorFrame();
-        initializeAddMemberFrame();
-
-        //login
-       loginController = new LoginController();
-       loginController.setLoginListener(x->{
-           currentUser = loginController.getCurrentUser();
-           loginSuccesfull();
-       });
-       Thread thread = new Thread(this);
-       thread.start();
-       loginController.startLoginProcess();
     }
 
+    void waitForDataAfterLogin(){
+        if(dataLoaded) loginSuccesfull();
+        else {
+            Thread waitingThread = new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                    waitForDataAfterLogin();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            waitingThread.start();
+        }
+    }
     /**
      * Method is triggered by LoginController after succesfull login. Opens new HomeTab if User is not a guest.
      */
    public void loginSuccesfull(){
+       loginController.getLoginFrame().setVisible(false);
         mainFrame.setVisible(true);
 
         if(currentUser != null){
@@ -123,28 +170,31 @@ public class MainController implements Runnable{
         }
         else mainFrame.setTitle("Welcome!");
 
-        addInitialLibrarys();
+       //addInitialLibrarys();
+
 
     }
 
-    /**
-     * Adds the Libraries (Exemplar, Community, Contributor) as Tabs to the Main Frame after they are loaded in a seperate thread
-     */
-    void addInitialLibrarys(){
-        if(librarysLoaded){
-            mainFrame.addTab("Exemplar Library", initialExemplarLibraryTab);
-            mainFrame.addTab("Contributor Library", initialContributorLibraryTab);
-            mainFrame.addTab("Community Library", initialCommunityLibraryTab);
-        }else{
-            Thread waitingThread = new Thread(()-> {
-                try {
-                    Thread.sleep(5000);
-                    addInitialLibrarys();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-            waitingThread.start();
+
+    void asyncLoadData(){
+        try {
+            exemplars = exemplarClient.getAll();
+            communities = communityClient.getAll();
+            users = userClient.getAll();
+            ratings = ratingClient.getAll();
+            comments= commentClient.getAll();
+            dataLoaded = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Thread.sleep(30000);
+            asyncLoadData();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -177,6 +227,7 @@ public class MainController implements Runnable{
                     labelClient.add(l);
                 }
                 Exemplar response = exemplarClient.add(importedExemplar);
+                exemplars.add(importedExemplar);
                 if(response != null){
                     addExemplarTabToMainframe(response.getName());
                     refreshHomeTab();
@@ -296,6 +347,7 @@ public class MainController implements Runnable{
             r.setSqlDate(sqlDate);
             try {
                 Rating newRating = ratingClient.add(r);
+                ratings.add(r);
                 newRatingPopupFrame.setVisible(false);
                 if(newRating != null){
                     JOptionPane.showMessageDialog(newRatingPopupFrame, "Thank you for Rating " + newRatingPopupFrame.getTab().getExemplar().getName());
@@ -312,7 +364,7 @@ public class MainController implements Runnable{
      * Initializes the Frame used to add Contributors to an Exemplar
      */
     void initializeAddContributorFrame(){
-        addContributorFrame = new AddUserrFrame();
+        addContributorFrame = new AddUserFrame();
         addContributorFrame.setVisible(false);
         addContributorFrame.setSize(new Dimension(350, 500));
         addContributorFrame.setLocationRelativeTo(mainFrame);
@@ -338,35 +390,7 @@ public class MainController implements Runnable{
         });
     }
 
-    /**
-     * Initializes the Frame used to add Users to a Community
-     */
-    void initializeAddMemberFrame(){
-        addMemberFrame = new AddMemberFrame();
-        addMemberFrame.setVisible(false);
-        addMemberFrame.setSize(new Dimension(350, 500));
-        addMemberFrame.setLocationRelativeTo(mainFrame);
-        /**
-         * Sets the listener of the frame to check if the selected user has contributor status,
-         * adds the contributor to the exemplar and persists the update.
-         * Refreshes the info panel from the ExemplarTab to reflect changes.
-         */
-        addContributorFrame.setListener(u->{
-            ExemplarTab tab = addContributorFrame.getTab();
-            if(u.getUsername() != null){
-            Exemplar e = tab.getExemplar();
-                if(!e.getContributors().contains(u)){
-                    e.getContributors().add(u);
-                    Exemplar updated = exemplarClient.update(e.getName(), e);
-                    tab.refreshInfoPanel();
-                    if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
-                }else JOptionPane.showMessageDialog(tab, "User already in community");
-            }else{
-                JOptionPane.showMessageDialog(tab, u.getUsername() + " is no user");
-            }
 
-        });
-    }
     /**
      * Creates an ActionListener that opens a new ExemplarLibrary in a new tab and selects that tab
      * @return the listener created
@@ -575,6 +599,7 @@ public class MainController implements Runnable{
          */
         homeTab.setDeleteUserListener(user->{
             try{
+                users.remove(user);
                 userClient.delete(user.getUsername());
                 logout();
             }catch(Exception e){
@@ -610,6 +635,7 @@ public class MainController implements Runnable{
         e.setContributors(new ArrayList<>());
         try {
             exemplarClient.add(e);
+            exemplars.add(e);
             ExemplarTab newExemplarTab = new ExemplarTab(e, true, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
@@ -633,6 +659,7 @@ public class MainController implements Runnable{
         c.setExemplars(new ArrayList<>());
         try {
             communityClient.add(c);
+            communities.add(c);
             CommunityTab newCommunityTab = new CommunityTab(c, currentUser);
             addListenersToCommunityTab(newCommunityTab);
             mainFrame.addTab(s,newCommunityTab);
@@ -726,6 +753,8 @@ public class MainController implements Runnable{
         newExemplarTab.setUpdateExemplarListener(exemplar-> exemplarClient.update(exemplar.getName(), exemplar));
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
+                Exemplar deleted = exemplarClient.get(id);
+                exemplars.remove(deleted);
                 exemplarClient.delete(id);
                 mainFrame.removeTab(tab);
                 refreshHomeTab();
@@ -799,6 +828,7 @@ public class MainController implements Runnable{
         newCommunityTab.setDeleteCommunityListener((id, tab)->{
             try {
                 communityClient.delete(id);
+                communities.remove(communities.stream().filter(c->c.getName()==id).collect(Collectors.toList()).get(0));
                 mainFrame.removeTab(tab);
                 refreshHomeTab();
             } catch (IOException | InterruptedException e) {
@@ -925,21 +955,7 @@ public class MainController implements Runnable{
         logoutListener.actionPerformed(null);
     }
 
-    /**
-     * Implements the runnable interface and loads the libraries from the database
-     */
-    @Override
-    public void run() {
-        initialExemplarLibraryTab = new ExemplarLibraryTab("");
-        initialContributorLibraryTab = new ContributorLibraryTab("");
-        initialCommunityLibraryTab = new CommunityLibraryTab("");
-        addListenersToContributorLibrary(initialContributorLibraryTab);
-        addListenersToCommunityLibrary(initialCommunityLibraryTab);
-        addListenersToExemplarLibrary(initialExemplarLibraryTab);
-        librarysLoaded = true;
 
-    }
-    
     public User getCurrentUser() {
         return currentUser;
     }

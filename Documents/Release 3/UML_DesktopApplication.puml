@@ -286,7 +286,7 @@ class view.events.UserEvent {
 + int getIsContributor()
 + void setIsContributor(int)
 }
-class view.frames.mainFrame.AddUserrFrame {
+class view.frames.mainFrame.AddUserFrame {
 - ExemplarTab tab
 - JPanel parentPanel
 - JTextField searchField
@@ -1069,7 +1069,7 @@ view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewLabelPopupFrame
 view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.ConfirmCommunityDeletionFrame
 view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewExemplarPopupFrame
 view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewCommunityPopupFrame
-view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.AddUserrFrame
+view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.AddUserFrame
 view.frames.mainFrame.JFrame <|-- view.frames.mainFrame.NewRatingPopupFrame
 view.panels.mainFrame.JPanel <|-- view.panels.mainFrame.CommunityLibraryTab
 view.panels.mainFrame.homeTab.JPanel <|-- view.panels.mainFrame.homeTab.MyExemplarsPanel

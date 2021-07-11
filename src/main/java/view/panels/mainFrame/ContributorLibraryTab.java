@@ -1,5 +1,6 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
@@ -70,7 +71,11 @@ public class ContributorLibraryTab extends JPanel {
      * @param searchTerm a string used to search contributors by a specific term
      */
     public void fetchContributors(String searchTerm){
-        allContributors = new UserClient().searchUsers(searchTerm);
+        allContributors = MainController.users
+                .stream()
+                .filter(u->u.getIsContributor() == 1 && u.getUsername().toLowerCase()
+                        .contains(searchTerm.toLowerCase()))
+                        .collect(Collectors.toList());
         allContributors = allContributors
                 .stream()
                 .filter(u->u.getIsContributor()==1)
@@ -83,13 +88,21 @@ public class ContributorLibraryTab extends JPanel {
      */
     public void addExemplarInformation(){
         for(User u : allContributors){
-            List<Exemplar> forUser = exemplarClient.getExemplarsForUser(u.getUsername());
+            List<Exemplar> forUser = MainController
+                    .exemplars.stream()
+                    .filter(e->(e.getCreator() != null && e.getCreator().equals(u)) || (e.getContributors() != null && e.getContributors().equals(u)))
+                    .collect(Collectors.toList());
             contributorExemplarMap.put(u, forUser);
             exemplarMap.put(u,
                     new double[]{
-                        forUser.stream().
-                                mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
-                                average().orElse(0),
+                        forUser.stream()
+                                .mapToDouble(e-> MainController.ratings.stream()
+                                                       .filter(r->r.getKey().getExemplar().equals(e))
+                                                        .mapToDouble(r->r.getRating())
+                                                        .average()
+                                                        .orElse(0)
+                                )
+                                .average().orElse(0),
                         forUser.size()});
 
             List<model.entities.Label> labelsForContributor = forUser.stream().
@@ -150,7 +163,7 @@ public class ContributorLibraryTab extends JPanel {
                 panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
-                panel.setPreferredSize(new Dimension(200, 50));
+                panel.setPreferredSize(new Dimension(200, 90));
                 selectedContributorMap.put(u.getUsername(), checkBox);
                 contributorPanelParent.add(panel);
             }
