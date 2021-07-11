@@ -133,8 +133,6 @@ q
 Asrc/main/java/view/panels/mainFrame/homeTab/MyExemplarsPanel.java,7\1\716320dd361c6947ffa73b7bb6ba5dd9a1ae05d3
 l
 <src/main/java/view/panels/mainFrame/CommunityLibraryTab.java,d\2\d26dc37c4b2de9d23de6bd5284ec23971d9d9385
-k
-;src/main/java/view/panels/mainFrame/ExemplarLibraryTab.java,a\e\ae70091e6840e8cde62885b75e8f35585ce4894e
 ~
 Nsrc/main/java/view/listeners/mainframe/exemplarTab/DeleteExemplarListener.java,8\4\84cf31a8c5e9326c0d677b0c5db2aa1d7b2728ab
 [
@@ -155,11 +153,11 @@ c
 3src/main/java/model/httpclients/ExemplarClient.java,6\1\61a298f99a344bf57c9610ad60c89a8ac9edcd51
 p
 @src/main/java/view/panels/mainFrame/exemplarTab/ExemplarTab.java,1\6\1683f7b5b5a4668730207d874e43a40451bd7dbd
+k
+;src/main/java/view/panels/mainFrame/ExemplarLibraryTab.java,a\e\ae70091e6840e8cde62885b75e8f35585ce4894e
 n
 >src/main/java/view/panels/mainFrame/ContributorLibraryTab.java,9\7\9723b82baf8bc9a43fc8c83a2b797ba09d0aed02
-\
-,src/main/java/controller/MainController.java,9\6\96bec464186c8eef9996b446bee0fd1577d99999
-]
--src/main/java/controller/LoginController.java,d\9\d915cdbef77c656eebfb7602fce5b0a8962b2b51
 _
 /src/main/java/view/frames/login/LoginFrame.java,e\3\e376ea19827f772670a20ed75ab64047f1ae3eb8
+]
+-src/main/java/controller/LoginController.java,d\9\d915cdbef77c656eebfb7602fce5b0a8962b2b51

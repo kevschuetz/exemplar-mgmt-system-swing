@@ -96,8 +96,7 @@ public class MainController{
     boolean dataLoaded = false;
 
     /**
-     * Initializes the Frames and the LoginController and starts the login process.
-     * Starts a new Thread to load the libraries in advance
+     * Starts a new Thread to fetch the data from the database and starts the login process
      */
     public MainController(){
         initializeMainFrame();
@@ -117,6 +116,9 @@ public class MainController{
         checkDataStatus();
     }
 
+    /**
+     * Regularly checks if the data has already been fetched and continues with the initialization of the components if so
+     */
     void checkDataStatus(){
         if(dataLoaded)startApplication();
         else {
@@ -132,6 +134,9 @@ public class MainController{
         }
     }
 
+    /**
+     * Initializes components after data has been fetched
+     */
     void startApplication(){
         initializeNewExemplarFrame();
         initializeNewCommunityFrame();
@@ -140,6 +145,9 @@ public class MainController{
         initializeAddContributorFrame();
     }
 
+    /**
+     * Triggered after succesfull login - waits in a loop until the data has been fetched  and enters the application if so
+     */
     void waitForDataAfterLogin(){
         if(dataLoaded) loginSuccesfull();
         else {
@@ -155,7 +163,8 @@ public class MainController{
         }
     }
     /**
-     * Method is triggered by LoginController after succesfull login. Opens new HomeTab if User is not a guest.
+     * Sets MainFrame visible.
+     * Opens new HomeTab if User is not a guest.
      */
    public void loginSuccesfull(){
        loginController.getLoginFrame().setVisible(false);
@@ -169,13 +178,11 @@ public class MainController{
 
         }
         else mainFrame.setTitle("Welcome!");
-
-       //addInitialLibrarys();
-
-
     }
 
-
+    /**
+     * Method that updates all data avery 30 seconds
+     */
     void asyncLoadData(){
         try {
             exemplars = exemplarClient.getAll();

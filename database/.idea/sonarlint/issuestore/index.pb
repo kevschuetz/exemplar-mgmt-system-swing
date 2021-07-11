@@ -11,3 +11,7 @@ V
 &src/main/java/resources/Community.java,9\a\9a1247eda366dd429d96c67fe95202b80e527249
 U
 %src/main/java/resources/Exemplar.java,4\b\4b1e910e3784f5d2a0f4fabd0be0c4be3c3abfb1
+S
+#src/main/java/resource/Comment.java,f\3\f3b20bd3cafd1ca6d31d44fbe544eb6514514e4b
+]
+-src/main/java/resource/CommentController.java,3\7\374d9e5e2950900a0a6d903d28f9049b8d5ffb88
