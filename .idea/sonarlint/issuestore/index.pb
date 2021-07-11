@@ -161,3 +161,5 @@ _
 /src/main/java/view/frames/login/LoginFrame.java,e\3\e376ea19827f772670a20ed75ab64047f1ae3eb8
 ]
 -src/main/java/controller/LoginController.java,d\9\d915cdbef77c656eebfb7602fce5b0a8962b2b51
+\
+,src/main/java/controller/MainController.java,9\6\96bec464186c8eef9996b446bee0fd1577d99999
