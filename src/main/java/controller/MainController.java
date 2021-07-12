@@ -14,6 +14,7 @@ import model.httpclients.UserClient;
 
 import model.entities.*;
 import model.httpclients.*;
+import org.apache.commons.codec.binary.StringUtils;
 import view.frames.mainFrame.*;
 import view.panels.mainFrame.CommunityLibraryTab;
 import view.panels.mainFrame.CommunityTab;
@@ -233,20 +234,40 @@ public class MainController{
                 for (Label l : importedExemplar.getLabels()){
                     labelClient.add(l);
                 }
-                Exemplar response = exemplarClient.add(importedExemplar);
-                exemplars.add(importedExemplar);
-                if(response != null){
-                    addExemplarTabToMainframe(response.getName());
-                    refreshHomeTab();
-                }else{
-                    JOptionPane.showMessageDialog(mainFrame, "An Exemplar with the name " + importedExemplar.getName() + " already exists. Choose another one and try again.");
-                }
-            } catch (IOException | InterruptedException e) {
+                addExemplar(importedExemplar);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-
         mainFrame.setCreateExemplarListener(e->newExemplarPopupFrame.setVisible(true));
+    }
+
+    /**
+     * Adds an imported exemplar to the database.
+     * @param exemplar the exemplar to be added
+     */
+    public void addExemplar(Exemplar exemplar){
+        Exemplar response = null;
+        try {
+            response = exemplarClient.add(exemplar);
+            if(response != null){
+                addExemplarTabToMainframe(response.getName());
+                exemplars.add(exemplar);
+                refreshHomeTab();
+            }else{
+                String newName = JOptionPane.showInputDialog("An Exemplar with the name " + exemplar.getName() + " already exists. Choose another one and try again.");
+                if(newName == null)return;
+                exemplar.setName(newName);
+                addExemplar(exemplar);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     /**
@@ -760,7 +781,9 @@ public class MainController{
         newExemplarTab.setUpdateExemplarListener(exemplar-> exemplarClient.update(exemplar.getName(), exemplar));
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
+                System.out.println(id);
                 Exemplar deleted = exemplarClient.get(id);
+                System.out.println(deleted.getName());
                 exemplars.remove(deleted);
                 exemplarClient.delete(id);
                 mainFrame.removeTab(tab);

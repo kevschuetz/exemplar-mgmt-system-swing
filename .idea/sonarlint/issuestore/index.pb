@@ -7,16 +7,12 @@ G
 src/test/TestLabel.java,a\5\a55f2ef92ca67358bacb021563aef2432cf692a9
 O
 src/test/TestCommentClient.java,f\0\f0bb6816c260151059bff437fafdbaea59a59f54
-P
- src/test/TestExemplarClient.java,9\4\94806935d884be592cc1eef89c963c253cdabe12
 M
 src/test/TestLabelClient.java,2\b\2ba3fd0951754942183f7ed6d79212c0db459088
 Q
 !src/test/TestCommunityClient.java,6\b\6b99aa029c96df700c1f25a4f968bd2426fd6a29
 N
 src/test/TestRatingClient.java,6\f\6f8ad4c9668a2f662e312861ff32a6e2ec432bcd
-P
- src/test/TestMainController.java,9\6\96b5d9b718658d8956be4e1a2774dcd25a3719be
 I
 src/test/TestComment.java,c\2\c274d14ec7f498fd1a54ef460bb2c477164a6085
 e
@@ -81,8 +77,6 @@ n
 >src/main/java/view/frames/mainFrame/FilterLabelPopupFrame.java,a\b\ab6373e6831d956e5def6cd80772773233d43d36
 R
 "src/main/java/META-INF/MANIFEST.MF,6\3\63ef5783cbf71fdf39c1fd6ae6873fd812259930
-b
-2src/main/java/model/httpclients/HttpConstants.java,1\3\13a46e1f9acebe3d53880da88114af866d034f3a
 a
 1src/main/java/model/httpclients/RatingClient.java,3\0\3054de555a90de7184640855642e512cf95aa98c
 X
@@ -129,8 +123,6 @@ b
 2src/main/java/model/httpclients/CommentClient.java,9\f\9f42852758d234660ba5a6830c7a3e0938b9f9fd
 s
 Csrc/main/java/view/panels/mainFrame/homeTab/MyCommunitiesPanel.java,6\c\6c78bf431c6d12a7bf8d64cb0fbd2dd5e1c4c574
-q
-Asrc/main/java/view/panels/mainFrame/homeTab/MyExemplarsPanel.java,7\1\716320dd361c6947ffa73b7bb6ba5dd9a1ae05d3
 l
 <src/main/java/view/panels/mainFrame/CommunityLibraryTab.java,d\2\d26dc37c4b2de9d23de6bd5284ec23971d9d9385
 ~
@@ -143,14 +135,10 @@ d
 Psrc/main/java/view/listeners/mainframe/communityTap/DeleteCommunityListener.java,9\3\9367898a93a970372d863b7e0c8a607146851a22
 e
 5src/main/java/view/panels/mainFrame/CommunityTab.java,8\a\8a6cc66eef29c10389505a027e1a31a0cc7407e8
-h
-8src/main/java/view/panels/mainFrame/homeTab/HomeTab.java,d\9\d9a98d1e72c9071efcbd742bf9ed357f1b0f5326
 m
 =src/main/java/view/panels/mainFrame/homeTab/ProfilePanel.java,9\1\91cbc0e7bcc709e53e9d2033763d006080301c28
 _
 /src/main/java/model/httpclients/UserClient.java,0\a\0a86312c35ef0e6f573294768e463eda68679d0b
-c
-3src/main/java/model/httpclients/ExemplarClient.java,6\1\61a298f99a344bf57c9610ad60c89a8ac9edcd51
 p
 @src/main/java/view/panels/mainFrame/exemplarTab/ExemplarTab.java,1\6\1683f7b5b5a4668730207d874e43a40451bd7dbd
 k
@@ -161,5 +149,3 @@ _
 /src/main/java/view/frames/login/LoginFrame.java,e\3\e376ea19827f772670a20ed75ab64047f1ae3eb8
 ]
 -src/main/java/controller/LoginController.java,d\9\d915cdbef77c656eebfb7602fce5b0a8962b2b51
-\
-,src/main/java/controller/MainController.java,9\6\96bec464186c8eef9996b446bee0fd1577d99999
