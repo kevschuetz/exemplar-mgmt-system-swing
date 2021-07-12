@@ -149,3 +149,19 @@ _
 /src/main/java/view/frames/login/LoginFrame.java,e\3\e376ea19827f772670a20ed75ab64047f1ae3eb8
 ]
 -src/main/java/controller/LoginController.java,d\9\d915cdbef77c656eebfb7602fce5b0a8962b2b51
+b
+2src/main/java/model/httpclients/HttpConstants.java,1\3\13a46e1f9acebe3d53880da88114af866d034f3a
+q
+Asrc/main/java/view/panels/mainFrame/homeTab/MyExemplarsPanel.java,7\1\716320dd361c6947ffa73b7bb6ba5dd9a1ae05d3
+h
+8src/main/java/view/panels/mainFrame/homeTab/HomeTab.java,d\9\d9a98d1e72c9071efcbd742bf9ed357f1b0f5326
+P
+ src/test/TestExemplarClient.java,9\4\94806935d884be592cc1eef89c963c253cdabe12
+\
+,src/main/java/controller/MainController.java,9\6\96bec464186c8eef9996b446bee0fd1577d99999
+c
+3src/main/java/model/httpclients/ExemplarClient.java,6\1\61a298f99a344bf57c9610ad60c89a8ac9edcd51
+P
+ src/test/TestMainController.java,9\6\96b5d9b718658d8956be4e1a2774dcd25a3719be
+Q
+!Documents/Release 4/finaluml.puml,5\e\5e97dd53d21adb60ddaef2e7546197cd2a20999c
