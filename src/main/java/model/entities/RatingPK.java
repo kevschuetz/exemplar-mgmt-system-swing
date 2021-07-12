@@ -2,11 +2,16 @@ package model.entities;
 
 import java.util.Objects;
 
+/**
+ * Subclass of Rating required for the primary key constraint in the database
+ */
 public class RatingPK {
     private User user;
     private Exemplar exemplar;
 
-    public RatingPK(){}
+    public RatingPK(){
+        //empty constructor
+    }
 
     public User getUser() {
         return user;

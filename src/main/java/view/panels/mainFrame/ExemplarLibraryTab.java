@@ -1,5 +1,6 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.Rating;
 import model.httpclients.ExemplarClient;
@@ -17,7 +18,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Panel that lists all the exemplars of the system and provides different sorting, filtering options
+ */
 public class ExemplarLibraryTab extends JPanel{
     private List<Exemplar> allExemplars;
     private List<Exemplar> filteredExemplars=new ArrayList<>();
@@ -27,7 +30,7 @@ public class ExemplarLibraryTab extends JPanel{
     private Set<model.entities.Label> allLabels = new HashSet<>();
     private List<String> filteredLabels = new ArrayList<>();
     private Map<Exemplar, List<Rating>> ratingsForExemplarLastWeek = new HashMap<>();
-    private Map<Exemplar, List<Rating>> allRatingsForExemplar = new HashMap<>();;
+    private Map<Exemplar, List<Rating>> allRatingsForExemplar = new HashMap<>();
     private boolean filtered = false;
 
 
@@ -64,76 +67,85 @@ public class ExemplarLibraryTab extends JPanel{
         addComponents();
     }
 
+    /**
+     * Initializes sorting listener that sorts the exemplars according to the combo-boxes
+     */
     private void initializeSortingListener() {
-        sortingListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                /**
-                 * Sort alphabetically
-                 */
-                if(sortingComboBox.getSelectedIndex() == 0) {
-                    allExemplars = allExemplars.stream().
-                            sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
-                    filteredExemplars=filteredExemplars.stream().
-                            sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
-                    if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allExemplars);
-                        Collections.reverse(filteredExemplars);
-                    }
+        sortingListener = event -> {
+            /**
+             * Sort alphabetically
+             */
+            if(sortingComboBox.getSelectedIndex() == 0) {
+                allExemplars = allExemplars.stream().
+                        sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
+                filteredExemplars=filteredExemplars.stream().
+                        sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
+                if(sortingComboBox2.getSelectedIndex() == 1){
+                    Collections.reverse(allExemplars);
+                    Collections.reverse(filteredExemplars);
                 }
-
-
-                /**
-                 * Sort by avg rating
-                 */
-                if(sortingComboBox.getSelectedIndex() == 1) {
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
-                        filteredExemplars=filteredExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
-                    if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allExemplars);
-                        Collections.reverse(filteredExemplars);
-                    }
-                }
-
-                /**
-                 * Sort by number of ratings
-                 */
-                if(sortingComboBox.getSelectedIndex() == 2) {
-                        allExemplars = allExemplars.stream().
-                                sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
-                    filteredExemplars=filteredExemplars.stream().
-                            sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allExemplars);
-                        Collections.reverse(filteredExemplars);
-                    }
-                }
-                updateTab();
             }
+
+
+            /**
+             * Sort by avg rating
+             */
+            if(sortingComboBox.getSelectedIndex() == 1) {
+                    allExemplars = allExemplars.stream().
+                            sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
+                    filteredExemplars=filteredExemplars.stream().
+                            sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[0])).collect(Collectors.toList());
+                if(sortingComboBox2.getSelectedIndex() == 1){
+                    Collections.reverse(allExemplars);
+                    Collections.reverse(filteredExemplars);
+                }
+            }
+
+            /**
+             * Sort by number of ratings
+             */
+            if(sortingComboBox.getSelectedIndex() == 2) {
+                    allExemplars = allExemplars.stream().
+                            sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
+                filteredExemplars=filteredExemplars.stream().
+                        sorted(Comparator.comparingDouble(e -> exemplarAvgRatingNumberOfRatingsMap.get(e)[1])).collect(Collectors.toList());
+
+                if(sortingComboBox2.getSelectedIndex() == 1) {
+                    Collections.reverse(allExemplars);
+                    Collections.reverse(filteredExemplars);
+                }
+            }
+            updateTab();
         };
     }
 
+    /**
+     * Fetches all the exemplars from the database
+     * @param searchTerm a string used to search exemplars by a specific term
+     */
     public void fetchExemplars(String searchTerm){
-        ExemplarClient exemplarClient = new ExemplarClient();
-        RatingClient ratingClient = new RatingClient();
-        allExemplars = exemplarClient.searchExemplars(searchTerm);
+        allExemplars = MainController.exemplars
+                .stream()
+                .filter(e->e.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
         allExemplars = allExemplars.stream().sorted(Comparator.comparing(e -> e.getName().toLowerCase())).collect(Collectors.toList());
+
         for (Exemplar e : allExemplars){
-            List<Rating> ratingsForExemplarTmp = ratingClient.getRatingsForExemplar(e.getName());
+            List<Rating> ratingsForExemplarTmp = MainController.ratings
+                    .stream()
+                    .filter(r->r.getKey().getExemplar().equals(e))
+                    .collect(Collectors.toList());
             java.sql.Date oneWeekAgo = java.sql.Date.valueOf(LocalDate.now().minusDays(7));
             List<Rating> ratingsLastWeek =
                     ratingsForExemplarTmp
                             .stream()
-                            .filter((r)->r.getSqlDate()!=null)
-                            .filter((r)-> r.getSqlDate().after(oneWeekAgo))
+                            .filter(r->r.getSqlDate()!=null)
+                            .filter(r-> r.getSqlDate().after(oneWeekAgo))
                             .collect(Collectors.toList());
-            if(ratingsLastWeek.size() != 0) ratingsForExemplarLastWeek.put(e, ratingsLastWeek);
+            if(!ratingsLastWeek.isEmpty()) ratingsForExemplarLastWeek.put(e, ratingsLastWeek);
             allRatingsForExemplar.put(e, ratingsForExemplarTmp);
             int numberOfRatingsForExemplar = ratingsForExemplarTmp.size();
-            exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{ratingClient.getAvgRatingForExemplar(e.getName()),
+            exemplarAvgRatingNumberOfRatingsMap.put(e, new double[]{MainController.ratings.stream().filter(r->r.getKey().getExemplar().equals(e)).mapToDouble(r->r.getRating()).average().orElse(0),
                     numberOfRatingsForExemplar});
             for(model.entities.Label l : e.getLabels()){
                 allLabels.add(l);
@@ -144,6 +156,11 @@ public class ExemplarLibraryTab extends JPanel{
 
     }
 
+    /**
+     * Creates a panel for every exemplar with different details and a listener that gets activated
+     * by double-clicking the panel and calls the exemplarListener.tabRequested() method that gets processed by
+     * the controller
+     */
     public void createExemplarPanels(){
         for(Exemplar e : allExemplars){
             JPanel panel = new JPanel();
@@ -159,7 +176,6 @@ public class ExemplarLibraryTab extends JPanel{
             });
             panel.setLayout(new GridLayout(4,3));
 
-            JLabel name = new JLabel("Name: ");
             JLabel exemplarName = new JLabel(e.getName());
             exemplarName.setFont(new Font("Verdana", Font.BOLD, 14));
             JLabel ratingLabel = new JLabel("Rating:");
@@ -198,7 +214,9 @@ public class ExemplarLibraryTab extends JPanel{
             exemplarPanelParent.add(exemplarJPanelMap.get(e));
         }
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
@@ -219,7 +237,9 @@ public class ExemplarLibraryTab extends JPanel{
         add(buttonPanel, c);
         setVisible(true);
     }
-
+    /**
+     * Initializes the panel with all the buttons used to interact with the exemplar
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -234,9 +254,9 @@ public class ExemplarLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
-        openExemplarsButton.addActionListener((x)->openExemplars());
-        mostRated.addActionListener((e)->{
+        closeLibraryButton.addActionListener(x->closeListener.componentSubmitted(this));
+        openExemplarsButton.addActionListener(x->openExemplars());
+        mostRated.addActionListener(e->{
             if(ratedLastWeekFilterIsActive) {
                 filtered=false;
                 ratedLastWeekFilterIsActive = !ratedLastWeekFilterIsActive;
@@ -247,7 +267,7 @@ public class ExemplarLibraryTab extends JPanel{
             filteredExemplars = ratingsForExemplarLastWeek.entrySet()
                     .stream()
                     .sorted((e1,e2)-> e1.getValue().size() > e2.getValue().size() ? 1 :0)
-                    .map(entry-> entry.getKey())
+                    .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
             filtered = true;
             ratedLastWeekFilterIsActive = !ratedLastWeekFilterIsActive;
@@ -264,37 +284,46 @@ public class ExemplarLibraryTab extends JPanel{
         buttonPanel.setBorder(border);
     }
 
+    /**
+     * Initializes the frame used to filter the exemplars by label
+     */
     void initializeFilterLabelFrame(){
         filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Exemplars");
         filterLabelPopupFrame.setVisible(false);
         filterLabelPopupFrame.setSize(new Dimension(350, 400));
         filterLabelPopupFrame.setLocationRelativeTo(this);
 
-        filterLabelPopupFrame.setListener((labels) -> {
+        filterLabelPopupFrame.setListener(labels -> {
             filteredLabels = labels;
-            if(filteredLabels.size()==0) filtered = false;
+            if(filteredLabels.isEmpty()) filtered = false;
             else filterExemplars();
             updateTab();
             filterLabelPopupFrame.setVisible(false);
         });
     }
 
+    /**
+     * Filters the exemplars according to the filtered labels
+     */
     private void filterExemplars() {
         filteredExemplars = allExemplars.stream().
                 filter(e->{
-                    List <String> allLabels = e.getLabels().stream().
+                    List <String> allLabelsOfExemplar = e.getLabels().stream().
                             map(l -> l.getValue().toLowerCase()).collect(Collectors.toList());
                     int i = filteredLabels.size();
                     int j = 0;
                     for(String s: filteredLabels){
-                        if(allLabels.contains(s.toLowerCase())) j++;
+                        if(allLabelsOfExemplar.contains(s.toLowerCase())) j++;
                     }
-                    if(i==j)return true;
-                    return false;
+                    return i==j;
                 }).collect(Collectors.toList());
         filtered=true;
     }
 
+    /**
+     * calls the tabRequested() method of the exemplarListener defined by the controller
+     * to open exemplars selected via the exemplar panels checkboxes
+     */
     void openExemplars(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedExemplarMap.entrySet();
         List<String> selectedExemplars = new ArrayList<>();
@@ -315,6 +344,9 @@ public class ExemplarLibraryTab extends JPanel{
         this.exemplarListener = exemplarListener;
     }
 
+    /**
+     * Updates the tab after a sorting/filtering action has been performed
+     */
     public void updateTab (){
         removeAll();
         exemplarPanelParent.removeAll();

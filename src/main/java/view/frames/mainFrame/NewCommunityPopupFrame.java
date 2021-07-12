@@ -4,6 +4,9 @@ import view.listeners.mainframe.NewCommunityListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Frame used to enter the name of a new community to be created
+ */
 public class NewCommunityPopupFrame extends JFrame {
     private JPanel infoPanel = new JPanel();
     private JLabel infoLabel = new JLabel("Please provide a name for your Community");

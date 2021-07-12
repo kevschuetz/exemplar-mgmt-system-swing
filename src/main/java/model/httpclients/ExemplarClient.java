@@ -1,10 +1,10 @@
 package model.httpclients;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Exemplar;
-import model.entities.User;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,6 +14,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Used to interact with the Exemplar entity
+ */
 public class ExemplarClient extends Client<Exemplar>{
     private final HttpClient client;
     private final String URL;
@@ -26,7 +29,7 @@ public class ExemplarClient extends Client<Exemplar>{
         client = HttpClient.newHttpClient();
         URL = HttpConstants.URL + "/exemplars";
         mapper = new ObjectMapper();
-    };
+    }
 
     @Override
     public Exemplar add(Exemplar value) throws IOException, InterruptedException {
@@ -37,8 +40,7 @@ public class ExemplarClient extends Client<Exemplar>{
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            Exemplar addedExemplar =  mapper.readValue(response.body(), Exemplar.class);
-            return addedExemplar;
+            return  mapper.readValue(response.body(), Exemplar.class);
         }catch (Exception e){
             return null;
         }
@@ -60,11 +62,9 @@ public class ExemplarClient extends Client<Exemplar>{
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
+           return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            return new LinkedList<>();
         }
     }
 
@@ -75,10 +75,9 @@ public class ExemplarClient extends Client<Exemplar>{
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try {
-            Exemplar exemplar = mapper.readValue(response.body(), Exemplar.class);
-            return exemplar;
+           return mapper.readValue(response.body(), Exemplar.class);
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -92,8 +91,8 @@ public class ExemplarClient extends Client<Exemplar>{
                 .PUT(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(value)))
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
-        Exemplar updatedExemplar =  mapper.readValue(response.body(), Exemplar.class);
-        return updatedExemplar;
+       return mapper.readValue(response.body(), Exemplar.class);
+
         }catch (Exception e){
             return null;
         }
@@ -105,11 +104,10 @@ public class ExemplarClient extends Client<Exemplar>{
                 .uri(URI.create(URL+"/creator?creator="+creator))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
+           return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
@@ -119,11 +117,10 @@ public class ExemplarClient extends Client<Exemplar>{
                     .uri(URI.create(URL+"/user?user="+user))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
+            return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
     public List<Exemplar> searchExemplars(String value){
@@ -132,11 +129,10 @@ public class ExemplarClient extends Client<Exemplar>{
                     .uri(URI.create(URL+"/search?value="+value))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
+           return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
@@ -146,30 +142,10 @@ public class ExemplarClient extends Client<Exemplar>{
                     .uri(URI.create(URL+"/search/label?value="+label))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
+            return mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
-
-
-
-    /*
-    container mit methode noch nicht gehosted
-    public List<Exemplar> getExemplarsForContributor(String contributor){
-        try{
-            request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL+"/contributor?contributor="+contributor))
-                    .build();
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            List<Exemplar> exemplars = mapper.readValue(response.body(), new TypeReference<List<Exemplar>>(){});
-            return exemplars;
-        }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Exemplar>();
-        }
-    }
-     */
 }

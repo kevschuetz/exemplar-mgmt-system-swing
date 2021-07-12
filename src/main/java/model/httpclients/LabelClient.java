@@ -1,17 +1,16 @@
 package model.httpclients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.entities.Community;
 import model.entities.Label;
 
-import java.io.IOException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
-public class LabelClient extends Client<Label>{
+
+public class LabelClient {
     private final HttpClient client;
     private final String URL;
     private final ObjectMapper mapper;
@@ -21,9 +20,9 @@ public class LabelClient extends Client<Label>{
         client = HttpClient.newHttpClient();
         URL = HttpConstants.URL + "/labels";
         mapper = new ObjectMapper();
-    };
+    }
 
-    @Override
+
     public Label add(Label value) {
         try{
         request = HttpRequest.newBuilder()
@@ -33,30 +32,10 @@ public class LabelClient extends Client<Label>{
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            Label added =  mapper.readValue(response.body(), Label.class);
-            return added;
+           return mapper.readValue(response.body(), Label.class);
         }catch (Exception e){
             return null;
         }
     }
 
-    @Override
-    public void delete(String id) throws IOException, InterruptedException {
-
-    }
-
-    @Override
-    public List<Label> getAll() throws IOException, InterruptedException {
-        return null;
-    }
-
-    @Override
-    public Label get(String id) throws IOException, InterruptedException {
-        return null;
-    }
-
-    @Override
-    public Label update(String id, Label value) throws IOException, InterruptedException {
-        return null;
-    }
 }

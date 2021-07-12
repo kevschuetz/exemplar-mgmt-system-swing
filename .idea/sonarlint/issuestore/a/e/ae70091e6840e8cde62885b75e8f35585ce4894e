@@ -1,0 +1,9 @@
+
+3
+java:S1643Ç"Use a StringBuilder instead.(„Ã»‘
+_
+java:S1128"=Remove this unused import 'model.httpclients.ExemplarClient'.(“ñ¬‹üÿÿÿÿ8ß«©/
+]
+java:S1128";Remove this unused import 'model.httpclients.RatingClient'.(­æ¢ùÿÿÿÿ8ß«©/
+I
+java:S1612”",Replace this lambda with a method reference.(ÃæÆq8„«š«©/

@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Frame that takes a text to confirm deletion of exemplar
+ */
 public class ConfirmExemplarDeletionFrame extends JFrame {
     private JPanel parentPanel = new JPanel();
     private JLabel label = new JLabel("Please confirm by typing in the name of the exemplar");
     private JTextField textField = new JTextField();
     private JButton button = new JButton("Delete");
     private ActionListener confirmListener;
-    private String exemplarName;
 
     public ConfirmExemplarDeletionFrame(String exemplarName){
         setLayout(new GridLayout(1,1));
@@ -22,7 +24,7 @@ public class ConfirmExemplarDeletionFrame extends JFrame {
         parentPanel.add(textField);
         parentPanel.add(button);
         add(parentPanel);
-        button.addActionListener((x)->{
+        button.addActionListener(x->{
             if(textField.getText().equals(exemplarName))confirmListener.actionPerformed(x);
         });
         getRootPane().setDefaultButton(button);

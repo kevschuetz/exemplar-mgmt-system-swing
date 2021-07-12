@@ -2,10 +2,14 @@ package model.entities;
 
 import java.util.Objects;
 
+/**
+ * Represents a label that can be attached to an exemplar
+ */
 public class Label {
     private String value;
 
     public Label(){
+        //empty constructor
     }
 
     public String getValue() {
@@ -15,6 +19,7 @@ public class Label {
     public void setValue(String value) {
         this.value = value;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,8 +1,8 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Community;
 import model.httpclients.CommunityClient;
-import model.httpclients.ExemplarClient;
 import view.listeners.mainframe.ActionWithComponentListener;
 import view.listeners.mainframe.homeTab.NewTabListener;
 
@@ -14,15 +14,14 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Panel that lists all the communites of the system
+ */
 public class CommunityLibraryTab extends JPanel{
     JPanel communityPanelParent = new JPanel();
     private JScrollPane scrollPane;
     Border border = BorderFactory.createBevelBorder(0);
     JPanel buttonPanel;
-
-
-    private CommunityClient communityClient = new CommunityClient();
-    private ExemplarClient exemplarClient = new ExemplarClient();
 
     private ActionWithComponentListener closeListener;
     private NewTabListener communityListener;
@@ -31,7 +30,6 @@ public class CommunityLibraryTab extends JPanel{
     private JComboBox sortingComboBox2;
 
     private ItemListener sortingListener;
-
 
     private List<Community> allCommunities;
     private Map<Community, double []> exemplarMap = new HashMap();
@@ -49,18 +47,24 @@ public class CommunityLibraryTab extends JPanel{
         addComponents();
     }
 
-
+    /**
+     * Fetches all the communities from the database
+     * @param searchTerm a string used to search communities by a specific term
+     */
     public void fetchCommunities(String searchTerm){
-        allCommunities = new CommunityClient().searchCommunities(searchTerm);
+        allCommunities = MainController.communities
+                .stream().filter(c->c.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
         allCommunities = allCommunities
                 .stream()
                 .filter(c->c.getName() != null)
                 .collect(Collectors.toList());
-        if(allCommunities.size() <= 0) System.exit(0);
     }
 
+    /**
+     * Adds all the communities to the scroll pane
+     */
     public void addCommunitiesToScrollPane(){
-        int i = 0;
         List<Community> communities = allCommunities;
         for(Community c : communities){
             if(c.getName() != null) {
@@ -97,12 +101,13 @@ public class CommunityLibraryTab extends JPanel{
                 panel.setPreferredSize(new Dimension(200, 75));
                 selectedCommunityMap.put(c.getName(), checkBox);
                 communityPanelParent.add(panel);
-                i++;
             }
         }
 
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
@@ -124,7 +129,9 @@ public class CommunityLibraryTab extends JPanel{
         setVisible(true);
 
     }
-
+    /**
+     * Initializes the button panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -137,48 +144,51 @@ public class CommunityLibraryTab extends JPanel{
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        //buttonPanel.add(sortingComboBox);
+
         buttonPanel.add(sortingComboBox2);
         buttonPanel.add(openCommunityButton);
         buttonPanel.add(closeLibraryButton);
         buttonPanel.setBorder(border);
 
-        openCommunityButton.addActionListener((x)->openCommunities());
-        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
+        openCommunityButton.addActionListener(x ->openCommunities());
+        closeLibraryButton.addActionListener(x->closeListener.componentSubmitted(this));
     }
 
+    /**
+     * Initializes sorting listener that sorts the communities according to the combo-boxes
+     */
     private void initializeSortingListener() {
-        sortingListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                /**
-                 * Sort alphabetically
-                 */
-                if(sortingComboBox.getSelectedIndex() == 0) {
-                    allCommunities = allCommunities.stream().
-                            sorted(Comparator.comparing(c -> c.getName())).collect(Collectors.toList());
+        sortingListener = event -> {
+            /**
+             * Sort alphabetically
+             */
+            if(sortingComboBox.getSelectedIndex() == 0) {
+                allCommunities = allCommunities.stream().
+                        sorted(Comparator.comparing(Community::getName)).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allCommunities);
-                    }
+                if(sortingComboBox2.getSelectedIndex() == 1) {
+                    Collections.reverse(allCommunities);
                 }
-                /**
-                 * Sort by number of users
-                 */
-                if(sortingComboBox.getSelectedIndex() == 2) {
-                    allCommunities= allCommunities.stream().
-                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allCommunities);
-
-                    }
-                }
-                updateTab();
             }
+            /**
+             * Sort by number of users
+             */
+            if(sortingComboBox.getSelectedIndex() == 2) {
+                allCommunities= allCommunities.stream().
+                        sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+
+                if(sortingComboBox2.getSelectedIndex() == 1){
+                    Collections.reverse(allCommunities);
+
+                }
+            }
+            updateTab();
         };
     }
 
+    /**
+     * Updates the panel by removing all communities and adding them once more
+     */
     public void updateTab (){
         removeAll();
         communityPanelParent.removeAll();
@@ -186,6 +196,9 @@ public class CommunityLibraryTab extends JPanel{
         addComponents();
     }
 
+    /**
+     * Opens new tabs for the communities which were requested by the user
+     */
     void openCommunities(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
         List<String> selectedCommunity = new ArrayList<>();

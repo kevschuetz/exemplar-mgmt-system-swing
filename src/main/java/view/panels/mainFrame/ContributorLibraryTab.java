@@ -1,5 +1,6 @@
 package view.panels.mainFrame;
 
+import controller.MainController;
 import model.entities.Exemplar;
 import model.entities.User;
 import model.httpclients.ExemplarClient;
@@ -17,7 +18,9 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Panel that lists all the contributors of the system and provides different sorting, filtering options
+ */
 public class ContributorLibraryTab extends JPanel {
     JPanel contributorPanelParent = new JPanel();
     private JScrollPane scrollPane;
@@ -63,8 +66,16 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
+    /**
+     * Fetches all the contributors from the database
+     * @param searchTerm a string used to search contributors by a specific term
+     */
     public void fetchContributors(String searchTerm){
-        allContributors = new UserClient().searchUsers(searchTerm);
+        allContributors = MainController.users
+                .stream()
+                .filter(u->u.getIsContributor() == 1 && u.getUsername().toLowerCase()
+                        .contains(searchTerm.toLowerCase()))
+                        .collect(Collectors.toList());
         allContributors = allContributors
                 .stream()
                 .filter(u->u.getIsContributor()==1)
@@ -72,15 +83,26 @@ public class ContributorLibraryTab extends JPanel {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Collects all the relevant information in respect to a contributor's exemplars like average rating or associated labels
+     */
     public void addExemplarInformation(){
         for(User u : allContributors){
-            List<Exemplar> forUser = exemplarClient.getExemplarsForUser(u.getUsername());
+            List<Exemplar> forUser = MainController
+                    .exemplars.stream()
+                    .filter(e->(e.getCreator() != null && e.getCreator().equals(u)) || (e.getContributors() != null && e.getContributors().equals(u)))
+                    .collect(Collectors.toList());
             contributorExemplarMap.put(u, forUser);
             exemplarMap.put(u,
                     new double[]{
-                        forUser.stream().
-                                mapToDouble(e -> ratingClient.getAvgRatingForExemplar(e.getName())).
-                                average().orElse(0),
+                        forUser.stream()
+                                .mapToDouble(e-> MainController.ratings.stream()
+                                                       .filter(r->r.getKey().getExemplar().equals(e))
+                                                        .mapToDouble(r->r.getRating())
+                                                        .average()
+                                                        .orElse(0)
+                                )
+                                .average().orElse(0),
                         forUser.size()});
 
             List<model.entities.Label> labelsForContributor = forUser.stream().
@@ -92,9 +114,10 @@ public class ContributorLibraryTab extends JPanel {
         }
 
     }
-
+    /**
+     * Adds all the contributors to the scroll pane
+     */
     public void addContributorsToScrollPane(){
-        int i = 0;
         List<User> contributors = allContributors;
         if(filtered) contributors = filteredContributors;
         for(User u : contributors){
@@ -113,7 +136,6 @@ public class ContributorLibraryTab extends JPanel {
                     }
                 });
 
-                //JLabel name = new JLabel("Name: ");
                 JLabel userName = new JLabel(u.getUsername());
                 userName.setFont(new Font("Verdana", Font.BOLD, 14));
                 JLabel labelNumberOfExemplars = new JLabel("Number of Exemplars: ");
@@ -123,7 +145,6 @@ public class ContributorLibraryTab extends JPanel {
                 JLabel labelExemplarLabels = new JLabel("Labels of Exemplars: ");
 
                 JCheckBox checkBox = new JCheckBox();
-               // if (i % 2 == 0) checkBox.setBackground(Color.LIGHT_GRAY);
 
                 panel.add(userName);
                 panel.add(new JLabel());
@@ -142,16 +163,17 @@ public class ContributorLibraryTab extends JPanel {
                 panel.add(new JLabel(labels.toString()));
                 panel.add(checkBox);
                 panel.setBorder(border);
-                panel.setPreferredSize(new Dimension(200, 50));
-                //if (i % 2 == 0) panel.setBackground(Color.LIGHT_GRAY);
+                panel.setPreferredSize(new Dimension(200, 90));
                 selectedContributorMap.put(u.getUsername(), checkBox);
                 contributorPanelParent.add(panel);
-                i++;
             }
         }
 
     }
 
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         setVisible(false);
         setLayout(new GridBagLayout());
@@ -174,6 +196,9 @@ public class ContributorLibraryTab extends JPanel {
 
     }
 
+    /**
+     * Initializes the button panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
@@ -187,14 +212,9 @@ public class ContributorLibraryTab extends JPanel {
         sortingComboBox.addItemListener(sortingListener);
         sortingComboBox2.addItemListener(sortingListener);
 
-        openContributorsButton.addActionListener((x)->openContributors());
-        closeLibraryButton.addActionListener((x)->closeListener.componentSubmitted(this));
-        filterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filterLabelPopupFrame.setVisible(true);
-            }
-        });
+        openContributorsButton.addActionListener(x->openContributors());
+        closeLibraryButton.addActionListener(x->closeListener.componentSubmitted(this));
+        filterButton.addActionListener(e -> filterLabelPopupFrame.setVisible(true));
 
         buttonPanel.add(sortingComboBox);
         buttonPanel.add(sortingComboBox2);
@@ -204,6 +224,9 @@ public class ContributorLibraryTab extends JPanel {
         buttonPanel.setBorder(border);
     }
 
+    /**
+     * Opens new tabs for the contributors which were requested by the user
+     */
     void openContributors(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedContributorMap.entrySet();
         List<String> selectedContributors = new ArrayList<>();
@@ -216,59 +239,62 @@ public class ContributorLibraryTab extends JPanel {
         contributorListener.tabRequested(selectedContributors);
     }
 
+    /**
+     * Initializes sorting listener that sorts the contributors according to the combo-boxes
+     */
     private void initializeSortingListener() {
-        sortingListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent event) {
-                /**
-                 * Sort alphabetically
-                 */
-                if(sortingComboBox.getSelectedIndex() == 0) {
-                    allContributors = allContributors.stream().
-                            sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
+        sortingListener = event -> {
+            /**
+             * Sort alphabetically
+             */
+            if(sortingComboBox.getSelectedIndex() == 0) {
+                allContributors = allContributors.stream().
+                        sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
 
-                    filteredContributors = filteredContributors.stream().
-                            sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
+                filteredContributors = filteredContributors.stream().
+                        sorted(Comparator.comparing(c -> c.getUsername().toLowerCase())).collect(Collectors.toList());
 
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allContributors);
-                        Collections.reverse(filteredContributors);
-                    }
+                if(sortingComboBox2.getSelectedIndex() == 1) {
+                    Collections.reverse(allContributors);
+                    Collections.reverse(filteredContributors);
                 }
-                /**
-                 * Sort by avg rating of exemplar
-                 */
-                if(sortingComboBox.getSelectedIndex() == 1) {
-                    allContributors = allContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
-
-                    filteredContributors = filteredContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1) {
-                        Collections.reverse(allContributors);
-                        Collections.reverse(filteredContributors);
-                    }
-                }
-                /**
-                 * Sort by number of users
-                 */
-                if(sortingComboBox.getSelectedIndex() == 2) {
-                        allContributors= allContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
-                        filteredContributors= filteredContributors.stream().
-                                sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
-
-                    if(sortingComboBox2.getSelectedIndex() == 1){
-                        Collections.reverse(allContributors);
-                        Collections.reverse(filteredContributors);
-                    }
-                }
-                updateTab();
             }
+            /**
+             * Sort by avg rating of exemplar
+             */
+            if(sortingComboBox.getSelectedIndex() == 1) {
+                allContributors = allContributors.stream().
+                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+
+                filteredContributors = filteredContributors.stream().
+                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[0])).collect(Collectors.toList());
+
+                if(sortingComboBox2.getSelectedIndex() == 1) {
+                    Collections.reverse(allContributors);
+                    Collections.reverse(filteredContributors);
+                }
+            }
+            /**
+             * Sort by number of users
+             */
+            if(sortingComboBox.getSelectedIndex() == 2) {
+                    allContributors= allContributors.stream().
+                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+                    filteredContributors= filteredContributors.stream().
+                            sorted(Comparator.comparingDouble(c -> exemplarMap.get(c)[1])).collect(Collectors.toList());
+
+                if(sortingComboBox2.getSelectedIndex() == 1){
+                    Collections.reverse(allContributors);
+                    Collections.reverse(filteredContributors);
+                }
+            }
+            updateTab();
         };
     }
 
+    /**
+     * Updates the panel by removing all contributors and adding them once more
+     */
     public void updateTab (){
         removeAll();
         contributorPanelParent.removeAll();
@@ -276,15 +302,18 @@ public class ContributorLibraryTab extends JPanel {
         addComponents();
     }
 
+    /**
+     * Initializes the pop up frame for filtering contributors by label
+     */
     void initializeFilterLabelFrame(){
         filterLabelPopupFrame = new FilterLabelPopupFrame(allLabels, "Filter Contributors");
         filterLabelPopupFrame.setVisible(false);
         filterLabelPopupFrame.setSize(new Dimension(350, 400));
         filterLabelPopupFrame.setLocationRelativeTo(this);
 
-        filterLabelPopupFrame.setListener((labels) -> {
+        filterLabelPopupFrame.setListener(labels -> {
             filteredLabels = labels;
-            if(filteredLabels.size()==0) filtered = false;
+            if(filteredLabels.isEmpty()) filtered = false;
             else filterContributors();
             updateTab();
             filterLabelPopupFrame.setVisible(false);
@@ -292,23 +321,23 @@ public class ContributorLibraryTab extends JPanel {
         });
     }
 
+    /**
+     * Filters contributors by label
+     */
     public void filterContributors(){
         filteredContributors = allContributors.stream().
                 filter(c -> {
-                    List <String> allLabels = labelsPerContributor.get(c).stream().
+                    List <String> allLabelsOfContributor = labelsPerContributor.get(c).stream().
                                     map(l -> l.getValue().toLowerCase()).collect(Collectors.toList());
                     int i = filteredLabels.size();
                     int j = 0;
                     for(String s: filteredLabels){
-                        if(allLabels.contains(s.toLowerCase())) j++;
+                        if(allLabelsOfContributor.contains(s.toLowerCase())) j++;
                     }
-                    if(i==j)return true;
-                    return false;
+                    return i==j;
                 }).collect(Collectors.toList());
         filtered = true;
     }
-
-
 
     public void setCloseListener(ActionWithComponentListener closeListener) {
         this.closeListener = closeListener;

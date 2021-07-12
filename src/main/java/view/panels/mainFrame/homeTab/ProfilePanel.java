@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Panel that displays all the information regarding a given user account
+ */
 public class ProfilePanel extends JPanel {
     JLabel userNameLabel = new JLabel("Username");
     JLabel fullNameLabel = new JLabel("Full name");
@@ -36,7 +39,9 @@ public class ProfilePanel extends JPanel {
         addActionListener();
         initializeConfirmFrame();
     }
-
+    /**
+     * Adds all the components to the panel
+     */
     void addComponents(){
         add(userNameLabel);
         add(userNameText);
@@ -53,7 +58,9 @@ public class ProfilePanel extends JPanel {
         add(updateButton);
         add(deleteUserButton);
     }
-
+    /**
+     * Sets the default text for all the text fields
+     */
     void setData(){
         userNameText.setText(user.getUsername());
         userNameText.setEditable(false);
@@ -62,7 +69,7 @@ public class ProfilePanel extends JPanel {
         passwordField1.setText("");
         passwordField2.setText("");
         if(user.getIsContributor()==1){
-            contributorCheckBox.addActionListener((x)->{
+            contributorCheckBox.addActionListener(x->{
                 if(!contributorCheckBox.isSelected()) contributorCheckBox.doClick();
             });
         }
@@ -72,11 +79,11 @@ public class ProfilePanel extends JPanel {
             contributorCheckBox.doClick();
         }
     }
-
-
-
+    /**
+     * Adds action listeners to the buttons
+     */
     void addActionListener(){
-        updateButton.addActionListener((x)->{
+        updateButton.addActionListener(x->{
             String fullname = fullNameText.getText();
             String oldPassword = oldPasswordField.getText();
             String newPassword1 = passwordField1.getText();
@@ -100,29 +107,40 @@ public class ProfilePanel extends JPanel {
             }
         });
 
-        deleteUserButton.addActionListener((x)->{
-            confirmFrame.setVisible(true);
-        });
+        deleteUserButton.addActionListener(x-> confirmFrame.setVisible(true));
     }
-
+    /**
+     * Initializes the confirmation pop-up frame
+     */
     void initializeConfirmFrame(){
         confirmFrame = new ConfirmDeletalFrame();
         confirmFrame.setSize(250,200);
         confirmFrame.setVisible(false);
-        confirmFrame.setCancelledListener((x)->confirmFrame.setVisible(false));
-        confirmFrame.setConfirmedListener((x)->{
+        confirmFrame.setCancelledListener(x->confirmFrame.setVisible(false));
+        confirmFrame.setConfirmedListener(x->{
             confirmFrame.setVisible(false);
             deleteListener.updateRequested(user);
         });
     }
+    /**
+     * Sets the user
+     * @param user user which should be set
+     */
     public void setUser(User user) {
         this.user = user;
         setData();
     }
+    /**
+     * Sets the update user listener
+     * @param profilePanelListener listener which should be set
+     */
     public void setUpdateUserListener(ProfilePanelListener profilePanelListener) {
         this.updateListener = profilePanelListener;
     }
-
+    /**
+     * Sets the delete listener
+     * @param deleteListener listener which should be set
+     */
     public void setDeleteListener(ProfilePanelListener deleteListener) {
         this.deleteListener = deleteListener;
     }
@@ -145,15 +163,24 @@ public class ProfilePanel extends JPanel {
             addListeners();
             add(panel);
         }
-
+        /**
+         * Adds listeners to buttons
+         */
         void addListeners(){
-            confirmButton.addActionListener((x)-> confirmedListener.actionPerformed(x));
-            cancelButton.addActionListener((x)->cancelledListener.actionPerformed(x));
+            confirmButton.addActionListener(x-> confirmedListener.actionPerformed(x));
+            cancelButton.addActionListener(x->cancelledListener.actionPerformed(x));
         }
+        /**
+         * Sets confirmed listener
+         * @param confirmedListener listener which should be set
+         */
         public void setConfirmedListener(ActionListener confirmedListener) {
             this.confirmedListener = confirmedListener;
         }
-
+        /**
+         * Sets cancelled listener
+         * @param cancelledListener listener which should be set
+         */
         public void setCancelledListener(ActionListener cancelledListener) {
             this.cancelledListener = cancelledListener;
         }

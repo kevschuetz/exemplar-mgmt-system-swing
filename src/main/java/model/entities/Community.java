@@ -3,6 +3,9 @@ package model.entities;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a community of users that references certain exemplars
+ */
 public class Community {
     private String name;
     private List<Exemplar> exemplars;
@@ -10,7 +13,9 @@ public class Community {
     private User creator;
 
 
-    public Community(){};
+    public Community(){
+        //empty constructor
+    }
 
     public String getName() {
         return name;

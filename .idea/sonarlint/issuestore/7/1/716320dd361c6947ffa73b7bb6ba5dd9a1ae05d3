@@ -1,0 +1,9 @@
+
+X
+java:S1128"=Remove this unused import 'model.httpclients.ExemplarClient'.(“ñ¬‹üÿÿÿÿ
+U
+java:S1854A":Remove this useless assignment to local variable "client".(…ÀŸ½ùÿÿÿÿ
+N
+java:S1612X",Replace this lambda with a method reference.(ö±¹ºşÿÿÿÿ8´Øª©/
+F
+java:S1481A"+Remove this unused "client" local variable.(…ÀŸ½ùÿÿÿÿ

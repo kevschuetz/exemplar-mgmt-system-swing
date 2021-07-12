@@ -1,6 +1,5 @@
 package model.httpclients;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.User;
@@ -14,7 +13,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Used to interact with the User entity
+ */
 public class UserClient extends Client<User> {
     private final HttpClient client;
     private final String URL;
@@ -27,7 +28,7 @@ public class UserClient extends Client<User> {
         client = HttpClient.newHttpClient();
         URL = HttpConstants.URL + "/users";
         mapper = new ObjectMapper();
-    };
+    }
 
 
 
@@ -40,8 +41,7 @@ public class UserClient extends Client<User> {
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            User addedUser =  mapper.readValue(response.body(), User.class);
-            return addedUser;
+           return mapper.readValue(response.body(), User.class);
         }catch (Exception e){
             return null;
         }
@@ -63,11 +63,10 @@ public class UserClient extends Client<User> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            List<User> users = mapper.readValue(response.body(), new TypeReference<List<User>>(){});
-            return users;
+            return mapper.readValue(response.body(), new TypeReference<List<User>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<User>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
@@ -78,10 +77,9 @@ public class UserClient extends Client<User> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try {
-            User user = mapper.readValue(response.body(), User.class);
-            return user;
+           return mapper.readValue(response.body(), User.class);
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -95,8 +93,7 @@ public class UserClient extends Client<User> {
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            User updatedUser =  mapper.readValue(response.body(), User.class);
-            return updatedUser;
+            return mapper.readValue(response.body(), User.class);
         }catch (Exception e){
             return null;
         }
@@ -110,11 +107,10 @@ public class UserClient extends Client<User> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        List<User> users = mapper.readValue(response.body(), new TypeReference<List<User>>(){});
-        return users;
+       return mapper.readValue(response.body(), new TypeReference<List<User>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<User>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 }

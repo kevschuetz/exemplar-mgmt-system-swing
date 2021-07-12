@@ -2,7 +2,6 @@ package model.httpclients;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.entities.Community;
 import model.entities.Rating;
 
 import java.io.IOException;
@@ -13,6 +12,9 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Used to interact with the Rating entity
+ */
 public class RatingClient extends Client<Rating> {
     private final HttpClient client;
     private final String URL;
@@ -24,7 +26,7 @@ public class RatingClient extends Client<Rating> {
         client = HttpClient.newHttpClient();
         URL = HttpConstants.URL + "/ratings";
         mapper = new ObjectMapper();
-    };
+    }
 
     @Override
     public Rating add(Rating value) throws IOException, InterruptedException {
@@ -35,8 +37,7 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            Rating added =  mapper.readValue(response.body(), Rating.class);
-            return added;
+            return  mapper.readValue(response.body(), Rating.class);
         }catch (Exception e){
             return null;
         }
@@ -61,11 +62,9 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            List<Rating> all = mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
-            return all;
+            return mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Rating>();
+            return new LinkedList<>();
         }
     }
 
@@ -78,10 +77,8 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try {
-            Rating entity = mapper.readValue(response.body(), Rating.class);
-            return entity;
+           return mapper.readValue(response.body(), Rating.class);
         }catch(Exception e){
-            //e.printStackTrace();
             return null;
         }
     }
@@ -98,11 +95,10 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        List<Rating> ratings = mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
-        return ratings;
+        return mapper.readValue(response.body(), new TypeReference<List<Rating>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Rating>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
@@ -113,10 +109,9 @@ public class RatingClient extends Client<Rating> {
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        Double avg = mapper.readValue(response.body(), Double.class);
-        return avg;
+        return mapper.readValue(response.body(), Double.class);
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return 0;
         }
     }

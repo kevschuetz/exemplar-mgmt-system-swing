@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a comment made by a user to an exemplar
+ */
 public class Comment {
 
     private long id;

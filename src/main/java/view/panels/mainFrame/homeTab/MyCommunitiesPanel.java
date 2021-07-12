@@ -1,5 +1,6 @@
 package view.panels.mainFrame.homeTab;
 
+import controller.MainController;
 import model.entities.Community;
 import model.entities.User;
 import model.httpclients.CommunityClient;
@@ -13,7 +14,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Panel that lists all the communites of a given user
+ */
 public class MyCommunitiesPanel extends JPanel {
     private User user;
     JPanel communityPanelParent = new JPanel();
@@ -41,13 +46,19 @@ public class MyCommunitiesPanel extends JPanel {
         add(scrollPane);
         addComponentsCommunity();
     }
-
+    /**
+     * Fetches all communities in which the current User is a member from the database
+     */
     void fetchCommunites(){
-        myCommunities= new CommunityClient().getCommunitiesForUser(user.getUsername());
+        myCommunities= MainController.communities
+                .stream()
+                .filter(c->(c.getCreator() != null && c.getCreator().equals(user)) || (c.getMembers() != null && c.getMembers().contains(user)))
+                .collect(Collectors.toList());
     }
-
+    /**
+     * Creates panels for all of the communities of the current User and adds them to a separate panel
+     */
     void addCommunites(){
-        int i = 0;
         for(Community c : myCommunities){
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(2,3));
@@ -76,14 +87,14 @@ public class MyCommunitiesPanel extends JPanel {
             panel.add(checkBox);
             panel.setBorder(border);
             panel.setPreferredSize(new Dimension(200, 50));
-            //if(i%2==0)panel.setBackground(Color.LIGHT_GRAY);
             communityPanelParent.add(panel);
             selectedCommunityMap.put(c.getName(), checkBox);
             myCommunityPanels.add(panel);
-            i++;
         }
     }
-
+    /**
+     * Adds the main components to the panel
+     */
     void addComponentsCommunity(){
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -102,7 +113,9 @@ public class MyCommunitiesPanel extends JPanel {
         c.gridy=1;
         add(buttonPanel, c);
     }
-
+    /**
+     * Initializes all the buttons of this panel
+     */
     void initializeButtonPanel(){
         buttonPanel= new JPanel();
         buttonPanel.setLayout(new GridLayout(1,2));
@@ -111,10 +124,12 @@ public class MyCommunitiesPanel extends JPanel {
         buttonPanel.add(createCommunityButton);
         createCommunityButton.addActionListener(x->createCommunityListener.actionPerformed(x));
         buttonPanel.add(openCommunityButton);
-        openCommunityButton.addActionListener((x)->openCommunity());
+        openCommunityButton.addActionListener(x->openCommunity());
         buttonPanel.setBorder(border);
     }
-
+    /**
+     * Opens new tabs for the communities which were requested by the current User
+     */
     void openCommunity(){
         Set<Map.Entry<String, JCheckBox>> entrySet = selectedCommunityMap.entrySet();
         List<String> selectedCommunities = new ArrayList<>();

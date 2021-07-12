@@ -3,21 +3,21 @@ package view.panels.mainFrame.homeTab;
 import model.entities.User;
 import view.listeners.mainframe.homeTab.NewTabListener;
 import view.listeners.mainframe.homeTab.ProfilePanelListener;
-import view.panels.mainFrame.AllExemplarsPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Default tab that gets opened at login displaying user-related information (users exemplars, communities, details)
+ */
 public class HomeTab extends JPanel {
     User user;
     JPanel communitiesAndProfile;
     ProfilePanel profilePanel;
     MyExemplarsPanel myExemplarsPanel;
     MyCommunitiesPanel myCommunitiesPanel;
-
-  //  Border border = BorderFactory.createCompoundBorder();
 
     public HomeTab(User user){
         this.user = user;
@@ -26,7 +26,9 @@ public class HomeTab extends JPanel {
         add(myExemplarsPanel);
         add(communitiesAndProfile);
     }
-
+    /**
+     * Initializes the main panels
+     */
     void initializePanels(){
         profilePanel = new ProfilePanel(user);
         myExemplarsPanel = new MyExemplarsPanel(user);
@@ -40,13 +42,19 @@ public class HomeTab extends JPanel {
         communitiesAndProfile.add(profilePanel);
         communitiesAndProfile.add(myCommunitiesPanel);
     }
-
+    /**
+     * Creates a border for the panel
+     * @param s title of the border
+     * @return the border which was created
+     */
     Border createBorder(String s){
         return BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(s),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
-
+    /**
+     * Updates the panel
+     */
     public void refresh(){
         removeAll();
         initializePanels();
@@ -72,6 +80,10 @@ public class HomeTab extends JPanel {
         this.user = user;
         profilePanel.setUser(user);
     }
+    /**
+     * Returns the profile panel of the current User
+     * @return the profile panel of the current User
+     */
     public ProfilePanel getProfilePanel() {
         return profilePanel;
     }

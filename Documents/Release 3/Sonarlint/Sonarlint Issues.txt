@@ -1,0 +1,20 @@
+Sonarlint issues:
+
+First Analysis: 992 Issues in 58 Files
+Second: 830
+
+Unused Imports
+Unused Fields
+Logger instead of System.out
+Remove paranthesis when there is only single variable in lambda expression
+Rename field (A field should not have the same name as the class)
+Remove Block of commented out code
+Rename field to match regular expression (lower-case for non static fields)
+Immediately return expression instead of assigning it temporarily
+
+Disabled Rules:
+
+Make field transient or serializable (Fields in a serializable class must themselves be serializable)
+Rename this package name to match the regular expression 
+Provide the parameterized type for this generig (List<type> instead of List but with JList)
+Declare this local variable with var instead

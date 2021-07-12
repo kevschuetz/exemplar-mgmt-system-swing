@@ -1,7 +1,7 @@
 package controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.entities.Community;
 import model.entities.Exemplar;
@@ -15,9 +15,6 @@ import model.httpclients.UserClient;
 import model.entities.*;
 import model.httpclients.*;
 import view.frames.mainFrame.*;
-import view.listeners.ActionWithStringListener;
-import view.listeners.mainframe.ActionWithComponentListener;
-import view.listeners.mainframe.homeTab.NewTabListener;
 import view.panels.mainFrame.CommunityLibraryTab;
 import view.panels.mainFrame.CommunityTab;
 import view.panels.mainFrame.ContributorLibraryTab;
@@ -38,14 +35,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-public class MainController implements Runnable{
+/**
+ * The Main Controller of the application contains most of the business logic
+ */
+public class MainController{
+
+    /**
+     * main Method that sets initializes a new MainController and sets the LogoutListener of it
+     * @param args
+     */
     public static void main(String[] args) {
         final MainController[] controller = {new MainController()};
         controller[0].setLogoutListener(new ActionListener() {
@@ -61,11 +65,13 @@ public class MainController implements Runnable{
     private LoginController loginController;
 
     private User currentUser;
+
     private UserClient userClient = new UserClient();
     private ExemplarClient exemplarClient = new ExemplarClient();
     private CommunityClient communityClient = new CommunityClient();
     private LabelClient labelClient = new LabelClient();
     private RatingClient ratingClient = new RatingClient();
+    private CommentClient commentClient = new CommentClient();
 
     private MainFrame mainFrame;
     private HomeTab homeTab;
@@ -73,41 +79,95 @@ public class MainController implements Runnable{
     private NewLabelPopupFrame newLabelPopupFrame;
     private NewCommunityPopupFrame newCommunityPopupFrame;
     private NewRatingPopupFrame newRatingPopupFrame;
-    private AddUserrFrame addContributorFrame;
-    private AddMemberFrame addMemberFrame;
+    private AddUserFrame addContributorFrame;
     private ExemplarLibraryTab initialExemplarLibraryTab;
     private ContributorLibraryTab initialContributorLibraryTab;
     private CommunityLibraryTab initialCommunityLibraryTab;
     boolean librarysLoaded = false;
 
     private ActionListener logoutListener;
+
+    public static List<Exemplar> exemplars;
+    public static List<User> users;
+    public static List<Community> communities;
+    public static List<Label> labels;
+    public static List<Rating> ratings;
+    public static List<Comment> comments;
+    boolean dataLoaded = false;
+
     /**
-     * Initializes the LoginController and starts the login process
+     * Starts a new Thread to fetch the data from the database and starts the login process
      */
     public MainController(){
         initializeMainFrame();
+        Thread dataThread = new Thread(()->{
+            asyncLoadData();
+        });
+        dataThread.start();
+
+        //login
+        loginController = new LoginController();
+        loginController.setLoginListener(x->{
+            currentUser = loginController.getCurrentUser();
+            waitForDataAfterLogin();
+        });
+        loginController.startLoginProcess();
+
+        checkDataStatus();
+    }
+
+    /**
+     * Regularly checks if the data has already been fetched and continues with the initialization of the components if so
+     */
+    void checkDataStatus(){
+        if(dataLoaded)startApplication();
+        else {
+            Thread waitingThread = new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                    checkDataStatus();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            waitingThread.start();
+        }
+    }
+
+    /**
+     * Initializes components after data has been fetched
+     */
+    void startApplication(){
         initializeNewExemplarFrame();
         initializeNewCommunityFrame();
         initializeNewLabelPopupFrame();
         initializeNewRatingPopupFrame();
         initializeAddContributorFrame();
-        initializeAddMemberFrame();
-
-        //login
-       loginController = new LoginController();
-       loginController.setLoginListener(x->{
-           currentUser = loginController.getCurrentUser();
-           loginSuccesfull();
-       });
-       Thread thread = new Thread(this);
-       thread.start();
-       loginController.startLoginProcess();
     }
 
     /**
-     * Method is triggered by LoginController after succesfull login. Opens new HomeTab if User is not a guest.
+     * Triggered after succesfull login - waits in a loop until the data has been fetched  and enters the application if so
      */
-    void loginSuccesfull(){
+    void waitForDataAfterLogin(){
+        if(dataLoaded) loginSuccesfull();
+        else {
+            Thread waitingThread = new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                    waitForDataAfterLogin();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            waitingThread.start();
+        }
+    }
+    /**
+     * Sets MainFrame visible.
+     * Opens new HomeTab if User is not a guest.
+     */
+   public void loginSuccesfull(){
+       loginController.getLoginFrame().setVisible(false);
         mainFrame.setVisible(true);
 
         if(currentUser != null){
@@ -118,29 +178,36 @@ public class MainController implements Runnable{
 
         }
         else mainFrame.setTitle("Welcome!");
-
-        addInitialLibrarys();
-
     }
 
-    void addInitialLibrarys(){
-        if(librarysLoaded){
-            mainFrame.addTab("Exemplar Library", initialExemplarLibraryTab);
-            mainFrame.addTab("Contributor Library", initialContributorLibraryTab);
-            mainFrame.addTab("Community Library", initialCommunityLibraryTab);
-        }else{
-            Thread waitingThread = new Thread(()-> {
-                try {
-                    Thread.sleep(5000);
-                    addInitialLibrarys();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-            waitingThread.start();
+    /**
+     * Method that updates all data avery 30 seconds
+     */
+    void asyncLoadData(){
+        try {
+            exemplars = exemplarClient.getAll();
+            communities = communityClient.getAll();
+            users = userClient.getAll();
+            ratings = ratingClient.getAll();
+            comments= commentClient.getAll();
+            dataLoaded = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Thread.sleep(30000);
+            asyncLoadData();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Initializes the MainFrame
+     */
     void initializeMainFrame(){
         mainFrame = new MainFrame();
         mainFrame.setVisible(false);
@@ -152,18 +219,22 @@ public class MainController implements Runnable{
         mainFrame.setSearchExemplarListener(getOpenExemplarLibraryListener(true));
         mainFrame.setSearchContributorListener(getOpenContributorLibraryListener(true));
         mainFrame.setSearchCommunityListener(getOpenCommunityLibraryListener(true));
-        mainFrame.setImportListener((path)->{
+        /**
+         * Implements the listener used to import an exemplar from the local file system
+         */
+        mainFrame.setImportListener(path->{
             Path pathTo = Path.of(path);
             try {
                 String exemplarJson = Files.readString(pathTo);
                 ObjectMapper mapper = new ObjectMapper();
                 Exemplar importedExemplar = mapper.readValue(exemplarJson, Exemplar.class);
                 importedExemplar.setCreator(currentUser);
-                importedExemplar.setContributors(new ArrayList<User>());
+                importedExemplar.setContributors(new ArrayList<>());
                 for (Label l : importedExemplar.getLabels()){
                     labelClient.add(l);
                 }
                 Exemplar response = exemplarClient.add(importedExemplar);
+                exemplars.add(importedExemplar);
                 if(response != null){
                     addExemplarTabToMainframe(response.getName());
                     refreshHomeTab();
@@ -175,7 +246,7 @@ public class MainController implements Runnable{
             }
         });
 
-        mainFrame.setCreateExemplarListener((e)->newExemplarPopupFrame.setVisible(true));
+        mainFrame.setCreateExemplarListener(e->newExemplarPopupFrame.setVisible(true));
     }
 
     /**
@@ -191,7 +262,7 @@ public class MainController implements Runnable{
          * creates the exemplar and opens it in a new Tab (createNewExemplarAndInitializeTab()).
          * Refreshes hometab afterwards to include newly created exemplar.
          */
-        newExemplarPopupFrame.setListener((s)->{
+        newExemplarPopupFrame.setListener(s->{
             boolean ok = verifyExemplarName(s);
             if(ok){
                 newExemplarPopupFrame.setVisible(false);
@@ -204,6 +275,9 @@ public class MainController implements Runnable{
         });
     }
 
+    /**
+     * Initializes the Frame used to create a new Community
+     */
     void initializeNewCommunityFrame(){
         newCommunityPopupFrame = new NewCommunityPopupFrame();
         newCommunityPopupFrame.setVisible(false);
@@ -214,7 +288,7 @@ public class MainController implements Runnable{
          * creates the community and opens it in a new Tab (createNewCommunityAndInitializeTab()).
          * Refreshes hometab afterwards to include newly created exemplar.
          */
-        newCommunityPopupFrame.setListener((s)->{
+        newCommunityPopupFrame.setListener(s->{
             boolean ok = verifyCommunityName(s);
             if(ok){
                 newCommunityPopupFrame.setVisible(false);
@@ -241,7 +315,7 @@ public class MainController implements Runnable{
          * Updates the exemplar in the database afterwards to reflect the changes.
          * Refreshes the infoPanel of the tab afterwards.
          */
-        newLabelPopupFrame.setListener((s)->{
+        newLabelPopupFrame.setListener(s->{
             model.entities.Label label = new model.entities.Label();
             label.setValue(s.toLowerCase(Locale.ROOT));
             model.entities.Label added = labelClient.add(label);
@@ -269,7 +343,7 @@ public class MainController implements Runnable{
          * inside the Exemplar Tab and the current user. Persists the rating in the database and refreshes the InfoPanel
          * of the ExemplarTab to reflect the rating change.
          */
-        newRatingPopupFrame.setListener((i)->{
+        newRatingPopupFrame.setListener(i->{
             Rating r = new Rating();
             RatingPK key = new RatingPK();
             key.setExemplar(newRatingPopupFrame.getTab().getExemplar());
@@ -280,15 +354,14 @@ public class MainController implements Runnable{
             r.setSqlDate(sqlDate);
             try {
                 Rating newRating = ratingClient.add(r);
+                ratings.add(r);
                 newRatingPopupFrame.setVisible(false);
                 if(newRating != null){
                     JOptionPane.showMessageDialog(newRatingPopupFrame, "Thank you for Rating " + newRatingPopupFrame.getTab().getExemplar().getName());
                 }
                 newRatingPopupFrame.getTab().refreshInfoPanel();
                 refreshHomeTab();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -298,7 +371,7 @@ public class MainController implements Runnable{
      * Initializes the Frame used to add Contributors to an Exemplar
      */
     void initializeAddContributorFrame(){
-        addContributorFrame = new AddUserrFrame();
+        addContributorFrame = new AddUserFrame();
         addContributorFrame.setVisible(false);
         addContributorFrame.setSize(new Dimension(350, 500));
         addContributorFrame.setLocationRelativeTo(mainFrame);
@@ -307,7 +380,7 @@ public class MainController implements Runnable{
          * adds the contributor to the exemplar and persists the update.
          * Refreshes the info panel from the ExemplarTab to reflect changes.
          */
-        addContributorFrame.setListener((u)->{
+        addContributorFrame.setListener(u->{
             ExemplarTab tab = addContributorFrame.getTab();
             if(u.getIsContributor()==1){
                 Exemplar e = tab.getExemplar();
@@ -324,68 +397,41 @@ public class MainController implements Runnable{
         });
     }
 
-    /**
-     * Initializes the Frame used to add Users to a Community
-     */
-    void initializeAddMemberFrame(){
-        addMemberFrame = new AddMemberFrame();
-        addMemberFrame.setVisible(false);
-        addMemberFrame.setSize(new Dimension(350, 500));
-        addMemberFrame.setLocationRelativeTo(mainFrame);
-        /**
-         * Sets the listener of the frame to check if the selected user has contributor status,
-         * adds the contributor to the exemplar and persists the update.
-         * Refreshes the info panel from the ExemplarTab to reflect changes.
-         */
-        addContributorFrame.setListener((u)->{
-            ExemplarTab tab = addContributorFrame.getTab();
-            if(u.getUsername() != null){
-            Exemplar e = tab.getExemplar();
-                if(!e.getContributors().contains(u)){
-                    e.getContributors().add(u);
-                    Exemplar updated = exemplarClient.update(e.getName(), e);
-                    tab.refreshInfoPanel();
-                    if (updated != null) JOptionPane.showMessageDialog(tab, "Adding succesfull");
-                }else JOptionPane.showMessageDialog(tab, "User already in community");
-            }else{
-                JOptionPane.showMessageDialog(tab, u.getUsername() + " is no user");
-            }
 
-        });
-    }
     /**
      * Creates an ActionListener that opens a new ExemplarLibrary in a new tab and selects that tab
      * @return the listener created
      */
     ActionListener getOpenExemplarLibraryListener(boolean searchableByMainframe){
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ExemplarLibraryTab exemplarLibrary;
-                if(searchableByMainframe) {
-                    exemplarLibrary = new ExemplarLibraryTab(mainFrame.getSearchTerm());
-                    mainFrame.referenceOpenTab(exemplarLibrary);
-                }
-                else exemplarLibrary = new ExemplarLibraryTab("");
-
-                addListenersToExemplarLibrary(exemplarLibrary);
-
-                if (searchableByMainframe){
-                    for(JComponent c : mainFrame.getOpenSearchTabs()){
-                        mainFrame.removeTab(c);
-                    }
-                    java.util.List<JComponent> list = new ArrayList<>();
-                    list.add(exemplarLibrary);
-                    mainFrame.setOpenSearchTabs(list);
-                    mainFrame.addTab("Search Exemplars", exemplarLibrary);
-                }else mainFrame.addTab("Exemplar Library",exemplarLibrary);
-
-
-                mainFrame.setLastTabSelected();
+        return e -> {
+            ExemplarLibraryTab exemplarLibrary;
+            if(searchableByMainframe) {
+                exemplarLibrary = new ExemplarLibraryTab(mainFrame.getSearchTerm());
+                mainFrame.referenceOpenTab(exemplarLibrary);
             }
+            else exemplarLibrary = new ExemplarLibraryTab("");
+
+            addListenersToExemplarLibrary(exemplarLibrary);
+
+            if (searchableByMainframe){
+                for(JComponent c : mainFrame.getOpenSearchTabs()){
+                    mainFrame.removeTab(c);
+                }
+                List<JComponent> list = new ArrayList<>();
+                list.add(exemplarLibrary);
+                mainFrame.setOpenSearchTabs(list);
+                mainFrame.addTab("Search Exemplars", exemplarLibrary);
+            }else mainFrame.addTab("Exemplar Library",exemplarLibrary);
+
+
+            mainFrame.setLastTabSelected();
         };
     }
 
+    /**
+     * Adds the necessary listeners to an ExemplarLibrary instance
+     * @param exemplarLibrary the library
+     */
     void addListenersToExemplarLibrary(ExemplarLibraryTab exemplarLibrary){
         exemplarLibrary.setCloseListener(c -> mainFrame.removeTab(c));
         exemplarLibrary.setExemplarListener(selectedEntities -> {
@@ -400,35 +446,39 @@ public class MainController implements Runnable{
      * @return the listener created
      */
     ActionListener getOpenContributorLibraryListener(boolean searchableByMainFrame){
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ContributorLibraryTab contributorLibrary;
+        return e -> {
+            ContributorLibraryTab contributorLibrary;
 
-                if(searchableByMainFrame) {
-                    contributorLibrary = new ContributorLibraryTab(mainFrame.getSearchTerm());
-                }
-                else contributorLibrary = new ContributorLibraryTab("");
-
-                addListenersToContributorLibrary(contributorLibrary);
-
-                if(searchableByMainFrame){
-                    for(JComponent c : mainFrame.getOpenSearchTabs()){
-                        mainFrame.removeTab(c);
-                    }
-                    java.util.List<JComponent> list = new ArrayList<>();
-                    list.add(contributorLibrary);
-                    mainFrame.setOpenSearchTabs(list);
-                    mainFrame.addTab("Search Contributors", contributorLibrary);
-                } else mainFrame.addTab("Contributor Library", contributorLibrary);
-
-                mainFrame.setLastTabSelected();
+            if(searchableByMainFrame) {
+                contributorLibrary = new ContributorLibraryTab(mainFrame.getSearchTerm());
             }
+            else contributorLibrary = new ContributorLibraryTab("");
+
+            addListenersToContributorLibrary(contributorLibrary);
+
+            if(searchableByMainFrame){
+                for(JComponent c : mainFrame.getOpenSearchTabs()){
+                    mainFrame.removeTab(c);
+                }
+                List<JComponent> list = new ArrayList<>();
+                list.add(contributorLibrary);
+                mainFrame.setOpenSearchTabs(list);
+                mainFrame.addTab("Search Contributors", contributorLibrary);
+            } else mainFrame.addTab("Contributor Library", contributorLibrary);
+
+            mainFrame.setLastTabSelected();
         };
     }
 
+    /**
+     * Adds the listeners to a Contributor Library instance
+     * @param contributorLibrary the library
+     */
     void addListenersToContributorLibrary(ContributorLibraryTab contributorLibrary){
         contributorLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        /**
+         * Implements the listener used to open contributorTabs for selected contributors
+         */
         contributorLibrary.setContributorListener(selectedEntities -> {
             for(String e1 : selectedEntities){
                 try {
@@ -448,36 +498,40 @@ public class MainController implements Runnable{
      * @return the listener created
     */
     ActionListener getOpenCommunityLibraryListener(boolean searchableByMainFrame){
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CommunityLibraryTab communityLibrary;
+        return e -> {
+            CommunityLibraryTab communityLibrary;
 
-                if(searchableByMainFrame) {
-                    communityLibrary = new CommunityLibraryTab(mainFrame.getSearchTerm());
-                }
-                else communityLibrary = new CommunityLibraryTab("");
-
-                addListenersToCommunityLibrary(communityLibrary);
-
-                if(searchableByMainFrame){
-                    for(JComponent c : mainFrame.getOpenSearchTabs()){
-                        mainFrame.removeTab(c);
-                    }
-                    java.util.List<JComponent> list = new ArrayList<>();
-                    list.add(communityLibrary);
-                    mainFrame.setOpenSearchTabs(list);
-                    mainFrame.addTab("Search Communities", communityLibrary);
-                } else mainFrame.addTab("Community Library", communityLibrary);
-
-                mainFrame.setLastTabSelected();
+            if(searchableByMainFrame) {
+                communityLibrary = new CommunityLibraryTab(mainFrame.getSearchTerm());
             }
+            else communityLibrary = new CommunityLibraryTab("");
+
+            addListenersToCommunityLibrary(communityLibrary);
+
+            if(searchableByMainFrame){
+                for(JComponent c : mainFrame.getOpenSearchTabs()){
+                    mainFrame.removeTab(c);
+                }
+                List<JComponent> list = new ArrayList<>();
+                list.add(communityLibrary);
+                mainFrame.setOpenSearchTabs(list);
+                mainFrame.addTab("Search Communities", communityLibrary);
+            } else mainFrame.addTab("Community Library", communityLibrary);
+
+            mainFrame.setLastTabSelected();
         };
     }
 
+    /**
+     * Adds listeners to a CommunityLibrary instance
+     * @param communityLibrary the library
+     */
     void addListenersToCommunityLibrary(CommunityLibraryTab communityLibrary){
 
         communityLibrary.setCloseListener(c -> mainFrame.removeTab(c));
+        /**
+         * Implements the listener used to open communityTabs for selected communities
+         */
         communityLibrary.setCommunityListener(selectedEntities -> {
             for(String e1 : selectedEntities){
                 addCommunityTabToMainframe(e1);
@@ -492,7 +546,7 @@ public class MainController implements Runnable{
         /**
          * Takes the UserEvent created by the HomeTab and updates the information in the database
          */
-        homeTab.setUpdateUserListener((u)-> {
+        homeTab.setUpdateUserListener(u-> {
             try {
                 User updated = userClient.update(u.getUsername(), u);
                 if (updated != null) {
@@ -500,9 +554,7 @@ public class MainController implements Runnable{
                     homeTab.setUser(updated);
                     JOptionPane.showMessageDialog(homeTab.getProfilePanel(), "Update successfull");
                 }else JOptionPane.showMessageDialog(homeTab.getProfilePanel(), "Update failed");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -510,7 +562,7 @@ public class MainController implements Runnable{
         /**
          * Takes a list with exemplar names and opens a ExemplarTab for every exemplar in the list (identified by name)
          */
-        homeTab.setOpenExemplarListener((list)->{
+        homeTab.setOpenExemplarListener(list->{
                 for(String s : list){
                     addExemplarTabToMainframe(s);
                 }
@@ -519,22 +571,18 @@ public class MainController implements Runnable{
         /**
          * Makes the NewExemplarPopupFrame visible to enter name
          */
-        homeTab.setCreateExemplarListener((e)->{
-            newExemplarPopupFrame.setVisible(true);
-        });
+        homeTab.setCreateExemplarListener(e-> newExemplarPopupFrame.setVisible(true));
 
         /**
          * Makes the NewCommunityPopupFrame visible to enter name
          */
-        homeTab.setCreateCommunityListener((c)->{
-            newCommunityPopupFrame.setVisible(true);
-        });
+        homeTab.setCreateCommunityListener(c-> newCommunityPopupFrame.setVisible(true));
 
         /**
          * Fetches all communities from the database according to their names in the list and opens
          * a CommunityTab for each of them
          */
-        homeTab.setOpenCommunityListener((list)->{
+        homeTab.setOpenCommunityListener(list->{
             try {
                 CommunityClient client = new CommunityClient();
                 for(String s : list){
@@ -556,8 +604,9 @@ public class MainController implements Runnable{
          * Deletes the user from the database and calls logout().
          *
          */
-        homeTab.setDeleteUserListener((user)->{
+        homeTab.setDeleteUserListener(user->{
             try{
+                users.remove(user);
                 userClient.delete(user.getUsername());
                 logout();
             }catch(Exception e){
@@ -566,11 +615,13 @@ public class MainController implements Runnable{
         });
 
         homeTab.setCreateExemplarLibraryListener(getOpenExemplarLibraryListener(false));
-        //homeTab.setCreateCommunityLibraryListener(getOpenCommunityLibraryListener(false));
         homeTab.setCreateContributorLibraryListener(getOpenContributorLibraryListener(false));
 
     }
 
+    /**
+     * Calls the refresh method form the hometab
+     */
     void refreshHomeTab(){
         homeTab.refresh();
         addListenersToHomeTab();
@@ -591,6 +642,7 @@ public class MainController implements Runnable{
         e.setContributors(new ArrayList<>());
         try {
             exemplarClient.add(e);
+            exemplars.add(e);
             ExemplarTab newExemplarTab = new ExemplarTab(e, true, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
@@ -614,6 +666,7 @@ public class MainController implements Runnable{
         c.setExemplars(new ArrayList<>());
         try {
             communityClient.add(c);
+            communities.add(c);
             CommunityTab newCommunityTab = new CommunityTab(c, currentUser);
             addListenersToCommunityTab(newCommunityTab);
             mainFrame.addTab(s,newCommunityTab);
@@ -637,18 +690,10 @@ public class MainController implements Runnable{
             return;
         }
         ContributorTab newContributorTab = new ContributorTab(contributor);
-        newContributorTab.setCloseListener(new ActionWithComponentListener(){
-            @Override
-            public void componentSubmitted(Component c){
-                mainFrame.removeTab(c);
-            }
-        });
-        newContributorTab.setExemplarListener(new NewTabListener() {
-            @Override
-            public void tabRequested(List<String> selectedEntities) {
-                for(String e : selectedEntities){
-                    addExemplarTabToMainframe(e);
-                }
+        newContributorTab.setCloseListener(c -> mainFrame.removeTab(c));
+        newContributorTab.setExemplarListener(selectedEntities -> {
+            for(String e : selectedEntities){
+                addExemplarTabToMainframe(e);
             }
         });
         mainFrame.addTab(username,newContributorTab);
@@ -670,8 +715,8 @@ public class MainController implements Runnable{
         if(e != null){
             boolean editable = false;
             if(e.getCreator() == null) editable = false;
-            else editable = e.getCreator().equals(currentUser) ? true : false;
-            if(!editable) if(e.getContributors().contains(currentUser)) editable = true;
+            else editable = e.getCreator().equals(currentUser);
+            if(!editable && e.getContributors().contains(currentUser)) editable = true;
             ExemplarTab newExemplarTab = new ExemplarTab(e, editable, currentUser);
             addListenersToExemplarTab(newExemplarTab);
             mainFrame.addTab(s,newExemplarTab);
@@ -691,9 +736,6 @@ public class MainController implements Runnable{
             interruptedException.printStackTrace();
         }
         if(c != null){
-            boolean editable = false;
-            if(c.getName() == null) editable = false;
-            else editable = c.getName().equals(currentUser) ? true : false;
             CommunityTab newCommunityTab = new CommunityTab(c, currentUser);
             addListenersToCommunityTab(newCommunityTab);
             mainFrame.addTab(s,newCommunityTab);
@@ -706,44 +748,47 @@ public class MainController implements Runnable{
      * @param newExemplarTab the given tab to add the listeners
      */
     void addListenersToExemplarTab(ExemplarTab newExemplarTab){
-        newExemplarTab.setCloseListener((c)->{
+        newExemplarTab.setCloseListener(c->{
             ExemplarTab tab = (ExemplarTab)c;
             JButton updateButton = tab.getUpdateButton();
             if(tab.isEditable()) updateButton.doClick();
             mainFrame.removeTab(c);
         });
-        newExemplarTab.setUpdateExemplarListener((exemplar)->{
-            exemplarClient.update(exemplar.getName(), exemplar);
-        });
+        /**
+         * Implements the listener used to update a given exemplar
+         */
+        newExemplarTab.setUpdateExemplarListener(exemplar-> exemplarClient.update(exemplar.getName(), exemplar));
         newExemplarTab.setDeleteExemplarListener((id, tab)->{
             try {
+                Exemplar deleted = exemplarClient.get(id);
+                exemplars.remove(deleted);
                 exemplarClient.delete(id);
                 mainFrame.removeTab(tab);
                 refreshHomeTab();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        newExemplarTab.setAddLabelListener((tab)->{
+        newExemplarTab.setAddLabelListener(tab->{
             newLabelPopupFrame.setVisible(true);
             newLabelPopupFrame.setTab(tab);
         });
 
-        newExemplarTab.setRatingListener((t)->{
+        newExemplarTab.setRatingListener(t->{
             newRatingPopupFrame.setTab(t);
             newRatingPopupFrame.setTitle(t.getExemplar().getName());
             newRatingPopupFrame.setVisible(true);
         });
 
-        newExemplarTab.setContributorListener((t)->{
+        newExemplarTab.setContributorListener(t->{
             addContributorFrame.setTab(t);
             addContributorFrame.setTitle(t.getExemplar().getName());
             addContributorFrame.setVisible(true);
         });
-
-        newExemplarTab.setExportListener((c)->{
+        /**
+         * Implements the listener used to export an exemplar
+         */
+        newExemplarTab.setExportListener(c->{
             ExemplarTab tab = (ExemplarTab)c;
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setDialogTitle("Choose a destination");
@@ -761,23 +806,20 @@ public class MainController implements Runnable{
                 exportExemplar(path, tab.getExemplar());
             }
         });
+        /**
+         * Implements the listener used to add an exemplar to a community
+         */
+        newExemplarTab.setAddToCommunityListener(s -> {
+            try {
+                Community c = communityClient.get(s);
+                if(c == null)return;
+                c.getExemplars().add(newExemplarTab.getExemplar());
+                communityClient.update(c.getName(), c);
 
-        newExemplarTab.setAddToCommunityListener(new ActionWithStringListener() {
-            @Override
-            public void stringSubmitted(String s) {
-                try {
-                    Community c = communityClient.get(s);
-                    if(c == null)return;
-                    c.getExemplars().add(newExemplarTab.getExemplar());
-                    communityClient.update(c.getName(), c);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
+
         });
 
 
@@ -788,84 +830,77 @@ public class MainController implements Runnable{
      * @param newCommunityTab the given tab to add the listeners
      */
     void addListenersToCommunityTab(CommunityTab newCommunityTab){
-        newCommunityTab.setCloseListener((c)->{
-            mainFrame.removeTab(c);
-        });
-        newCommunityTab.setUpdateCommunityListener((community)->{
-            communityClient.update(community.getName(), community);
-        });
+        newCommunityTab.setCloseListener(c->mainFrame.removeTab(c));
+        newCommunityTab.setUpdateCommunityListener(community-> communityClient.update(community.getName(), community));
         newCommunityTab.setDeleteCommunityListener((id, tab)->{
             try {
                 communityClient.delete(id);
+                communities.remove(communities.stream().filter(c->c.getName()==id).collect(Collectors.toList()).get(0));
                 mainFrame.removeTab(tab);
                 refreshHomeTab();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        newCommunityTab.setJoinCommunityListener((u)->{
+        /**
+         * Implements the listener used to join a community
+         */
+        newCommunityTab.setJoinCommunityListener(u->{
             Community c = null;
             try {
                 c = communityClient.get(newCommunityTab.getCommunity().getName());
                 c.getMembers().add(u);
                 c = communityClient.update(c.getName(), c);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        newCommunityTab.setLeaveListener((u)->{
+        /**
+         * Implements the listener used to leava a community
+         */
+        newCommunityTab.setLeaveListener(u->{
             Community c = null;
             try {
                 c = communityClient.get(newCommunityTab.getCommunity().getName());
                 c.getMembers().remove(u);
                 c = communityClient.update(c.getName(), c);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-
-        newCommunityTab.setMemberClickedListener(new ActionWithStringListener() {
-            @Override
-            public void stringSubmitted(String s) {
-                try {
-                    createNewContributorTab(s);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        /**
+         * Implements the listener that gets activated afer a community member has been double-clicked
+         */
+        newCommunityTab.setMemberClickedListener(s -> {
+            try {
+                createNewContributorTab(s);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-
-        newCommunityTab.setRemoveExemplarListener(new ActionWithStringListener() {
-            @Override
-            public void stringSubmitted(String s) {
-                try {
-                    Community c = communityClient.get(newCommunityTab.getCommunity().getName());
-                    c.getExemplars().remove(exemplarClient.get(s));
-                    communityClient.update(c.getName(),c);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        /**
+         * Implements the listener used to remove an exemplar from the community
+         */
+        newCommunityTab.setRemoveExemplarListener(s -> {
+            try {
+                Community c = communityClient.get(newCommunityTab.getCommunity().getName());
+                c.getExemplars().remove(exemplarClient.get(s));
+                communityClient.update(c.getName(),c);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-
-        newCommunityTab.setShowExemplarListener(new ActionWithStringListener() {
-            @Override
-            public void stringSubmitted(String s) {
-                addExemplarTabToMainframe(s);
-            }
-        });
+        /**
+         * Impelemnts the listener used to open an exemplar from within the community
+         */
+        newCommunityTab.setShowExemplarListener(this::addExemplarTabToMainframe);
     }
 
+    /**
+     * Exports an exemplar to the users local file system
+     * @param path the path where the exemplar needs to be saved
+     * @param exemplar the exemplar to be saved
+     */
     private void exportExemplar(String path, Exemplar exemplar) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -873,8 +908,6 @@ public class MainController implements Runnable{
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(json);
             writer.close();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -886,7 +919,7 @@ public class MainController implements Runnable{
      * @param s the given ExemplarName
      * @return true if the name is free, false if not
      */
-    boolean verifyExemplarName(String s){
+    public boolean verifyExemplarName(String s){
         try{
             Exemplar exists = exemplarClient.get(s);
             if(exists == null) return true;
@@ -901,7 +934,7 @@ public class MainController implements Runnable{
      * @param s the given CommunityName
      * @return true if the name is free, false if not
      */
-    boolean verifyCommunityName(String s){
+    public boolean verifyCommunityName(String s){
         try{
             Community exists = communityClient.get(s);
             if(exists == null) return true;
@@ -915,29 +948,38 @@ public class MainController implements Runnable{
      */
     void setLogoutListener(ActionListener listener){
         logoutListener = listener;
-        mainFrame.setLogoutListener(e->{
-            logout();
-        });
+        mainFrame.setLogoutListener(e-> logout());
     }
 
+    /**
+     * disposes the frames before calling the logout method for memory performance reasons
+     */
     private void logout() {
         addContributorFrame.dispose();
         newLabelPopupFrame.dispose();
         newRatingPopupFrame.dispose();
         newExemplarPopupFrame.dispose();
-        // newCommunityPopupFrame.dispose();
         logoutListener.actionPerformed(null);
     }
 
-    @Override
-    public void run() {
-        initialExemplarLibraryTab = new ExemplarLibraryTab("");
-        initialContributorLibraryTab = new ContributorLibraryTab("");
-        initialCommunityLibraryTab = new CommunityLibraryTab("");
-        addListenersToContributorLibrary(initialContributorLibraryTab);
-        addListenersToCommunityLibrary(initialCommunityLibraryTab);
-        addListenersToExemplarLibrary(initialExemplarLibraryTab);
-        librarysLoaded = true;
-        return;
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    public NewRatingPopupFrame getNewRatingPopupFrame() {
+        return newRatingPopupFrame;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setHomeTab(HomeTab homeTab) {
+        this.homeTab = homeTab;
     }
 }

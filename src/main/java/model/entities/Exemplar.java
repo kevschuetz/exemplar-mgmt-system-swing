@@ -3,6 +3,9 @@ package model.entities;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents an exemplar as a problem and a solution regarding a specific topic
+ */
 public class Exemplar {
     private String name;
 

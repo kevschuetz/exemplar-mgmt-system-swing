@@ -1,5 +1,8 @@
 package view.events;
 
+/**
+ * Wraps informations regarding an Event that requires details about a User
+ */
 public class UserEvent {
     private String username;
     private String fullname;

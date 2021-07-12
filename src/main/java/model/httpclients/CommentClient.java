@@ -12,9 +12,12 @@ import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Used to interact with the Commment entity
+ */
 public class CommentClient extends Client<Comment>{
     private final HttpClient client;
-    private final String URL;
+    private final String url;
     private final ObjectMapper mapper;
 
     private HttpRequest request;
@@ -22,21 +25,20 @@ public class CommentClient extends Client<Comment>{
 
     public CommentClient(){
         client = HttpClient.newHttpClient();
-        URL = HttpConstants.URL + "/comments";
+        url = HttpConstants.URL + "/comments";
         mapper = new ObjectMapper();
-    };
+    }
 
     @Override
     public Comment add(Comment value) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(value)))
                 .build();
         response= client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            Comment addedComment =  mapper.readValue(response.body(), Comment.class);
-            return addedComment;
+            return mapper.readValue(response.body(), Comment.class);
         }catch (Exception e){
             return null;
         }
@@ -45,7 +47,7 @@ public class CommentClient extends Client<Comment>{
     @Override
     public void delete(String id) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+"/"+id))
+                .uri(URI.create(url +"/"+id))
                 .DELETE()
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -54,29 +56,27 @@ public class CommentClient extends Client<Comment>{
     @Override
     public List<Comment> getAll() throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try{
-            List<Comment> comments = mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
-            return comments;
+         return mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
         }catch(Exception e){
-            //e.printStackTrace();
-            return new LinkedList<Comment>();
+            e.printStackTrace();
+            return new LinkedList<>();
         }
     }
 
     @Override
     public Comment get(String id) throws IOException, InterruptedException {
         request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+"/"+id))
+                .uri(URI.create(url +"/"+id))
                 .build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         try {
-            Comment comment = mapper.readValue(response.body(), Comment.class);
-            return comment;
+            return mapper.readValue(response.body(), Comment.class);
         }catch(Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -85,13 +85,12 @@ public class CommentClient extends Client<Comment>{
     public Comment update(String id, Comment value)  {
         try{
             request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL+"/"+id))
+                    .uri(URI.create(url +"/"+id))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(value)))
                     .build();
             response= client.send(request, HttpResponse.BodyHandlers.ofString());
-            Comment updatedComment =  mapper.readValue(response.body(), Comment.class);
-            return updatedComment;
+            return mapper.readValue(response.body(), Comment.class);
         }catch (Exception e){
             return null;
         }
@@ -100,15 +99,14 @@ public class CommentClient extends Client<Comment>{
     public List<Comment>findCommentsForExemplar(String exemplarname){
         try{
             request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL+"/forexemplar?exemplarname="+exemplarname))
+                    .uri(URI.create(url +"/forexemplar?exemplarname="+exemplarname))
                     .build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            List<Comment>comments = mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
-            return comments;
+            return mapper.readValue(response.body(), new TypeReference<List<Comment>>(){});
         }catch(Exception e){
             e.printStackTrace();
-            return new LinkedList<Comment>();
+            return new LinkedList<>();
         }
     }
 
