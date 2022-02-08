@@ -1,40 +1,42 @@
 # Exemplar Management System (Team 4)
 
-Repository team4 for the project of creating an Exemplar Management Tool
+Repository team4 for the project of creating an Exemplar Management Tool in the course of the PR Software Engineering in the summer term 2021 led by Prof. Luca Berardinelli.
 
 ## Structure of the repository 
 
-The root folder represents the maven project for the desktop application (Exemplar Management System).
+The root folder and the pom.xml therein represents the maven project for the desktop application (Exemplar Management System).
 
-The /database folder represents an independent Spring-Boot application that will act as a proxy between the desktop application and the database (for security reasons and to make the client "thinner")
+The /database folder represents an independent Spring-Boot application that acts as a proxy between the desktop application and the database.
 [Spring-Boot project](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/tree/main/database)
 
-Other documents and documentation files can be found unde /Documents
+For further information regarding the project feel free to look at the [project documentation](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%204/Project%20Documentation.pdf)
+
+Other documents and documentation files can be found under /Documents
 [Documentation](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/tree/main/Documents)
+Subfolders for every release contain release-specific documents.
 
-## **Release 1**
+## **Installation**
 
-*The Deliverables for Release 1 can be found under the following links:*
+In order to install the system and run it locally follow these steps.
+* Clone the repository
+$ git clone https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4
 
-* [Diagram: General architecture of the application](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/General%20Architecture%200.pdf)
-* [Diagram: database](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/Database_Diagram.png)
+* Execute the executable jar of the frontend by navigating to the /out/artifacts/application_jar/ folder and executing the jar with the following command
+$ java -jar application.jar
+
+It is recommended to have at least JDK 15 installed, although it may work with lower versions.
+
+## **Branches**
+We created seperate branches for every release where the status of the project at a given time can be assessed. 
+
+## **Final Release**
+
+*The Deliverables for the final Release can be found under the following links:*
+
+* [Project documentation](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%204/Project%20Documentation.pdf)
+
+* [Final UML Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%204/finaluml.png)
 * [Link to CircleCI confirming succesfull builds](https://app.circleci.com/pipelines/github/jku-win-se) 
-* [UML class diagram: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Desktop_Application.png)
-* [UML class PlantUML-Syntax: Frontend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/clientapplication.puml)
-* [UML class diagram: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/UML_Backend.png)
-* [UML class PlantUML-Syntax: Backend](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/backend.puml)
-* [Prototype User Guide (also includes link to prototype)](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%201/GR04_PrototypeUserGuide.pdf)
-* [Prototype Presentation](https://pr.to/XKZ9SR/)
+* [JavaDoc for important aspects](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/release/final/Documents/Release%204/javadoc/index.html)
 
-## **Release 2**
-
-*The Deliverables for Release 2 can be found under the following links:*
-
-* [Use Cases](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/Use%20Cases.docx)
-* [UML Backend PUML Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/backEnd.puml)
-* [UML Frontend PUML Syntax](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/frontEnd.puml)
-* [UML Backend Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/backend.png)
-* [UML Frontend Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/frontEnd.png)
-* [Status Presentation 2 with requirements status and unit test overview](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%202/ReleasePr%C3%A4sentation2__Team04.pptx)
-* [Executable JAR](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/out/artifacts/application_jar/application.jar)
 
