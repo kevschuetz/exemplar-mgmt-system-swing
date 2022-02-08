@@ -1,6 +1,6 @@
 # Exemplar Management System (Team 4)
 
-Repository team4 for the project of creating an Exemplar Management Tool in the course of the PR Software Engineering in the summer term 2021 led by Prof. Luca Berardinelli.
+Repository for the project of creating an Exemplar Management Tool in the course of the PR Software Engineering in the summer term 2021 led by Prof. Luca Berardinelli.
 
 ## Structure of the repository 
 
@@ -26,17 +26,6 @@ $ java -jar application.jar
 
 It is recommended to have at least JDK 15 installed, although it may work with lower versions.
 
-## **Branches**
-We created seperate branches for every release where the status of the project at a given time can be assessed. 
 
-## **Final Release**
-
-*The Deliverables for the final Release can be found under the following links:*
-
-* [Project documentation](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%204/Project%20Documentation.pdf)
-
-* [Final UML Diagram](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/main/Documents/Release%204/finaluml.png)
-* [Link to CircleCI confirming succesfull builds](https://app.circleci.com/pipelines/github/jku-win-se) 
-* [JavaDoc for important aspects](https://github.com/jku-win-se/teaching-2021.prse-exemplar-team4/blob/release/final/Documents/Release%204/javadoc/index.html)
 
 
